@@ -46,7 +46,11 @@ Example (any of the ten):
 
 Smaller, composable Claude Code skills (`SKILL.md`): `html-site-foundation` (start here), `html-landing-page`, `html-palette-type`, `html-motion-system`, `html-interaction-details`, `html-icons-tabler`, `html-threejs-scenes`, `html-kinetic-type`. Copy a folder into `~/.claude/skills/` to install it.
 
-## 5. Maintaining the prompts
+## 5. Love stories (`love-stories/`)
+
+A different kind of page: **cinematic, illustrated love-story pages** driven by scroll (an apology when she isn't talking, flirty date invites, long distance, proposals, anniversaries, a Mars-and-Venus understanding story, comfort, birthdays). Almost no text, no photo squares, the screen fills with flowers at the turning point, and it ends with a Yes / No question. Paste [`love-stories/LOVE-STORY-SKILL.md`](love-stories/LOVE-STORY-SKILL.md) into any AI, tell it the topic, and it writes a short story script that a tested engine turns into the page. 11 ready examples are in [`love-stories/examples/`](love-stories/examples/). See [`love-stories/README.md`](love-stories/README.md).
+
+## 6. Maintaining the prompts
 
 Prompts are generated. Edit the sources, then rebuild:
 
@@ -59,12 +63,12 @@ node build.mjs        # writes prompts/<type>.md and IMAGE-LIBRARY.md
 
 To add a site type, create `parts/<type>.md` with a title, a "HOW TO USE" box, an `<!-- IMAGES: ... -->` line, a `{{CORE}}` line, a "PART C" specification including a "C3b. Visual plan", and run the build.
 
-## 6. Lessons baked in
+## 7. Lessons baked in
 
 - **Never `clip-path` an element you observe with IntersectionObserver.** Chrome reports a fully clipped target as not intersecting, so a reveal that starts from `clip-path: inset(0 0 100% 0)` never fires and the photo stays invisible forever. The reveal here uses an overlay curtain and a failsafe that shows anything left hidden after 4 seconds.
 - **Don't let an AI recall image IDs.** Many remembered IDs are wrong (the "Modern Home" ID in the original `skillsV3.md` is a photo of a man with equipment). Use the verified library.
 
-## 7. Legacy
+## 8. Legacy
 
 `skillsV3.md` is the original all-in-one prompt (including e-commerce cart and toast chapters), kept for reference. Its hand-picked photo IDs were not verified; prefer the library above.
 

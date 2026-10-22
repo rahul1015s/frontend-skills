@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Good morning, love</title>
+<meta name="theme-color" content="#05050c">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+/* ───────── love-story engine (full-screen illustrated scenes driven by scroll) ───────── */
+*,*::before,*::after{box-sizing:border-box}
+html{background:#05050c;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+body{margin:0;color:#fff;font-family:'Playfair Display',Georgia,serif;-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;overflow:hidden;--u:min(100vw,72svh);--gy:78%;background:#05050c}
+.scene{position:absolute;inset:0;visibility:hidden;opacity:0;--gy:78%}
+.cam{position:absolute;inset:0;transform-origin:50% 60%}
+.sky{position:absolute;inset:0;background:linear-gradient(180deg,var(--c1) 0%,var(--c2) 55%,var(--c3) 100%)}
+.prop{position:absolute;translate:-50% -50%;pointer-events:none}
+.prop.b{translate:-50% -100%}
+.inn{display:block;width:100%}.prop svg{display:block;width:100%;height:auto;overflow:visible}
+.full{position:absolute;inset:0;pointer-events:none}
+.layer-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:12}
+/* idle motion */
+.bob{animation:bob 6s ease-in-out infinite}.float{animation:float 7s ease-in-out infinite}.sway{transform-origin:50% 100%;animation:sway 5s ease-in-out infinite}
+.beat{animation:beat 1.25s ease-in-out infinite}.spin{animation:spin 40s linear infinite}
+@keyframes bob{50%{transform:translateY(-1.6vmin)}}@keyframes float{50%{transform:translateY(-3vmin) rotate(2deg)}}@keyframes sway{50%{transform:rotate(2.6deg)}}
+@keyframes beat{0%,100%{transform:scale(1)}14%{transform:scale(1.14)}28%{transform:scale(1)}42%{transform:scale(1.1)}}@keyframes spin{to{transform:rotate(360deg)}}
+.flame{animation:flick 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}.flicker .glow{animation:glowp 3s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 50%}
+@keyframes flick{0%,100%{transform:scale(1)}40%{transform:scale(.88,1.14)}70%{transform:scale(1.06,.94)}}@keyframes glowp{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.st{position:absolute;border-radius:50%;background:#fff;animation:tw 3s ease-in-out infinite}@keyframes tw{0%,100%{opacity:.25}50%{opacity:1}}
+.cl{position:absolute;animation:drift linear infinite}.cl svg{width:100%;height:auto;display:block}@keyframes drift{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+.win{animation:tw 4s ease-in-out infinite}
+.fl{position:absolute;translate:-50% -100%;display:flex;flex-direction:column;align-items:center}
+.fl .stem{display:block;width:.55vmin;min-width:3px;height:var(--sh);background:linear-gradient(#3fae68,#2a7f48);order:2;border-radius:3px}
+.fl .bl{width:var(--b);order:1;margin-bottom:-1.4vmin;transform-origin:50% 100%;animation:sway 4s ease-in-out infinite}.fl .bl svg{display:block;width:100%;height:auto}
+.hrt{position:absolute;bottom:-8vmin;height:auto;animation:rise linear infinite;opacity:.85}@keyframes rise{from{transform:translateY(0) rotate(-8deg)}to{transform:translateY(-120vh) rotate(10deg)}}
+.ln{position:absolute;bottom:-10vmin;border-radius:34% 34% 42% 42%/20% 20% 55% 55%;background:radial-gradient(ellipse at 50% 70%,#ffe29a,#ff9f45 60%,#c4531a);box-shadow:0 0 4vmin #ffb703;animation:rise linear infinite;opacity:.9}
+.bal{animation:float 6s ease-in-out infinite}.drip{animation:drip 3s linear infinite}@keyframes drip{from{transform:translateY(-6px);opacity:0}30%{opacity:.6}to{transform:translateY(46px);opacity:0}}
+.steam{animation:steam 3s ease-in-out infinite}@keyframes steam{0%{opacity:0;transform:translateY(8px)}50%{opacity:.8}100%{opacity:0;transform:translateY(-8px)}}
+.dot{animation:dotb 1s ease-in-out infinite}@keyframes dotb{50%{transform:translateY(-4px);opacity:.5}}
+.ph{position:absolute;translate:-50% -50%;animation:bob 7s ease-in-out infinite;filter:drop-shadow(0 1.4vmin 2.4vmin rgba(0,0,0,.35))}.ph svg{display:block;width:100%;height:auto}
+.word{position:absolute;left:50%;top:50%;translate:-50% -50%;font-family:'Caveat','Playfair Display',cursive;font-weight:700;white-space:nowrap;text-shadow:0 .6vmin 3vmin rgba(0,0,0,.35)}.word b{display:inline-block;font-weight:700}
+/* captions */
+.cap{position:absolute;left:0;right:0;z-index:20;text-align:center;padding:0 7vw;pointer-events:none;text-shadow:0 2px 26px rgba(0,0,0,.5)}
+.cap[data-pos="top"]{top:10%}.cap[data-pos="mid"]{top:44%;translate:0 -50%}.cap[data-pos="bottom"]{bottom:11%}
+.cap .line{font:italic 600 clamp(26px,6.6vw,66px)/1.16 'Playfair Display',Georgia,serif;letter-spacing:-.01em}
+.cap .line .w{display:inline-block;margin:0 .13em}
+.cap.dark{color:#4a1236;text-shadow:0 1px 18px rgba(255,255,255,.75)}
+.cap .whisper{margin-top:.5em;font:400 clamp(22px,4.6vw,36px)/1.2 'Caveat',cursive;opacity:.92}
+/* hud */
+#bar{position:fixed;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,#ff4d6d,#ffd166);transform-origin:0 50%;transform:scaleX(0);z-index:60}
+#play{position:fixed;top:12px;right:12px;z-index:60;border:1px solid rgba(255,255,255,.35);background:rgba(10,10,20,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border-radius:999px;padding:.55em 1em;font:600 13px/1 system-ui,sans-serif;letter-spacing:.04em;cursor:pointer;min-height:40px}
+#hint{position:fixed;left:50%;bottom:3.2vh;translate:-50% 0;z-index:40;text-align:center;font:500 12px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#fff;opacity:.85;pointer-events:none}
+#hint i{display:block;width:22px;height:34px;border:2px solid #fff;border-radius:14px;margin:0 auto 8px;position:relative}#hint i::after{content:"";position:absolute;left:50%;top:6px;width:4px;height:7px;margin-left:-2px;border-radius:2px;background:#fff;animation:wheel 1.6s ease-in-out infinite}@keyframes wheel{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(12px)}}
+/* flower fill */
+#bloom{position:absolute;inset:0;z-index:15;pointer-events:none;visibility:hidden}.bloom-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#ffc2d1,#ff8fab 70%,#ff6b8b)}
+.bb{position:absolute;translate:-50% -50%;will-change:transform}.bb svg{display:block;width:100%;height:auto}
+/* finale */
+.ask{position:absolute;inset:0;z-index:30;display:grid;place-content:center;justify-items:center;gap:3.4vh;text-align:center;padding:0 7vw;pointer-events:none;visibility:hidden;opacity:0}
+.ask.on{pointer-events:auto}
+.ask[data-pos="high"]{place-content:start center;padding-top:17vh}.ask[data-pos="low"]{place-content:end center;padding-bottom:14vh}
+.ask::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(closest-side at 50% 38%,rgba(0,0,0,.3),transparent 78%)}
+.ask h2{margin:0;font:italic 700 clamp(32px,9vw,84px)/1.08 'Playfair Display',Georgia,serif;text-shadow:0 2px 30px rgba(0,0,0,.45);max-width:16ch}
+.btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;position:relative;min-height:64px;width:min(92vw,520px)}
+.btn{border:0;border-radius:999px;font:700 clamp(17px,4.4vw,24px)/1 system-ui,sans-serif;padding:1em 1.9em;cursor:pointer;min-height:54px;color:#fff;transition:transform .2s,box-shadow .2s}
+.btn:active{transform:scale(.95)}
+.yes{background:linear-gradient(135deg,#ff4d6d,#ff8fab);box-shadow:0 10px 44px rgba(255,77,109,.6);animation:beat 1.4s ease-in-out infinite}
+.no{background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.4);transition:left .35s cubic-bezier(.23,1,.32,1),top .35s cubic-bezier(.23,1,.32,1),transform .2s}
+.yesmsg{position:absolute;inset:0;z-index:40;display:grid;place-content:center;justify-items:center;gap:2.4vh;text-align:center;padding:0 8vw;visibility:hidden;opacity:0;pointer-events:none}
+.yesmsg{isolation:isolate}.yesmsg::before{content:"";position:absolute;inset:8% 2%;z-index:-1;background:radial-gradient(ellipse at center,rgba(110,8,56,.82) 0%,rgba(110,8,56,.6) 50%,rgba(110,8,56,0) 74%);filter:blur(6px)}
+.yesmsg.on{pointer-events:auto}
+.yesmsg h3{margin:0;font:italic 700 clamp(34px,10vw,92px)/1.05 'Playfair Display',Georgia,serif;text-shadow:0 2px 30px rgba(120,10,50,.55)}
+.yesmsg p{margin:0;font:400 clamp(24px,5.4vw,40px)/1.25 'Caveat',cursive;text-shadow:0 2px 20px rgba(120,10,50,.55);max-width:22ch}
+.yesmsg a{background:#fff;color:#c2185b;text-decoration:none;font:700 clamp(16px,4vw,20px)/1 system-ui,sans-serif;padding:1em 1.6em;border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+#track{width:1px;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.bob,.float,.sway,.beat,.spin,.flame,.st,.cl,.hrt,.ln,.bal,.drip,.steam,.dot,.ph,.win{animation:none!important}}
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* ───────── figures: stylised people built from a skeleton (no faces; modern flat-illustration look) ───────── */
+const Figures = (() => {
+  const BASE = {
+    h: [60, 34], n: [60, 52], sL: [46, 60], sR: [74, 60], eL: [40, 88], eR: [80, 88], wL: [40, 116], wR: [80, 116],
+    pL: [53, 112], pR: [67, 112], kL: [52, 162], kR: [68, 162], fL: [50, 208], fR: [70, 208], tilt: 0
+  };
+  const J = (o) => Object.assign({}, BASE, o);
+  /* single poses (frame 120 x 220) */
+  const POSES = {
+    stand: J({}),
+    sad: J({ h: [58, 41], tilt: 9, n: [60, 55], sL: [47, 64], sR: [73, 64], eL: [44, 94], eR: [76, 94], wL: [70, 82], wR: [50, 82] }),
+    happy: J({ h: [60, 32], tilt: -5, eL: [26, 40], wL: [14, 8], eR: [94, 40], wR: [106, 8] }),
+    wave: J({ eR: [92, 70], wR: [100, 38] }),
+    reach: J({ eR: [98, 66], wR: [128, 54], wL: [56, 92], eL: [44, 86] }),
+    walk: J({ h: [62, 34], pL: [58, 112], pR: [62, 112], kL: [44, 160], kR: [76, 158], fL: [30, 204], fR: [88, 206], eL: [36, 88], wL: [28, 112], eR: [88, 86], wR: [96, 110] }),
+    back: J({ h: [60, 36], tilt: 4, eL: [42, 90], wL: [44, 118], eR: [78, 90], wR: [76, 118] }),
+    sit: J({ nodress: true, h: [68, 112], tilt: 14, n: [62, 128], sL: [58, 140], sR: [62, 138], eL: [80, 178], eR: [84, 176], wL: [92, 160], wR: [96, 158], pL: [40, 190], pR: [44, 190], kL: [86, 160], kR: [90, 158], fL: [92, 206], fR: [98, 206] }),
+    sitfront: J({ nodress: true, h: [60, 74], n: [60, 92], sL: [46, 100], sR: [74, 100], eL: [40, 128], eR: [80, 128], wL: [54, 148], wR: [66, 148], pL: [53, 152], pR: [67, 152], kL: [42, 180], kR: [78, 180], fL: [40, 214], fR: [80, 214] }),
+    phone: J({ h: [60, 38], tilt: 10, eL: [42, 92], wL: [52, 82], eR: [78, 92], wR: [68, 82] })
+  };
+  /* couple poses (frame 240 x 220): [A joints, B joints] with A on the left */
+  const sh = (j, dx, dy = 0) => { const o = {}; for (const k in j) o[k] = Array.isArray(j[k]) ? [j[k][0] + dx, j[k][1] + dy] : j[k]; return o; };
+  const COUPLES = {
+    apart: [sh(POSES.back, 10), sh(POSES.back, 110)],
+    holdhands: [sh(J({ eR: [92, 92], wR: [106, 114] }), 12), sh(J({ eL: [28, 92], wL: [14, 114] }), 112)],
+    hug: [
+      sh(J({ h: [62, 34], tilt: 8, n: [62, 52], sL: [48, 60], sR: [76, 60], eL: [44, 90], wL: [78, 98], eR: [96, 82], wR: [112, 96], pL: [55, 112], pR: [69, 112] }), 40),
+      sh(J({ h: [58, 36], tilt: -8, n: [58, 54], sL: [44, 62], sR: [72, 62], eL: [30, 54], wL: [36, 80], eR: [60, 100], wR: [42, 92], pL: [51, 112], pR: [65, 112] }), 88)
+    ],
+    forehead: [
+      sh(J({ h: [68, 36], tilt: 14, n: [62, 53], eL: [44, 90], wL: [74, 98], eR: [94, 74], wR: [112, 62] }), 36),
+      sh(J({ h: [52, 38], tilt: -14, n: [58, 55], eL: [38, 66], wL: [58, 56], eR: [74, 96], wR: [48, 98] }), 100)
+    ],
+    dance: [
+      sh(J({ h: [62, 32], tilt: 4, eL: [30, 70], wL: [28, 34], eR: [92, 90], wR: [114, 100], kL: [48, 160], kR: [72, 150], fL: [44, 206], fR: [84, 198] }), 30),
+      sh(J({ h: [60, 38], tilt: -6, eL: [44, 80], wL: [30, 34], eR: [78, 92], wR: [50, 98], kL: [48, 156], kR: [74, 160], fL: [44, 204], fR: [92, 208] }), 108)
+    ],
+    kneel: [
+      J({ h: [70, 70], tilt: 6, n: [72, 88], sL: [58, 96], sR: [86, 96], eL: [50, 124], wL: [58, 136], eR: [104, 104], wR: [126, 80], pL: [66, 142], pR: [80, 142], kL: [54, 190], kR: [112, 150], fL: [26, 210], fR: [114, 208] }),
+      sh(J({ h: [60, 36], tilt: -6, eL: [44, 70], wL: [58, 48], eR: [76, 70], wR: [62, 48] }), 130)
+    ],
+    benchsolo: [null, sh(J({ nodress: true, h: [56, 76], tilt: -10, n: [60, 92], sL: [46, 100], sR: [74, 100], eL: [40, 128], eR: [80, 128], wL: [54, 148], wR: [66, 148], pL: [53, 152], pR: [67, 152], kL: [42, 180], kR: [78, 180], fL: [40, 214], fR: [80, 214] }), 70)],
+    bench: [sh(J({ h: [60, 74], tilt: 6, n: [60, 92], sL: [46, 100], sR: [74, 100], eL: [40, 128], eR: [80, 128], wL: [54, 148], wR: [66, 148], pL: [53, 152], pR: [67, 152], kL: [42, 180], kR: [78, 180], fL: [40, 214], fR: [80, 214] }), 20),
+      sh(J({ h: [56, 76], tilt: -12, n: [60, 92], sL: [46, 100], sR: [74, 100], eL: [40, 128], eR: [80, 128], wL: [54, 148], wR: [66, 148], pL: [53, 152], pR: [67, 152], kL: [42, 180], kR: [78, 180], fL: [40, 214], fR: [80, 214] }), 100)]
+  };
+  const line = (pts, w, c) => `<path d="M${pts.map(p => p.join(' ')).join(' L')}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+  const hairSvg = (style, [x, y], c) => {
+    const back = {
+      long: `<path d="M${x - 16} ${y - 2} C${x - 20} ${y - 24} ${x + 20} ${y - 24} ${x + 16} ${y - 2} C${x + 24} ${y + 22} ${x + 14} ${y + 40} ${x + 8} ${y + 42} L${x - 8} ${y + 42} C${x - 14} ${y + 40} ${x - 24} ${y + 22} ${x - 16} ${y - 2}Z" fill="${c}"/>`,
+      short: '', curly: `<circle cx="${x}" cy="${y - 6}" r="20" fill="${c}"/>`, bun: `<circle cx="${x}" cy="${y - 20}" r="8" fill="${c}"/>`,
+      pony: `<path d="M${x + 10} ${y - 6} C${x + 30} ${y - 4} ${x + 30} ${y + 24} ${x + 18} ${y + 36} C${x + 20} ${y + 18} ${x + 14} ${y + 6} ${x + 8} ${y + 2}Z" fill="${c}"/>`
+    }[style] || '';
+    const cap = style === 'curly' ? `<path d="M${x - 14} ${y - 2} C${x - 16} ${y - 18} ${x + 16} ${y - 18} ${x + 14} ${y - 2} C${x + 8} ${y - 8} ${x - 8} ${y - 8} ${x - 14} ${y - 2}Z" fill="${c}"/>` : `<path d="M${x - 15} ${y - 1} C${x - 17} ${y - 21} ${x + 17} ${y - 21} ${x + 15} ${y - 1} C${x + 9} ${y - 10} ${x - 5} ${y - 10} ${x - 15} ${y - 1}Z" fill="${c}"/>`;
+    return { back, front: cap };
+  };
+  /* one person: o = { who:'he'|'she', skin, top, bottom, hair, hairStyle, shoe, dress, flip, sc } */
+  const person = (j, o) => {
+    const she = o.who === 'she', skin = o.skin || '#f2c4a0', top = o.top || (she ? '#ff6b8b' : '#3b5bdb'), bottom = o.bottom || (she ? '#7a3b69' : '#22304f');
+    const hair = o.hair || (she ? '#2a1a1a' : '#1c1a22'), shoe = o.shoe || '#1a1a22', lw = she ? 10 : 12, aw = she ? 7 : 8.5;
+    const mid = [(j.pL[0] + j.pR[0]) / 2, (j.pL[1] + j.pR[1]) / 2], ms = [(j.sL[0] + j.sR[0]) / 2, (j.sL[1] + j.sR[1]) / 2];
+    const hs = hairSvg(o.hairStyle || (she ? 'long' : 'short'), j.h, hair);
+    let s = '';
+    s += line([j.sR, j.eR], aw, top) + line([j.eR, j.wR], aw - 1, skin) + `<circle cx="${j.wR[0]}" cy="${j.wR[1]}" r="${aw * 0.62}" fill="${skin}"/>`; // far arm
+    const dress = she && o.dress !== false && !j.nodress;
+    if (dress) { /* dress: legs show below the hem */
+      s += line([j.kL, j.fL], lw - 1, skin) + line([j.kR, j.fR], lw - 1, skin);
+      s += `<ellipse cx="${j.fL[0] - 2}" cy="${j.fL[1] + 3}" rx="8" ry="4.5" fill="${shoe}"/><ellipse cx="${j.fR[0] + 2}" cy="${j.fR[1] + 3}" rx="8" ry="4.5" fill="${shoe}"/>`;
+    } else {
+      s += line([j.pL, j.kL, j.fL], lw, bottom) + line([j.pR, j.kR, j.fR], lw, bottom);
+      s += `<ellipse cx="${j.fL[0] - 2}" cy="${j.fL[1] + 3}" rx="9" ry="4.5" fill="${shoe}"/><ellipse cx="${j.fR[0] + 2}" cy="${j.fR[1] + 3}" rx="9" ry="4.5" fill="${shoe}"/>`;
+    }
+    s += hs.back;
+    if (dress) {
+      const k = [(j.kL[0] + j.kR[0]) / 2, Math.min(j.kL[1], j.kR[1])], flare = j.pL[1] > 140 ? 20 : 27;
+      s += `<path d="M${j.sL[0]} ${j.sL[1]} L${j.sR[0]} ${j.sR[1]} C${mid[0] + 9} ${(ms[1] + mid[1]) / 2} ${mid[0] + 9} ${mid[1] - 8} ${mid[0] + 9} ${mid[1] - 4} C${k[0] + flare} ${mid[1] + 20} ${k[0] + flare + 2} ${k[1] - 6} ${k[0] + flare - 2} ${k[1] + 2} Q${k[0]} ${k[1] + 12} ${k[0] - flare + 2} ${k[1] + 2} C${k[0] - flare - 2} ${k[1] - 6} ${k[0] - flare} ${mid[1] + 20} ${mid[0] - 9} ${mid[1] - 4} C${mid[0] - 9} ${mid[1] - 8} ${mid[0] - 9} ${(ms[1] + mid[1]) / 2} ${j.sL[0]} ${j.sL[1]}Z" fill="${top}"/>`;
+      s += `<path d="M${mid[0] - 10} ${mid[1] - 6} Q${mid[0]} ${mid[1] + 2} ${mid[0] + 10} ${mid[1] - 6}" stroke="${bottom}" stroke-width="3" fill="none" opacity=".55"/>`;
+    } else {
+      s += line([ms, mid], she ? 20 : 26, top) + line([j.sL, j.sR], she ? 12 : 13, top);
+    }
+    s += line([j.n, [j.h[0], j.h[1] + 12]], 8, skin);
+    s += `<g transform="rotate(${j.tilt || 0} ${j.h[0]} ${j.h[1]})"><circle cx="${j.h[0]}" cy="${j.h[1]}" r="14.5" fill="${o.back ? hair : skin}"/>${o.back ? '' : hs.front}${o.beard && !o.back ? `<path d="M${j.h[0] - 12} ${j.h[1] + 2} C${j.h[0] - 12} ${j.h[1] + 18} ${j.h[0] + 12} ${j.h[1] + 18} ${j.h[0] + 12} ${j.h[1] + 2} C${j.h[0] + 6} ${j.h[1] + 8} ${j.h[0] - 6} ${j.h[1] + 8} ${j.h[0] - 12} ${j.h[1] + 2}Z" fill="${o.beard === true ? hair : o.beard}"/>` : ''}</g>`;
+    s += line([j.sL, j.eL], aw, top) + line([j.eL, j.wL], aw - 1, skin) + `<circle cx="${j.wL[0]}" cy="${j.wL[1]}" r="${aw * 0.62}" fill="${skin}"/>`; // near arm
+    return `<g>${s}</g>`;
+  };
+  const wrap = (inner, w, h) => `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" overflow="visible" aria-hidden="true">${inner}</svg>`;
+  /* public: figure(pose, opts) -> { svg, w, h } ; pair(name, a, b) -> composite */
+  const figure = (pose, o = {}) => {
+    const j = POSES[pose] || POSES.stand; let g = person(j, o);
+    if (o.flip) g = `<g transform="translate(120 0) scale(-1 1)">${g}</g>`;
+    return { svg: wrap(g, 120, 224), w: 120, h: 224 };
+  };
+  const pair = (name, a = {}, b = {}) => {
+    const c = COUPLES[name] || COUPLES.holdhands;
+    const bk = name === 'apart' ? { back: true } : {};
+    const A = c[0] ? person(c[0], Object.assign({ who: 'he' }, bk, a)) : '', B = person(c[1], Object.assign({ who: 'she' }, bk, b));
+    let extra = '', pre = '';
+    if (name === 'bench' || name === 'benchsolo') {
+      pre = `<g fill="#6b4a3a"><rect x="14" y="104" width="212" height="9" rx="4"/><rect x="14" y="120" width="212" height="9" rx="4"/><rect x="26" y="104" width="7" height="60"/><rect x="207" y="104" width="7" height="60"/></g>`;
+      extra = `<g fill="#8a6350"><rect x="8" y="160" width="224" height="11" rx="5"/><rect x="22" y="170" width="9" height="46"/><rect x="209" y="170" width="9" height="46"/></g>`;
+    }
+    if (b && b.umbrella || a && a.umbrella) { const uc = (b && b.umbrella) || (a && a.umbrella); extra += `<g><path d="M120 -64 L120 120" stroke="#3a2a35" stroke-width="3" stroke-linecap="round"/><path d="M-6 6 Q120 -130 246 6 Q222 -6 200 6 Q178 -6 156 6 Q134 -6 112 6 Q90 -6 68 6 Q46 -6 24 6 Q6 -4 -6 6Z" fill="${uc}"/><path d="M120 6 Q120 -70 120 -118" stroke="#ffffff" stroke-opacity=".25" stroke-width="2" fill="none"/></g>`; }
+    if (name === 'kneel') extra = `<circle cx="${c[0].wR[0] + 3}" cy="${c[0].wR[1] - 5}" r="4.4" fill="none" stroke="#ffd166" stroke-width="2.2"/><path d="M${c[0].wR[0] + 3} ${c[0].wR[1] - 11} l3 3 l-3 3 l-3 -3Z" fill="#9be7ff"/>`;
+    return { svg: wrap(pre + A + B + extra, 240, 224), w: 240, h: 224 };
+  };
+  return { figure, pair, POSES, COUPLES };
+})();
+
+/* ───────── particle effects on one canvas: rain, snow, petals, hearts, fireflies, sparkles, confetti ───────── */
+const FX = (() => {
+  let cv, ctx, W = 0, H = 0, dpr = 1, mode = 'none', next = 'none', parts = [], t0 = 0, max = 90, reduce = false, rnd = Math.random;
+  const COL = { petals: ['#ffb3c7', '#ff8fab', '#ffd1dc', '#fff'], rose: ['#c1121f', '#e5383b', '#9d0208', '#ff4d6d'], hearts: ['#ff4d6d', '#ff8fab', '#ff6b8b', '#ffc2d1'], confetti: ['#ff4d6d', '#ffd166', '#06d6a0', '#4cc9f0', '#f72585', '#fff'] };
+  const heart = (c, x, y, s) => { c.beginPath(); c.moveTo(x, y + s * .35); c.bezierCurveTo(x - s, y - s * .35, x - s * .55, y - s * 1.05, x, y - s * .45); c.bezierCurveTo(x + s * .55, y - s * 1.05, x + s, y - s * .35, x, y + s * .35); c.fill(); };
+  let fwT = 0;
+  const spawn = (m, burst) => {
+    const p = { m, x: rnd() * W, y: -20, vx: 0, vy: 0, s: 1, r: 0, vr: 0, a: 1, life: 0, c: '#fff', ph: rnd() * 6.28 };
+    if (m === 'rain') { p.vx = -1.5 - rnd(); p.vy = 14 + rnd() * 8; p.s = 10 + rnd() * 14; p.a = .25 + rnd() * .3; p.x = rnd() * (W + 100); }
+    else if (m === 'snow') { p.vy = .6 + rnd() * 1.2; p.vx = .2; p.s = 1.5 + rnd() * 3; p.a = .5 + rnd() * .5; }
+    else if (m === 'petals' || m === 'rose') { p.vy = .8 + rnd() * 1.4; p.vx = -.4 + rnd() * .8; p.s = 5 + rnd() * 7; p.vr = (rnd() - .5) * .06; p.c = COL[m === 'rose' ? 'rose' : 'petals'][(rnd() * 4) | 0]; p.a = .85; }
+    else if (m === 'hearts') { p.y = H + 20; p.vy = -(.7 + rnd() * 1.3); p.s = 6 + rnd() * 12; p.c = COL.hearts[(rnd() * 4) | 0]; p.a = .75; }
+    else if (m === 'fireflies') { p.y = rnd() * H; p.vx = (rnd() - .5) * .5; p.vy = (rnd() - .5) * .5; p.s = 1.6 + rnd() * 2.4; p.c = '#fff3a8'; }
+    else if (m === 'spark') { p.vx = burst.vx; p.vy = burst.vy; p.x = burst.x; p.y = burst.y; p.s = 2 + rnd() * 1.8; p.c = burst.c; p.a = 1; }
+    else if (m === 'sparkle') { p.y = rnd() * H; p.s = 2 + rnd() * 4; p.life = rnd() * 6; p.c = '#fff'; }
+    else if (m === 'confetti') { const a = rnd() * 6.28, v = burst ? 6 + rnd() * 14 : 0; p.x = burst ? W / 2 : rnd() * W; p.y = burst ? H * .55 : -20; p.vx = Math.cos(a) * v; p.vy = burst ? Math.sin(a) * v - 4 : 1 + rnd() * 2.5; p.s = 5 + rnd() * 8; p.vr = (rnd() - .5) * .3; p.c = COL.confetti[(rnd() * 6) | 0]; p.heart = rnd() > .55; p.burst = burst; }
+    return p;
+  };
+  const resize = () => { dpr = Math.min(window.devicePixelRatio || 1, 2); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); max = W < 700 ? 60 : 100; };
+  const draw = (p) => {
+    ctx.globalAlpha = Math.max(0, p.a); ctx.fillStyle = p.c; ctx.strokeStyle = '#cfe3ff';
+    if (p.m === 'rain') { ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x + p.vx * 1.2, p.y - p.s); ctx.stroke(); }
+    else if (p.m === 'snow' || p.m === 'fireflies') { if (p.m === 'fireflies') { ctx.shadowColor = '#fff3a8'; ctx.shadowBlur = 14; ctx.globalAlpha = .4 + .6 * Math.abs(Math.sin(p.life * 2 + p.ph)); } ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 6.28); ctx.fill(); ctx.shadowBlur = 0; }
+    else if (p.m === 'spark') { ctx.shadowColor = p.c; ctx.shadowBlur = 8; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 6.28); ctx.fill(); ctx.shadowBlur = 0; }
+    else if (p.m === 'petals' || p.m === 'rose') { ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.beginPath(); ctx.ellipse(0, 0, p.s, p.s * .55, 0, 0, 6.28); ctx.fill(); ctx.restore(); }
+    else if (p.m === 'hearts') heart(ctx, p.x, p.y, p.s);
+    else if (p.m === 'sparkle') { const k = Math.abs(Math.sin(p.life * 2 + p.ph)); ctx.globalAlpha = k * .9; ctx.fillRect(p.x - p.s * k, p.y - .6, p.s * 2 * k, 1.2); ctx.fillRect(p.x - .6, p.y - p.s * k, 1.2, p.s * 2 * k); }
+    else if (p.m === 'confetti') { ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); if (p.heart) heart(ctx, 0, 0, p.s); else ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); ctx.restore(); }
+    ctx.globalAlpha = 1;
+  };
+  const tick = (time, dt) => {
+    if (!ctx || reduce) return;
+    const d = Math.min(dt / 16.7, 3); ctx.clearRect(0, 0, W, H);
+    if (mode === 'fireworks') { fwT -= d; if (fwT <= 0) { fwT = 38 + rnd() * 40; const cx = W * (.15 + rnd() * .7), cy = H * (.12 + rnd() * .38), col = ['#ff4d6d', '#ffd166', '#4cc9f0', '#fff', '#c77dff', '#80ed99'][(rnd() * 6) | 0]; for (let i = 0; i < 64; i++) { const a = rnd() * 6.28, v = 2.4 + rnd() * 4.6; parts.push(spawn('spark', { x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v, c: col })); } } }
+    const rate = { rain: 3, snow: 1, petals: .35, rose: .35, hearts: .3, fireflies: .1, sparkle: .15, confetti: .6, none: 0 }[mode] || 0;
+    if (mode !== 'none' && parts.length < max && (rate >= 1 || rnd() < rate * d)) for (let i = 0; i < Math.max(1, rate | 0); i++) if (parts.length < max) parts.push(spawn(mode));
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i]; p.life += d / 60;
+      if (p.m === 'spark') { p.x += p.vx * d; p.y += p.vy * d; p.vy += .07 * d; p.vx *= .985; p.a -= .011 * d; }
+      else if (p.m === 'petals' || p.m === 'rose') { p.x += p.vx * d + Math.sin(p.life * 2 + p.ph) * .7; p.y += p.vy * d; p.r += p.vr * d; }
+      else if (p.m === 'hearts') { p.x += Math.sin(p.life * 2 + p.ph) * .6; p.y += p.vy * d; p.a -= .0016 * d; }
+      else if (p.m === 'fireflies') { p.x += p.vx * d + Math.sin(p.life + p.ph) * .3; p.y += p.vy * d + Math.cos(p.life * 1.3 + p.ph) * .3; }
+      else if (p.m === 'sparkle') { /* static twinkle */ }
+      else if (p.m === 'confetti') { p.x += p.vx * d; p.y += p.vy * d; p.vy += (p.burst ? .35 : 0) * d; p.vx *= p.burst ? .985 : 1; p.r += p.vr * d; if (p.burst) p.a -= .006 * d; }
+      else { p.x += p.vx * d; p.y += p.vy * d; }
+      const dead = p.m === 'spark' ? p.a <= 0 : p.m === 'sparkle' ? (p.m !== mode) : (p.y > H + 40 || p.y < -60 || p.x < -80 || p.x > W + 80 || p.a <= 0);
+      if (p.m !== mode && p.m !== 'confetti' && p.m !== 'spark') p.a -= .02 * d;
+      if (dead && !(p.m === 'sparkle' && p.m === mode)) { parts.splice(i, 1); continue; }
+      draw(p);
+    }
+  };
+  return {
+    init(canvas, opts = {}) { cv = canvas; ctx = cv.getContext('2d'); reduce = !!opts.reduce; rnd = opts.rnd || Math.random; resize(); addEventListener('resize', resize); if (window.gsap) gsap.ticker.add(tick); },
+    set(m) { if (m && m !== mode) { mode = m; if (m === 'sparkle') for (let i = 0; i < 40; i++) parts.push(spawn('sparkle')); } },
+    burst(n = 90) { for (let i = 0; i < n; i++) parts.push(spawn('confetti', true)); },
+    get mode() { return mode; }
+  };
+})();
+
+/* ───────── illustrated props. Each returns { html, w (× --u), anchor:'c'|'b', idle, full, hook(el, tl, t, d) } ───────── */
+const Props = (() => {
+  let _u = 0; const uid = () => 'p' + (++_u);
+  const HEART = 'M50 90 C8 60 4 26 28 18 C40 14 50 22 50 32 C50 22 60 14 72 18 C96 26 92 60 50 90Z';
+  const mix = (a, b, k) => { const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); const x = p(a), y = p(b); return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * k).toString(16).padStart(2, '0')).join(''); };
+  const svg = (vb, inner, extra = '') => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" ${extra}>${inner}</svg>`;
+  const HILL = { night: ['#10122e', '#191a45', '#262560'], day: ['#7ccf7a', '#5fb86a', '#3f9a58'], dusk: ['#2a1740', '#3d1d52', '#5a2a62'], blush: ['#ffa8bd', '#ff8aa6', '#f0627f'], candle: ['#2a0a14', '#3d0f1e', '#531428'], dawn: ['#8a5a9c', '#b36a9a', '#df86a5'], space: ['#0b0b2a', '#12123a', '#1c1c52'], rain: ['#2a3350', '#35405f', '#434f72'], golden: ['#e98f4f', '#d9743f', '#bf5a34'], mars: ['#7a2418', '#a63a24', '#c4523a'], venus: ['#ff9fb5', '#ff86a2', '#f0627f'], mint: ['#2a8c82', '#1f6f68', '#14544e'] };
+
+  /* blossoms (square svg, centred) */
+  const blossom = (type, c = '#ff6b8b') => {
+    const d = mix(c, '#000000', .28), l = mix(c, '#ffffff', .45);
+    const inner = {
+      daisy: Array.from({ length: 14 }, (_, i) => `<ellipse cx="50" cy="24" rx="6.5" ry="22" transform="rotate(${i * 360 / 14} 50 50)" fill="#fff"/>`).join('') + '<circle cx="50" cy="50" r="12" fill="#ffd166"/><circle cx="50" cy="50" r="6" fill="#f4a261"/>',
+      tulip: `<path d="M26 38 C24 70 38 88 50 88 C62 88 76 70 74 38 C66 48 58 36 50 26 C42 36 34 48 26 38Z" fill="${c}"/><path d="M50 26 C44 44 44 70 50 88 C56 70 56 44 50 26Z" fill="${d}" opacity=".35"/><path d="M26 38 C34 50 40 62 50 88" stroke="${l}" stroke-width="2" fill="none" opacity=".6"/>`,
+      rose: [0, 1, 2, 3, 4].map(i => `<ellipse cx="50" cy="26" rx="20" ry="26" transform="rotate(${i * 72} 50 50)" fill="${c}"/>`).join('') + [0, 1, 2, 3, 4].map(i => `<ellipse cx="50" cy="36" rx="13" ry="17" transform="rotate(${i * 72 + 36} 50 50)" fill="${d}"/>`).join('') + `<circle cx="50" cy="50" r="12" fill="${l}"/><path d="M50 42 C58 42 60 52 52 54 C46 55 44 48 49 47" stroke="${d}" stroke-width="2.4" fill="none"/>`,
+      sunflower: Array.from({ length: 20 }, (_, i) => `<ellipse cx="50" cy="20" rx="6" ry="20" transform="rotate(${i * 18} 50 50)" fill="${i % 2 ? '#ffc300' : '#ffd60a'}"/>`).join('') + '<circle cx="50" cy="50" r="17" fill="#5a3a1a"/><circle cx="50" cy="50" r="10" fill="#3b2410"/>',
+      cherry: Array.from({ length: 5 }, (_, i) => `<path d="M50 50 C34 40 32 12 46 8 L50 15 L54 8 C68 12 66 40 50 50Z" transform="rotate(${i * 72} 50 50)" fill="${c}"/>`).join('') + '<circle cx="50" cy="50" r="5" fill="#ffd166"/>' + Array.from({ length: 6 }, (_, i) => `<circle cx="${50 + 9 * Math.cos(i)}" cy="${50 + 9 * Math.sin(i)}" r="1.4" fill="#e76f51"/>`).join('')
+    }[type] || '';
+    return svg('0 0 100 100', inner);
+  };
+
+  const P = {
+    /* ── sky ── */
+    moon: o => { const id = uid(), cres = o.k === 'crescent'; return { w: .3 * (o.size || 1), html: svg('0 0 120 120', `<defs><radialGradient id="${id}"><stop offset=".3" stop-color="#fff6d6" stop-opacity=".55"/><stop offset="1" stop-color="#fff6d6" stop-opacity="0"/></radialGradient>${cres ? `<mask id="${id}m"><rect width="120" height="120" fill="#fff"/><circle cx="76" cy="50" r="36" fill="#000"/></mask>` : ''}</defs><circle cx="60" cy="60" r="58" fill="url(#${id})"/><circle cx="58" cy="62" r="36" fill="#fff6d6" ${cres ? `mask="url(#${id}m)"` : ''}/>${cres ? '' : '<circle cx="46" cy="52" r="6" fill="#efe0b0" opacity=".7"/><circle cx="70" cy="72" r="8" fill="#efe0b0" opacity=".6"/><circle cx="62" cy="46" r="3" fill="#efe0b0" opacity=".6"/>'}`), idle: 'bob' }; },
+    sun: o => ({ w: .34 * (o.size || 1), html: svg('0 0 140 140', `<g class="spin" style="transform-origin:70px 70px">${Array.from({ length: 16 }, (_, i) => `<rect x="67" y="4" width="6" height="${i % 2 ? 14 : 22}" rx="3" fill="#ffd166" transform="rotate(${i * 22.5} 70 70)"/>`).join('')}</g><circle cx="70" cy="70" r="34" fill="#ffc94d"/><circle cx="70" cy="70" r="34" fill="url(#none)"/>`), idle: 'bob' }),
+    stars: o => { const n = o.n || 70; let h = ''; for (let i = 0; i < n; i++) { const s = 1 + Math.random() * 2.6; h += `<i class="st" style="left:${Math.random() * 100}%;top:${Math.random() * (o.h || 62)}%;width:${s}px;height:${s}px;animation-delay:${(Math.random() * 4).toFixed(2)}s;animation-duration:${(2 + Math.random() * 3).toFixed(2)}s"></i>`; } return { full: true, html: h }; },
+    clouds: o => { const c = o.tint || '#ffffff'; const one = (x, y, w, dur, dl) => `<div class="cl" style="left:${x}%;top:${y}%;width:${w}%;animation-duration:${dur}s;animation-delay:${dl}s;opacity:${o.o || .85}">${svg('0 0 200 80', `<g fill="${c}"><circle cx="60" cy="48" r="26"/><circle cx="96" cy="36" r="32"/><circle cx="134" cy="46" r="26"/><rect x="40" y="48" width="114" height="26" rx="13"/></g>`)}</div>`; return { full: true, html: one(-5, o.y || 12, 34, 90, 0) + one(40, (o.y || 12) + 8, 26, 120, -30) + one(70, (o.y || 12) - 4, 30, 105, -60) + (o.n > 3 ? one(15, (o.y || 12) + 20, 22, 130, -20) : '') }; },
+    rainbow: o => { const cols = ['#ff4d6d', '#ff9f1c', '#ffd60a', '#52b788', '#4cc9f0', '#4361ee', '#9d4edd']; return { w: 1.5 * (o.size || 1), anchor: 'b', html: svg('0 0 400 200', cols.map((c, i) => `<path class="rb" d="M${12 + i * 12} 200 A${188 - i * 12} ${188 - i * 12} 0 0 1 ${388 - i * 12} 200" stroke="${c}" stroke-width="12" fill="none" pathLength="1" stroke-linecap="round" opacity=".92"/>`).join('')), hook: (el, tl, t, d) => { const p = el.querySelectorAll('.rb'); gsap.set(p, { strokeDasharray: 1, strokeDashoffset: 1 }); tl.to(p, { strokeDashoffset: 0, duration: d * .6, stagger: d * .04, ease: 'power2.out' }, t); } }; },
+    city: o => { let s = '', x = -2, r = () => Math.random(); const cols = o.pal || ['#0e1030', '#171a45']; for (let layer = 0; layer < 2; layer++) { x = -4; while (x < 104) { const w = 4 + r() * 6, h = (layer ? 14 : 22) + r() * (layer ? 22 : 34); s += `<rect x="${x.toFixed(1)}" y="${(100 - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${cols[layer]}"/>`; if (layer) for (let wy = 100 - h + 3; wy < 96; wy += 4) for (let wx = x + 1; wx < x + w - 1; wx += 2) if (r() > .6) s += `<rect class="win" x="${wx.toFixed(1)}" y="${wy.toFixed(1)}" width=".9" height="1.5" fill="#ffd166" opacity="${(.4 + r() * .6).toFixed(2)}" style="animation-delay:${(r() * 5).toFixed(1)}s"/>`; x += w + .4; } } return { full: true, html: `<svg class="citysvg" viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;left:0;bottom:${o.bottom || 18}%;width:100%;height:${o.h || 38}%">${s}</svg>` }; },
+    hills: o => { const c = o.colors || HILL[o.pal || 'night']; const paths = ['M0 18 C20 6 40 24 60 14 S90 8 100 16 L100 40 L0 40Z', 'M0 24 C25 12 45 30 70 21 S95 17 100 23 L100 40 L0 40Z', 'M0 30 C30 22 55 34 80 28 S96 26 100 30 L100 40 L0 40Z']; const hs = o.hs || [44, 33, 22]; return { full: true, html: paths.map((d, i) => `<svg class="hill" data-k="${i}" viewBox="0 0 100 40" preserveAspectRatio="none" style="position:absolute;left:0;bottom:0;width:100%;height:${hs[i]}%"><path d="${d}" fill="${c[i]}"/></svg>`).join('') }; },
+    /* ── flowers ── */
+    flowers: o => { const n = o.n || 9, x1 = o.x1 ?? 6, x2 = o.x2 ?? 94, cols = o.colors || ['#ff6b8b', '#ffd166', '#ff9ff3', '#ffffff', '#ff8a5c'], types = o.types || ['daisy', 'tulip', 'rose', 'cherry', 'sunflower']; let h = ''; for (let i = 0; i < n; i++) { const x = x1 + (x2 - x1) * (n === 1 ? .5 : i / (n - 1)) + (Math.random() - .5) * 4, sh = 10 + Math.random() * 15, b = 8 + Math.random() * 6, t = types[i % types.length], c = cols[i % cols.length]; h += `<div class="fl" style="left:${x.toFixed(1)}%;top:${o.y || 'var(--gy)'};--sh:${sh.toFixed(1)}vmin;--b:${b.toFixed(1)}vmin"><i class="stem"></i><div class="bl">${blossom(t, c)}</div></div>`; } return { full: true, html: h, hook: (el, tl, t, d) => { const st = el.querySelectorAll('.stem'), bl = el.querySelectorAll('.bl'); gsap.set(st, { scaleY: 0, transformOrigin: '50% 100%' }); gsap.set(bl, { scale: 0 }); tl.to(st, { scaleY: 1, duration: d * .6, stagger: d * .4 / n, ease: 'power2.out' }, t).to(bl, { scale: 1, rotation: 0, duration: d * .45, stagger: d * .4 / n, ease: 'back.out(2)' }, t + d * .35); } }; },
+    blossom: o => ({ w: .22 * (o.size || 1), html: blossom(o.type || 'rose', o.color || '#ff4d6d'), idle: 'bob' }),
+    rose: o => ({ w: .5 * (o.size || 1), html: svg('0 0 100 160', `<path d="M50 90 C50 120 48 140 50 160" stroke="#3a9d5d" stroke-width="4" fill="none"/><path d="M50 128 C34 118 24 122 20 112 C34 108 46 114 50 124Z" fill="#3a9d5d"/><path d="M50 118 C64 110 74 112 80 102 C66 100 54 106 50 114Z" fill="#2f8a4d"/><g transform="translate(0 -6)">${blossom('rose', o.color || '#e5383b').replace(/<svg[^>]*>|<\/svg>/g, '')}</g>`), anchor: 'b', idle: 'sway' }),
+    cherry: o => ({ w: 1 * (o.size || 1), anchor: 'b', html: svg('0 0 300 300', `<path d="M146 300 C150 240 140 200 130 170 C120 150 100 140 80 120 M146 220 C170 190 200 170 224 140 M140 190 C120 170 124 140 140 120" stroke="#5a3a3a" stroke-width="12" stroke-linecap="round" fill="none"/>${[[150, 90, 80], [90, 120, 56], [214, 120, 60], [60, 90, 40], [250, 90, 40], [150, 40, 50], [110, 60, 46], [196, 66, 46]].map(([x, y, r], i) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${['#ffb3c7', '#ff8fab', '#ffc2d1'][i % 3]}" opacity=".92"/>`).join('')}`), idle: 'sway' }),
+    pine: o => ({ w: .22 * (o.size || 1), anchor: 'b', html: svg('0 0 100 160', `<rect x="46" y="130" width="8" height="30" fill="#4a3a2a"/><path d="M50 8 L84 56 H64 L92 98 H66 L96 136 H4 L34 98 H8 L36 56 H16Z" fill="${o.color || '#1f5f4a'}"/>`), idle: 'sway' }),
+    /* ── hearts & romance ── */
+    heart: o => ({ w: .34 * (o.size || 1), html: svg('0 0 100 100', `<defs><linearGradient id="${uid()}"></linearGradient></defs><path d="${HEART}" fill="${o.color || '#ff4d6d'}"/><path d="M26 30 C30 24 38 22 42 28" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none" opacity=".5"/>`), idle: 'beat' }),
+    hearts: o => { const n = o.n || 14; let h = ''; for (let i = 0; i < n; i++) { const s = 2.2 + Math.random() * 3.8; h += `<svg class="hrt" viewBox="0 0 100 100" style="left:${(Math.random() * 96).toFixed(1)}%;width:${s}vmin;animation-delay:${(-Math.random() * 12).toFixed(2)}s;animation-duration:${(8 + Math.random() * 8).toFixed(1)}s"><path d="${HEART}" fill="${['#ff4d6d', '#ff8fab', '#ffc2d1', '#ff6b8b'][i % 4]}"/></svg>`; } return { full: true, html: h }; },
+    balloons: o => { const cs = o.colors || ['#ff4d6d', '#ffd166', '#4cc9f0']; return { w: .32 * (o.size || 1), html: svg('0 0 140 220', cs.map((c, i) => { const x = 30 + i * 40, y = 60 - (i % 2) * 20; return `<g class="bal" style="animation-delay:${i * .6}s"><path d="M${x} ${y + 48} C${x + 6} ${y + 100} ${70 + (i - 1) * 8} ${y + 140} 70 215" stroke="#ffffff" stroke-opacity=".6" fill="none"/><ellipse cx="${x}" cy="${y}" rx="26" ry="32" fill="${c}"/><path d="M${x - 4} ${y + 32} l4 7 l4 -7Z" fill="${c}"/><ellipse cx="${x - 9}" cy="${y - 12}" rx="5" ry="9" fill="#fff" opacity=".35"/></g>`; }).join('')), idle: 'float' }; },
+    lanterns: o => { const n = o.n || 6; let h = ''; for (let i = 0; i < n; i++) { const s = 4 + Math.random() * 4; h += `<div class="ln" style="left:${(8 + Math.random() * 84).toFixed(1)}%;width:${s}vmin;height:${(s * 1.3).toFixed(1)}vmin;animation-delay:${(-Math.random() * 20).toFixed(1)}s;animation-duration:${(18 + Math.random() * 14).toFixed(1)}s"></div>`; } return { full: true, html: h }; },
+    plane: o => ({ w: .16 * (o.size || 1), html: svg('0 0 100 80', '<path d="M4 38 L96 4 L66 76 L48 50Z" fill="#fff"/><path d="M48 50 L96 4 L40 44Z" fill="#dfe7ff"/><path d="M48 50 L46 70 L58 56Z" fill="#c4d0f5"/>'), idle: 'float' }),
+    word: o => ({ w: 0, html: `<span class="word" style="font-size:calc(var(--u)*${(o.size || 1) * .14});color:${o.color || '#fff'}">${[...(o.t || '')].map(ch => `<b>${ch === ' ' ? '&nbsp;' : ch}</b>`).join('')}</span>`, hook: (el, tl, t, d) => { const ch = el.querySelectorAll('b'); gsap.set(ch, { opacity: 0, y: 24 }); tl.to(ch, { opacity: 1, y: 0, duration: d * .6, stagger: d * .4 / Math.max(1, ch.length), ease: 'power3.out' }, t); } }),
+    /* ── objects ── */
+    envelope: o => { const id = uid(); return { w: .62 * (o.size || 1), html: svg('0 0 220 170', `<rect x="12" y="40" width="196" height="120" rx="10" fill="#f6d7c3"/><g class="letter"><rect x="28" y="52" width="164" height="100" rx="6" fill="#fffaf2"/>${[0, 1, 2, 3].map(i => `<rect x="44" y="${68 + i * 16}" width="${[120, 100, 112, 70][i]}" height="4" rx="2" fill="#e8c9b5"/>`).join('')}<path d="M110 120 C98 112 96 100 104 98 C108 97 110 100 110 102 C110 100 112 97 116 98 C124 100 122 112 110 120Z" fill="#ff4d6d" transform="translate(0 6)"/></g><path d="M12 160 L110 92 L208 160Z" fill="#f2bfa4"/><path d="M12 48 L12 160 L110 98Z M208 48 L208 160 L110 98Z" fill="#fadfcf"/><g class="flap"><path d="M12 42 L110 108 L208 42Z" fill="#f0a98a"/><circle cx="110" cy="92" r="11" fill="#e5383b"/><path d="M110 98 C104 94 103 88 107 87 C109 87 110 88 110 89 C110 88 111 87 113 87 C117 88 116 94 110 98Z" fill="#fff"/></g>`), anchor: 'c', idle: 'bob', hook: (el, tl, t, d) => { const f = el.querySelector('.flap'), l = el.querySelector('.letter'); tl.to(f, { scaleY: -1, svgOrigin: '110 42', duration: d * .4, ease: 'power2.inOut' }, t + d * .2).to(l, { y: -64, duration: d * .45, ease: 'power3.out' }, t + d * .5); } }; },
+    phone: o => ({ w: .34 * (o.size || 1), html: svg('0 0 150 290', `<rect x="4" y="4" width="142" height="282" rx="26" fill="#14141f" stroke="#2c2c40" stroke-width="3"/><rect x="12" y="14" width="126" height="262" rx="18" fill="#1f2433"/>${[[22, 40, 78, 26, '#39405a'], [50, 78, 78, 26, '#ff4d6d'], [22, 118, 92, 26, '#39405a'], [38, 156, 90, 26, '#ff4d6d']].map(([x, y, w, h, c], i) => `<g class="msg" data-i="${i}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="13" fill="${c}"/><rect x="${x + 10}" y="${y + 9}" width="${w - 22}" height="3.4" rx="2" fill="#fff" opacity=".7"/><rect x="${x + 10}" y="${y + 16}" width="${w - 40}" height="3.4" rx="2" fill="#fff" opacity=".45"/></g>`).join('')}<g class="typing">${[0, 1, 2].map(i => `<circle class="dot" cx="${40 + i * 12}" cy="214" r="4" fill="#9aa4c7" style="animation-delay:${i * .15}s"/>`).join('')}</g><g class="sent" opacity="0" transform="translate(75 238)"><path d="${HEART}" transform="translate(-14 -14) scale(.28)" fill="#ff4d6d"/></g>`), idle: 'bob', hook: (el, tl, t, d) => { const m = el.querySelectorAll('.msg'); gsap.set(m, { opacity: 0, y: 12, transformOrigin: '50% 50%' }); tl.to(m, { opacity: 1, y: 0, stagger: d * .18, duration: d * .2, ease: 'power2.out' }, t).to(el.querySelector('.typing'), { opacity: 0, duration: d * .1 }, t + d * .7).to(el.querySelector('.sent'), { opacity: 1, scale: 1.4, duration: d * .2, svgOrigin: '75 238', ease: 'back.out(3)' }, t + d * .78); } }),
+    window: o => ({ w: .72 * (o.size || 1), anchor: 'b', html: svg('0 0 260 340', `<rect x="14" y="6" width="232" height="300" rx="10" fill="#e9e4dc"/><rect x="26" y="18" width="208" height="276" rx="4" fill="${o.glass || '#20284a'}" opacity=".78"/><path d="M130 18 V294 M26 150 H234" stroke="#e9e4dc" stroke-width="7"/><rect x="4" y="300" width="252" height="16" rx="6" fill="#d8d0c4"/>${Array.from({ length: 16 }, (_, i) => `<path class="drip" d="M${34 + (i * 53) % 196} ${24 + (i * 71) % 150} v${12 + (i % 4) * 8}" stroke="#cfe3ff" stroke-width="2" stroke-linecap="round" opacity=".5" style="animation-delay:${(i * .37) % 3}s"/>`).join('')}<path d="M14 6 C34 60 30 180 14 300 L2 300 L2 6Z M246 6 C226 60 230 180 246 300 L258 300 L258 6Z" fill="${o.curtain || '#7a3b69'}" opacity=".9"/>`) }),
+    lamp: o => ({ w: .16 * (o.size || 1), anchor: 'b', html: (id => svg('0 0 80 240', `<defs><radialGradient id="${id}"><stop offset="0" stop-color="#ffe29a" stop-opacity=".85"/><stop offset=".45" stop-color="#ffd166" stop-opacity=".28"/><stop offset="1" stop-color="#ffd166" stop-opacity="0"/></radialGradient></defs><ellipse class="glow" cx="40" cy="30" rx="70" ry="70" fill="url(#${id})"/><rect x="36" y="40" width="8" height="196" fill="#2b2b3a"/><path d="M22 36 H58 L52 16 H28Z" fill="#2b2b3a"/><circle cx="40" cy="28" r="8" fill="#ffe29a"/><rect x="26" y="232" width="28" height="8" rx="3" fill="#2b2b3a"/>`))(uid()), idle: 'flicker' }),
+    candles: o => ({ w: .5 * (o.size || 1), anchor: 'b', html: svg('0 0 240 120', [[30, 70, 14], [64, 50, 16], [104, 78, 14], [142, 44, 16], [180, 66, 14], [212, 84, 12]].map(([x, h, w], i) => `<g><rect x="${x - w / 2}" y="${120 - h}" width="${w}" height="${h}" rx="3" fill="#fff0e0"/><ellipse class="flame" cx="${x}" cy="${120 - h - 8}" rx="4" ry="9" fill="#ffb703" style="animation-delay:${i * .2}s"/><circle cx="${x}" cy="${120 - h - 10}" r="14" fill="#ffb703" opacity=".18"/></g>`).join('')) }),
+    glasses: o => ({ w: .38 * (o.size || 1), html: svg('0 0 200 180', `<g class="gl l" style="transform-origin:60px 150px"><path d="M40 20 H90 C92 70 80 96 66 100 V150 H78 V160 H52 V150 H64 V100 C50 96 38 70 40 20Z" fill="#fff" opacity=".28"/><path d="M42 50 H88 C88 76 78 94 66 98 C54 94 42 76 42 50Z" fill="#b5179e" opacity=".9"/></g><g class="gl r" style="transform-origin:140px 150px"><path d="M110 20 H160 C162 70 150 96 136 100 V150 H148 V160 H122 V150 H134 V100 C120 96 108 70 110 20Z" fill="#fff" opacity=".28"/><path d="M112 50 H158 C158 76 148 94 136 98 C124 94 112 76 112 50Z" fill="#b5179e" opacity=".9"/></g>`), hook: (el, tl, t, d) => { tl.fromTo(el.querySelector('.l'), { rotation: -6 }, { rotation: 12, duration: d * .6, svgOrigin: '60 150', ease: 'power2.inOut' }, t).fromTo(el.querySelector('.r'), { rotation: 6 }, { rotation: -12, duration: d * .6, svgOrigin: '140 150', ease: 'power2.inOut' }, t); } }),
+    gift: o => ({ w: .34 * (o.size || 1), anchor: 'b', html: svg('0 0 140 140', `<rect x="20" y="62" width="100" height="70" rx="6" fill="${o.color || '#ff4d6d'}"/><rect x="62" y="62" width="16" height="70" fill="#ffd166"/><g class="lid"><rect x="14" y="44" width="112" height="22" rx="6" fill="${mix(o.color || '#ff4d6d', '#000000', .12)}"/><rect x="62" y="44" width="16" height="22" fill="#ffd166"/><path d="M70 44 C46 18 30 30 50 42Z M70 44 C94 18 110 30 90 42Z" fill="#ffd166"/></g>`), hook: (el, tl, t, d) => { tl.to(el.querySelector('.lid'), { y: -34, rotation: -14, svgOrigin: '70 60', duration: d * .5, ease: 'back.out(2)' }, t + d * .2); } }),
+    cake: o => ({ w: .4 * (o.size || 1), anchor: 'b', html: svg('0 0 160 150', `<rect x="20" y="96" width="120" height="44" rx="8" fill="#ffb3c7"/><rect x="34" y="62" width="92" height="38" rx="8" fill="#ff8fab"/><path d="M20 108 q10 14 20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="#fff"/><path d="M34 74 q8 12 16 0 t16 0 t16 0 t16 0 t12 0" fill="#fff"/>${[56, 80, 104].map((x, i) => `<g><rect x="${x - 3}" y="40" width="6" height="22" fill="#fff"/><ellipse class="flame" cx="${x}" cy="34" rx="4" ry="8" fill="#ffb703" style="animation-delay:${i * .25}s"/></g>`).join('')}`) }),
+    cups: o => ({ w: .34 * (o.size || 1), html: svg('0 0 180 120', `<path d="M24 54 H84 V80 C84 100 70 108 54 108 C38 108 24 100 24 80Z" fill="#fff"/><path d="M84 62 C100 62 100 84 84 84" stroke="#fff" stroke-width="5" fill="none"/><path d="M96 54 H156 V80 C156 100 142 108 126 108 C110 108 96 100 96 80Z" fill="#ffd1dc"/><path d="M156 62 C172 62 172 84 156 84" stroke="#ffd1dc" stroke-width="5" fill="none"/><path class="steam" d="M54 44 C44 34 64 28 54 14" stroke="#fff" stroke-opacity=".7" stroke-width="3" fill="none" stroke-linecap="round"/><path class="steam" style="animation-delay:.6s" d="M126 44 C116 34 136 28 126 14" stroke="#fff" stroke-opacity=".7" stroke-width="3" fill="none" stroke-linecap="round"/>`) }),
+    /* ── space & metaphors ── */
+    planet: o => { const id = uid(), k = o.kind || 'mars'; const defs = { mars: ['#ff7b54', '#8a2c1e', '<ellipse cx="38" cy="44" rx="9" ry="6" fill="#7a2418" opacity=".45"/><ellipse cx="64" cy="64" rx="12" ry="7" fill="#7a2418" opacity=".4"/><ellipse cx="50" cy="20" rx="14" ry="4" fill="#fff" opacity=".55"/>'], venus: ['#ffd29a', '#e07a5f', '<path d="M8 40 C30 30 50 52 92 38 M6 58 C34 48 56 70 94 56 M12 76 C34 66 60 86 88 74" stroke="#fff" stroke-width="5" opacity=".28" fill="none"/>'], jupiter: ['#f3dfc1', '#b47a54', '<path d="M4 34 H96 M2 48 H98 M4 62 H96 M8 76 H92" stroke="#b9794c" stroke-width="6" opacity=".6"/><ellipse cx="62" cy="62" rx="9" ry="5" fill="#c4432d" opacity=".85"/>'], earth: ['#6ec6ff', '#1b5fa8', '<path d="M22 36 C30 26 44 30 42 42 C40 54 28 56 22 48Z M58 54 C70 48 80 58 74 70 C68 80 56 72 58 54Z" fill="#52b788"/>'] }[k] || ['#fff', '#aaa', '']; return { w: .36 * (o.size || 1), html: svg('-14 -14 128 128', `<defs><radialGradient id="${id}" cx=".35" cy=".3"><stop offset="0" stop-color="${defs[0]}"/><stop offset="1" stop-color="${defs[1]}"/></radialGradient><clipPath id="${id}c"><circle cx="50" cy="50" r="46"/></clipPath><radialGradient id="${id}g"><stop offset=".6" stop-color="${defs[0]}" stop-opacity=".35"/><stop offset="1" stop-color="${defs[0]}" stop-opacity="0"/></radialGradient></defs><circle cx="50" cy="50" r="62" fill="url(#${id}g)"/><circle cx="50" cy="50" r="46" fill="url(#${id})"/><g clip-path="url(#${id}c)">${defs[2]}<circle cx="68" cy="68" r="52" fill="#000" opacity=".2"/></g>`), idle: 'bob' }; },
+    bridge: o => { const n = o.n || 11; let hs = ''; for (let i = 0; i < n; i++) { const t = i / (n - 1), x = 24 + 552 * t, y = 168 - 4 * 118 * t * (1 - t); hs += `<path class="bh" d="${HEART}" transform="translate(${(x - 21).toFixed(1)} ${(y - 21).toFixed(1)}) scale(.42)" fill="${['#ff4d6d', '#ff8fab', '#ffc2d1'][i % 3]}" data-i="${i}"/>`; } return { w: 1.2 * (o.size || 1), html: svg('0 0 600 200', `<path class="barc" d="M24 168 Q300 -68 576 168" stroke="#ffc2d1" stroke-opacity=".5" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round" fill="none" pathLength="1"/>` + hs), hook: (el, tl, t, d) => { const h = [...el.querySelectorAll('.bh')]; gsap.set(h, { scale: 0, transformOrigin: '50% 50%' }); const order = h.map((e, i) => [Math.min(i, h.length - 1 - i), e]).sort((a, b) => a[0] - b[0]).map(x => x[1]); tl.fromTo(order, { scale: 0 }, { scale: 1, duration: d * .4, stagger: d * .5 / order.length, ease: 'back.out(2.4)', immediateRender: false }, t); } }; },
+    constellation: o => { const pts = []; for (let i = 0; i < 17; i++) { const a = i / 17 * Math.PI * 2; pts.push([100 + 6.4 * 16 * Math.pow(Math.sin(a), 3) * .62, 94 - 6.4 * (13 * Math.cos(a) - 5 * Math.cos(2 * a) - 2 * Math.cos(3 * a) - Math.cos(4 * a)) * .62]); } const path = 'M' + pts.map(p => p.map(v => v.toFixed(1)).join(' ')).join(' L') + ' Z'; return { w: .62 * (o.size || 1), html: svg('0 0 200 190', `<path class="cline" d="${path}" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.2" pathLength="1"/>${pts.map((p, i) => `<circle class="cst" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${i % 3 ? 2.2 : 3.4}" fill="#fff"/>`).join('')}`), idle: 'bob', hook: (el, tl, t, d) => { const l = el.querySelector('.cline'), s = el.querySelectorAll('.cst'); gsap.set(l, { strokeDasharray: 1, strokeDashoffset: 1 }); gsap.set(s, { opacity: 0, scale: 0, transformOrigin: 'center' }); tl.to(s, { opacity: 1, scale: 1, duration: d * .3, stagger: d * .3 / s.length, svgOrigin: undefined }, t).to(l, { strokeDashoffset: 0, duration: d * .5, ease: 'none' }, t + d * .3); } }; },
+    heartbeat: o => ({ w: 1.05 * (o.size || 1), html: svg('0 0 420 110', `<path class="ecg" d="M0 55 H120 L136 55 L148 18 L166 94 L180 55 H214 L226 55 C226 44 238 38 250 46 C262 38 274 44 274 55 C274 72 250 88 250 88 C250 88 226 72 226 55 M274 55 H420" stroke="${o.color || '#ff4d6d'}" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>`), hook: (el, tl, t, d) => { const p = el.querySelector('.ecg'); gsap.set(p, { strokeDasharray: 1, strokeDashoffset: 1 }); tl.to(p, { strokeDashoffset: 0, duration: d, ease: 'none' }, t); } }),
+    photos: o => { const imgs = o.imgs || [], n = Math.min(imgs.length, 5), spots = [[22, 30, 1], [74, 26, .85], [30, 68, .8], [78, 66, 1], [50, 46, 1.15]]; let h = ''; for (let i = 0; i < n; i++) { const id = uid(), [x, y, s] = spots[o.spots ? o.spots[i] : i] || spots[i]; h += `<div class="ph" style="left:${x}%;top:${y}%;width:calc(var(--u)*${(.36 * s * (o.size || 1)).toFixed(2)})">${svg('0 0 100 90', `<defs><clipPath id="${id}"><path d="${HEART}" transform="translate(0 -4) scale(1 1)"/></clipPath></defs><path d="${HEART}" fill="#ffd1dc" transform="translate(0 -4)"/><image href="${imgs[i]}" x="0" y="0" width="100" height="90" preserveAspectRatio="xMidYMid slice" clip-path="url(#${id})"/><path d="${HEART}" fill="none" stroke="#fff" stroke-width="2.4" transform="translate(0 -4)"/>`)}</div>`; } return { full: true, html: h, hook: (el, tl, t, d) => { const ph = el.querySelectorAll('.ph'); gsap.set(ph, { scale: 0, rotation: () => gsap.utils.random(-14, 14) }); tl.to(ph, { scale: 1, duration: d * .5, stagger: d * .5 / Math.max(1, ph.length), ease: 'back.out(1.8)' }, t); } }; }
+  };
+  return { make: (name, o) => (P[name] ? P[name](o || {}) : null), blossom, HILL, names: Object.keys(P), uid };
+})();
+
+/* ───────── LoveStory(config): builds scenes from a script and drives them with scroll ───────── */
+const SKY = {
+  night: ['#070b1f', '#141a47', '#2c2f6b'], 'rain-night': ['#161c36', '#262f54', '#3b4670'], rain: ['#4a5775', '#6a7794', '#8b97ad'], dusk: ['#2d1b4e', '#8a3b6e', '#ff8a5c'],
+  dawn: ['#3b2a6b', '#ff7aa2', '#ffd1a1'], golden: ['#ff9a6a', '#ffc78a', '#ffeab8'], blush: ['#ffd1dc', '#ffb3c7', '#ff8fab'], sunny: ['#5cb8ff', '#a8dcff', '#fff1c9'],
+  candle: ['#1a0a12', '#3b0f22', '#7a1d35'], lavender: ['#3a2f6b', '#7b5fb0', '#e0a8ff'], space: ['#03030c', '#0b0a2a', '#1b0f3b'], void: ['#0d0e1a', '#12142a', '#1a1d3a'], rose: ['#7a1d4a', '#d6457a', '#ffb3c7'], mint: ['#0e3b43', '#2a8c82', '#a8e6cf']
+};
+function LoveStory(cfg) {
+  const G = window.gsap, ST = window.ScrollTrigger; G.registerPlugin(ST);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, portrait = innerWidth / innerHeight < 0.9;
+  const S = cfg.scenes, N = S.length, el = (t, c, h, p) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; (p || null) && p.append(e); return e; };
+  document.title = cfg.title || document.title;
+  const stage = el('div'); stage.id = 'stage'; document.body.prepend(stage);
+  const scenesEl = el('div', 'scenes', '', stage); scenesEl.style.cssText = 'position:absolute;inset:0';
+  const fxc = el('canvas', 'layer-fx', '', stage); FX.init(fxc, { reduce });
+  const bloomEl = el('div', '', '', stage); bloomEl.id = 'bloom'; const bloomBg = el('div', 'bloom-bg', '', bloomEl);
+  const capsEl = el('div', '', '', stage);
+  const bar = el('div'); bar.id = 'bar'; document.body.append(bar);
+  const play = el('button', '', '▶ Play'); play.id = 'play'; play.type = 'button'; play.setAttribute('aria-label', 'Play as a video'); document.body.append(play);
+  const hint = el('div', '', '<i></i>scroll'); hint.id = 'hint'; document.body.append(hint);
+  const track = el('div'); track.id = 'track'; document.body.append(track);
+  const per = () => Math.max(innerHeight * 0.95, 600); const sizeTrack = () => { track.style.height = (N * per() + innerHeight) + 'px'; }; sizeTrack();
+
+  /* flower fill layer */
+  const BC = cfg.bloomColors || ['#ff4d6d', '#ff8fab', '#ffd166', '#ffffff', '#ff6b8b', '#ffb3c7'], BT = ['rose', 'daisy', 'tulip', 'cherry', 'sunflower'];
+  const cols = portrait ? 4 : 8, rows = portrait ? 7 : 5, bbs = [];
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) { const b = el('div', 'bb', Props.blossom(BT[(r * cols + c) % 5], BC[(r + c * 2) % BC.length]), bloomEl); b.style.left = ((c + .5 + (r % 2 ? .25 : -.25) * .6) / cols * 100) + '%'; b.style.top = ((r + .5) / rows * 100) + '%'; b.style.width = (100 / cols * 1.7) + '%'; bbs.push(b); }
+  G.set(bbs, { scale: 0 });
+  const bloomIn = (tl, t, d) => { tl.set(bloomEl, { visibility: 'visible' }, t).fromTo(bloomBg, { opacity: 0 }, { opacity: 1, duration: d * .8, immediateRender: false }, t).fromTo(bbs, { scale: 0, rotation: () => G.utils.random(-70, 70) }, { scale: 1, rotation: () => G.utils.random(-15, 15), duration: d * .8, stagger: { each: d * .2 / bbs.length, from: 'random' }, ease: 'back.out(1.5)', immediateRender: false }, t); };
+  const bloomOut = (tl, t, d) => { tl.to(bbs, { scale: 0, rotation: () => G.utils.random(-70, 70), duration: d * .8, stagger: { each: d * .2 / bbs.length, from: 'random' }, ease: 'power2.in', immediateRender: false }, t).to(bloomBg, { opacity: 0, duration: d * .7, immediateRender: false }, t + d * .3).set(bloomEl, { visibility: 'hidden' }, t + d); };
+
+  const tl = G.timeline({ paused: true, defaults: { ease: 'none' } });
+  const A = { fade: { opacity: 0 }, rise: { opacity: 0, yPercent: 40 }, drop: { opacity: 0, yPercent: -60 }, pop: { opacity: 0, scale: .2 }, 'slide-l': { opacity: 0, xPercent: -80 }, 'slide-r': { opacity: 0, xPercent: 80 }, grow: { opacity: 0, scaleY: 0, transformOrigin: '50% 100%' }, none: null };
+  const sceneEls = [];
+
+  S.forEach((sc, i) => {
+    const t0 = i, sky = SKY[sc.sky] || (Array.isArray(sc.sky) ? sc.sky : SKY.night), skyTo = sc.skyTo ? (SKY[sc.skyTo] || sc.skyTo) : null;
+    const se = el('div', 'scene', '', scenesEl); se.style.setProperty('--gy', (sc.ground || 78) + '%'); sceneEls.push(se);
+    const cam = el('div', 'cam', '', se); cam.style.cssText += ';--c1:' + sky[0] + ';--c2:' + sky[1] + ';--c3:' + sky[2]; if (sc.focus) cam.style.transformOrigin = sc.focus;
+    el('div', 'sky', '', cam);
+    (sc.props || []).forEach((pd, k) => {
+      let spec, wrap, w;
+      if (pd.p === 'figure' || pd.p === 'couple') {
+        const L = (who, o) => Object.assign({}, cfg[who] || {}, o || {});
+        const f = pd.p === 'figure' ? Figures.figure(pd.pose || 'stand', L(pd.who || 'she', Object.assign({ who: pd.who || 'she' }, pd))) : Figures.pair(pd.pose || 'holdhands', L('he', pd.he), L('she', Object.assign({}, pd.she || {}, pd.umbrella ? { umbrella: pd.umbrella } : {})));
+        spec = { w: (pd.p === 'figure' ? .4 : .74) * (pd.s || 1), html: f.svg, anchor: 'b' };
+      } else spec = Props.make(pd.p, pd);
+      if (!spec) { console.warn('unknown prop', pd.p); return; }
+      let inner;
+      if (spec.full) { wrap = el('div', 'full ' + (pd.idle || spec.idle || ''), spec.html, cam); inner = wrap; }
+      else {
+        wrap = el('div', 'prop ' + (spec.anchor === 'b' ? 'b ' : '') + (pd.idle === undefined ? (spec.idle || '') : pd.idle), '', cam); inner = el('div', 'inn', spec.html, wrap);
+        const y = pd.y === undefined ? 'g' : pd.y;
+        wrap.style.left = (pd.x ?? 50) + '%'; wrap.style.top = y === 'g' ? 'var(--gy)' : (typeof y === 'string' && y.endsWith('%') ? y : y + '%'); if (spec.w) wrap.style.width = `calc(var(--u)*${(spec.w * (pd.p === 'figure' || pd.p === 'couple' ? 1 : (pd.s || 1))).toFixed(3)})`;
+      }
+      if (pd.z !== undefined) wrap.style.zIndex = pd.z;
+      if (pd.flip && pd.p !== 'figure') wrap.style.scale = '-1 1';
+      /* pose crossfade */
+      let wrap2 = null;
+      if (pd.pose2 && (pd.p === 'figure' || pd.p === 'couple')) { const f2 = pd.p === 'figure' ? Figures.figure(pd.pose2, Object.assign({ who: pd.who || 'she' }, cfg[pd.who || 'she'] || {}, pd)) : Figures.pair(pd.pose2, Object.assign({}, cfg.he || {}, pd.he || {}), Object.assign({}, cfg.she || {}, pd.she || {})); wrap2 = el('div', 'prop b ' + (pd.idle || ''), '', cam); el('div', 'inn', f2.svg, wrap2); wrap2.style.cssText += `;left:${wrap.style.left};top:${wrap.style.top};width:${wrap.style.width};opacity:0`; if (pd.z !== undefined) wrap2.style.zIndex = pd.z; }
+      const at = pd.at ?? (0.04 + k * 0.012), d = pd.d ?? 0.22, a = pd.a === undefined ? 'fade' : pd.a;
+      if (a && A[a]) tl.from(inner, Object.assign({}, A[a], { duration: d, ease: 'power2.out' }), t0 + at);
+      if (wrap2) { const pa = pd.pose2at ?? 0.5; tl.to(wrap, { opacity: 0, duration: .08, immediateRender: false }, t0 + pa).to(wrap2, { opacity: 1, duration: .08, immediateRender: false }, t0 + pa); }
+      if (pd.to) { const dur = pd.toD ?? 0.7, st = t0 + (pd.toAt ?? 0.1), pos = { duration: dur, ease: 'none', immediateRender: false }; if (pd.to.x !== undefined) pos.left = pd.to.x + '%'; if (pd.to.y !== undefined) pos.top = pd.to.y + '%'; const ts = [wrap, wrap2].filter(Boolean); if (pos.left || pos.top) tl.to(ts, pos, st); if (pd.to.s !== undefined || pd.to.r !== undefined) { const tr = { duration: dur, ease: 'none', immediateRender: false }; if (pd.to.s !== undefined) tr.scale = pd.to.s; if (pd.to.r !== undefined) tr.rotation = pd.to.r; tl.to(ts.map(w => w.firstElementChild), tr, st); } }
+      if (spec.hook) spec.hook(inner, tl, t0 + at, d + (pd.hd || 0.2));
+      /* parallax drift for hills */
+    });
+    /* hills parallax and camera push */
+    cam.querySelectorAll('.hill').forEach(h => { const k = +h.dataset.k; tl.fromTo(h, { x: 0 }, { x: (k - 1) * -14, duration: 1, immediateRender: false }, t0); });
+    tl.fromTo(cam, { scale: sc.zoom ? sc.zoom[0] : 1.0 }, { scale: sc.zoom ? sc.zoom[1] : 1.07, duration: 1.1, ease: 'none' }, t0 - .05);
+    /* sky morph inside the scene */
+    if (skyTo) tl.to(cam, { '--c1': skyTo[0], '--c2': skyTo[1], '--c3': skyTo[2], duration: sc.skyD ?? .6, ease: 'none', immediateRender: false }, t0 + (sc.skyAt ?? .15));
+    /* scene fade in / out */
+    if (i === 0) tl.set(se, { autoAlpha: 1 }, 0); else tl.fromTo(se, { autoAlpha: 0 }, { autoAlpha: 1, duration: .14 }, t0 - .12);
+    if (i < N - 1) tl.to(se, { autoAlpha: 0, duration: .14, immediateRender: false }, t0 + .88);
+    /* caption */
+    if (sc.cap) {
+      const lum = h => { const v = [1, 3, 5].map(k => parseInt(h.slice(k, k + 2), 16)); return .299 * v[0] + .587 * v[1] + .114 * v[2]; };
+      const skyL = (lum(sky[0]) + lum(sky[2]) + (skyTo ? lum(skyTo[0]) + lum(skyTo[2]) : lum(sky[0]) + lum(sky[2]))) / 4;
+      const c = el('div', 'cap' + (skyL > 150 ? ' dark' : ''), `<div class="line">${sc.cap.split(/\s+/).map(w => `<span class="w">${w}</span>`).join(' ')}</div>${sc.whisper ? `<div class="whisper">${sc.whisper}</div>` : ''}`, capsEl); c.dataset.pos = sc.capPos || 'top'; if (sc.capColor) c.style.color = sc.capColor;
+      const ws = c.querySelectorAll('.w'), wh = c.querySelector('.whisper');
+      tl.fromTo(ws, { opacity: 0, y: 26, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .16, stagger: .02, ease: 'power2.out' }, t0 + (sc.capAt ?? .08));
+      if (wh) tl.fromTo(wh, { opacity: 0, y: 14 }, { opacity: .92, y: 0, duration: .14, ease: 'power2.out' }, t0 + (sc.capAt ?? .08) + .2);
+      if (i < N - 1) tl.to(c, { opacity: 0, duration: .1, immediateRender: false }, t0 + (sc.out === 'bloom' ? .6 : .83));
+    }
+    /* transition into the next scene */
+    if (sc.out === 'bloom' && i < N - 1) { bloomIn(tl, t0 + .66, .26); bloomOut(tl, t0 + 1.06, .3); }
+  });
+  tl.set({}, {}, N);
+
+  /* finale */
+  const f = cfg.finale, last = N - 1;
+  let ask = null, yesmsg = null;
+  if (f) {
+    ask = el('div', 'ask', `<h2>${f.q}</h2><div class="btns"><button class="btn yes" type="button">${f.yes || 'Yes 💗'}</button><button class="btn no" type="button">${f.no || 'No'}</button></div>`, stage);
+    ask.dataset.pos = f.pos || 'high';
+    tl.fromTo(ask, { autoAlpha: 0 }, { autoAlpha: 1, duration: .2, ease: 'power2.out' }, last + .32);
+    yesmsg = el('div', 'yesmsg', `<h3>${f.yesTitle || 'Thank you'}</h3>${(f.letter || []).map(l => `<p>${l}</p>`).join('')}${f.reply ? `<a href="${f.reply.url}" target="_blank" rel="noopener">${f.reply.label}</a>` : ''}`, stage);
+    const yes = ask.querySelector('.yes'), no = ask.querySelector('.no'), btns = ask.querySelector('.btns'); let dodge = 0;
+    const flee = (e) => { e && e.preventDefault(); const r = btns.getBoundingClientRect(), nb = no.getBoundingClientRect(); dodge++; no.style.position = 'fixed'; const x = G.utils.random(14, innerWidth - nb.width - 14), y = G.utils.random(innerHeight * .2, innerHeight - nb.height - 20); no.style.left = x + 'px'; no.style.top = y + 'px'; no.style.transform = `scale(${Math.max(.55, 1 - dodge * .07)})`; if (dodge === 6) no.textContent = f.noGiveUp || 'ok fine… yes'; };
+    const gentle = f.dodge === false;
+    if (gentle) { const note = el('p', 'nonote', '', ask); note.style.cssText = 'margin:0;font:400 clamp(22px,5vw,32px)/1.2 Caveat,cursive;opacity:0;text-shadow:0 2px 20px rgba(0,0,0,.5);transition:opacity .5s'; note.textContent = f.noMsg || 'That’s okay. Take all the time you need.'; no.addEventListener('click', () => { note.style.opacity = 1; setTimeout(() => { note.style.opacity = 0; }, 3800); }); }
+    else { no.addEventListener('pointerenter', flee); no.addEventListener('touchstart', flee, { passive: false }); no.addEventListener('click', e => { if (dodge >= 6) yes.click(); else flee(e); }); }
+    yes.addEventListener('click', () => {
+      FX.set('hearts'); FX.burst(160);
+      const t2 = G.timeline(); bloomEl.style.visibility = 'visible';
+      t2.to(ask, { autoAlpha: 0, duration: .3 }, 0).to(bloomBg, { opacity: 1, duration: .8 }, 0).to(bbs, { scale: 1, rotation: () => G.utils.random(-15, 15), duration: .9, stagger: { each: .012, from: 'random' }, ease: 'back.out(1.5)' }, 0)
+        .to(yesmsg, { autoAlpha: 1, duration: .6 }, .8).fromTo(yesmsg.children, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: .6, stagger: .4, ease: 'power2.out' }, .8).add(() => yesmsg.classList.add('on'));
+      stage.querySelectorAll('.cap').forEach(c => c.style.display = 'none'); hint.style.display = 'none';
+    });
+  }
+
+  /* scroll binding */
+  let cur = -1;
+  const fxFor = i => (S[i] && S[i].fx) || 'none';
+  ST.create({
+    trigger: track, start: 'top top', end: 'bottom bottom', scrub: reduce ? true : 0.7, animation: tl,
+    onUpdate: self => {
+      bar.style.transform = `scaleX(${self.progress})`;
+      const i = Math.min(N - 1, Math.max(0, Math.floor(self.progress * N + 0.03))); if (i !== cur) { cur = i; FX.set(fxFor(i)); }
+      if (self.progress > 0.02) hint.style.opacity = 0; else hint.style.opacity = .85;
+      if (ask) ask.classList.toggle('on', self.progress > (last + .55) / N);
+    }
+  });
+  FX.set(fxFor(0));
+  addEventListener('resize', () => { sizeTrack(); ST.refresh(); });
+
+  /* reel mode (auto-play like a video) */
+  let playing = false; const secPer = cfg.reelSeconds || 4.6;
+  const stop = () => { playing = false; play.textContent = '▶ Play'; };
+  const start = () => { if (scrollY > (document.documentElement.scrollHeight - innerHeight) - 4) scrollTo(0, 0); playing = true; play.textContent = '❚❚ Pause'; };
+  play.addEventListener('click', () => playing ? stop() : start());
+  ['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, () => { if (playing) stop(); }, { passive: true }));
+  G.ticker.add((time, dt) => { if (!playing) return; const max = document.documentElement.scrollHeight - innerHeight, y = scrollY + max / (N * secPer) * dt / 1000; scrollTo(0, y); if (y >= max - 2) stop(); });
+  const qs = new URLSearchParams(location.search);
+  if (qs.get('reel') === '1') { document.body.classList.add('reel'); play.style.display = 'none'; hint.style.display = 'none'; setTimeout(start, 1200); }
+  const jump = parseFloat(qs.get('t')); if (!isNaN(jump)) setTimeout(() => { const max = document.documentElement.scrollHeight - innerHeight; scrollTo(0, jump / N * max); }, 300);
+  return { tl, stop, start };
+}
+
+</script>
+<script>
+LoveStory({
+  title: 'Good morning, love',
+  reelSeconds: 4.2,
+  scenes: [
+    { sky: 'dawn', fx: 'sparkle', cap: 'Good morning, beautiful.', capPos: 'top', ground: 84,
+      props: [{ p: 'sun', x: 50, y: 34, s: 1.1, a: 'rise', to: { y: 24 }, toD: .8 }, { p: 'clouds', y: 14, tint: '#fff2f6' }, { p: 'hills', pal: 'dawn' }, { p: 'flowers', n: 9, y: '84%', hd: .5 }] },
+    { sky: 'golden', fx: 'petals', cap: 'The sun rose, and I thought of you.', capPos: 'top', ground: 84,
+      props: [{ p: 'sun', x: 30, y: 24, s: 1 }, { p: 'clouds', y: 16, tint: '#fff6e0', o: .8 }, { p: 'hills', pal: 'golden' }, { p: 'cherry', x: 78, y: 'g', s: 1.1 }, { p: 'cups', x: 36, y: 66, s: 1.1, a: 'pop' }] },
+    { sky: 'sunny', fx: 'hearts', cap: 'Today is yours. Go shine.', capPos: 'top', ground: 84, out: 'bloom',
+      props: [{ p: 'clouds', y: 8, tint: '#fff' }, { p: 'hills', pal: 'day', hs: [28, 20, 12] }, { p: 'flowers', n: 12, y: '84%', hd: .5 }, { p: 'figure', pose: 'happy', who: 'she', x: 50, y: 'g', s: 1.1, a: 'pop' }, { p: 'balloons', x: 18, y: 50, s: 1.2 }, { p: 'balloons', x: 84, y: 54, s: 1, colors: ['#ffd166', '#ff8fab', '#4cc9f0'] }] },
+    { sky: 'blush', fx: 'hearts', cap: 'I’m cheering for you. Always.', capPos: 'top', ground: 84,
+      props: [{ p: 'clouds', y: 10, tint: '#fff' }, { p: 'hills', pal: 'blush' }, { p: 'rose', x: 50, y: '86%', s: 1.5, a: 'grow' }, { p: 'heart', x: 50, y: 32, s: 1, a: 'pop' }] }
+  ]
+});
+</script>
+</body>
+</html>
