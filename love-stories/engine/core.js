@@ -104,7 +104,7 @@ function LoveStory(cfg) {
       FX.set('hearts'); FX.burst(160);
       const t2 = G.timeline(); bloomEl.style.visibility = 'visible';
       t2.to(ask, { autoAlpha: 0, duration: .3 }, 0).to(bloomBg, { opacity: 1, duration: .8 }, 0).to(bbs, { scale: 1, rotation: () => G.utils.random(-15, 15), duration: .9, stagger: { each: .012, from: 'random' }, ease: 'back.out(1.5)' }, 0)
-        .to(yesmsg, { autoAlpha: 1, duration: .6 }, .8).fromTo(yesmsg.children, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: .6, stagger: .4, ease: 'power2.out' }, .8).add(() => yesmsg.classList.add('on'));
+        .to(yesmsg, { autoAlpha: 1, duration: .6 }, .8).fromTo(yesmsg.children, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: .6, stagger: .4, ease: 'power2.out' }, .8).add(() => yesmsg.classList.add('on'), 1.1);
       stage.querySelectorAll('.cap').forEach(c => c.style.display = 'none'); hint.style.display = 'none';
     });
   }
