@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+<!-- IMAGES: people,nature,travel,property,wedding,creative,design,hotel -->
 {{CORE}}
 
 ---
@@ -40,6 +41,20 @@ Photos are never filtered with heavy overlays; use a subtle scrim only under tex
 8. **Contact / enquiry** — form with date + type of shoot, email, studio location.
 9. **Footer.**
 
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+The photographer’s site is the gallery. Fill it generously and honestly by genre:
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero collage | 3 photos, one per genre | `nature.04` · a portrait (`people.13` or `people.00`) · `property.24` |
+| Series index (4–5 covers) | Each series cover is a different genre | Portraits `people.14` · Landscapes `nature.16` · Architecture `property.09` · Street `travel.09` · Wedding `wedding.18` |
+| **Main gallery** (24 photos, chips **Portrait · Landscape · Architecture · Street · Wedding**) | 5 per chip at least; vary aspect ratios | Portrait: `people.00` `people.01` `people.03` `people.05` `people.07` `people.16` `people.22` · Landscape: `nature.00` `nature.03` `nature.04` `nature.08` `nature.14` `nature.17` `nature.19` · Architecture: `property.03` `property.05` `property.07` `property.14` `property.18` `property.22` `property.24` · Street: `travel.04` `travel.05` `travel.08` `travel.11` `travel.12` · Wedding: `wedding.00` `wedding.08` `wedding.13` `wedding.18` |
+| Featured series (sticky caption) | 5 photos from one genre with EXIF lines | choose one chip’s photos |
+| About | Photographer portrait + gear shot | `people.28` or `people.26` (man) · `people.06` (woman) · `creative.05` |
+
+Use `<body data-art-kinds="mesh,topo,rings">`. Total distinct photos ≥ 40.
+
 ### C4. Signature moment
 
 **A refined lightbox**: native `<dialog>`, image zoom-fade between photos, keyboard (←/→/Esc), swipe on touch, caption with EXIF line, counter, and preloading of the neighbours. Photos in the grid reveal with a curtain (`img-reveal`) as they scroll in, and the hero collage drifts at different speeds.
@@ -68,36 +83,7 @@ Photos are never filtered with heavy overlays; use a subtle scrim only under tex
 .card-s h3{font-size:var(--step-2)}
 .card-s span{font:500 var(--step--1)/1 var(--font-mono);letter-spacing:.08em;opacity:.8}
 
-/* filters + masonry */
-.chips{display:flex;gap:.5rem;flex-wrap:wrap;margin:1.5rem 0 2rem}
-.chip{padding:.6rem 1.1rem;min-height:44px;border-radius:var(--r-pill);border:1px solid var(--line);color:var(--text-2);transition:background-color var(--t-hover),color var(--t-hover),border-color var(--t-hover)}
-.chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
-.masonry{columns:2;column-gap:12px}
-@media (min-width:861px){.masonry{columns:3}}
-@media (min-width:1200px){.masonry{columns:4}}
-.shot{display:block;width:100%;margin:0 0 12px;break-inside:avoid;position:relative;border-radius:var(--r-md);overflow:hidden;cursor:zoom-in}
-.shot.hide{display:none}
-.shot .media{border-radius:0}
-.shot figcaption{position:absolute;inset:auto 0 0 0;padding:.8rem;font:500 .7rem/1.2 var(--font-mono);letter-spacing:.08em;color:#fff;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .5s var(--ease-out);background:linear-gradient(to top,rgb(0 0 0 / .6),transparent)}
-@media (hover:hover) and (pointer:fine){.shot:hover figcaption{opacity:1;transform:none}.shot:hover img{transform:scale(1.04)}}
-.shot img{transition:transform 1.2s var(--ease-out)}
-
-/* lightbox */
-dialog.lb{border:0;padding:0;background:rgb(0 0 0 / .94);color:#fff;width:100vw;height:100dvh;max-width:none;max-height:none;overflow:hidden}
-dialog.lb::backdrop{background:rgb(0 0 0 / .94)}
-dialog.lb[open]{display:grid;grid-template-rows:auto 1fr auto;animation:lbIn .45s var(--ease-out)}
-@keyframes lbIn{from{opacity:0}}
-.lb-top,.lb-bot{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:14px var(--gutter);font:500 var(--step--1)/1.3 var(--font-mono);letter-spacing:.08em}
-.lb-stage{position:relative;display:grid;place-items:center;padding:0 var(--gutter);min-height:0;touch-action:pan-y}
-.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;transition:opacity .35s,transform .5s var(--ease-out)}
-.lb-stage img.swap{opacity:0;transform:scale(.985)}
-.lb-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgb(255 255 255 / .25);display:grid;place-items:center;font-size:22px;color:#fff;background:rgb(0 0 0 / .35);transition:background-color var(--t-hover),transform var(--t-press)}
-.lb-btn:active{transform:scale(.94)}
-@media (hover:hover) and (pointer:fine){.lb-btn:hover{background:rgb(255 255 255 / .14)}}
-.lb-prev,.lb-next{position:absolute;top:50%;translate:0 -50%}
-.lb-prev{left:var(--gutter)}.lb-next{right:var(--gutter)}
-@media (max-width:860px){.lb-prev,.lb-next{top:auto;bottom:8px;translate:none}}
-
+/* filters, masonry, .shot and the lightbox now live in the core CSS/engine (A4.4) */
 /* featured series (sticky caption) */
 .feature{display:grid;gap:clamp(20px,4vw,64px)}
 @media (min-width:861px){.feature{grid-template-columns:1fr 1.4fr;align-items:start}}
@@ -121,96 +107,24 @@ dialog.lb[open]{display:grid;grid-template-rows:auto 1fr auto;animation:lbIn .45
 
 ### C6. Markup patterns
 
-**Gallery item (one `<figure>` per photo; data drives the lightbox)**
+**Main gallery** uses the core component from A4.4 (`.masonry[data-gallery]` with `figure.shot` items, `.chip[data-filter]` filters, automatic lightbox). Do not write a lightbox. Per photo: `data-cat` is the chip key (`portrait`, `landscape`, `architecture`, `street`, `wedding`), `data-title` is a short poetic caption, `data-exif` is `35mm · f/1.8 · 1/250 · ISO 200` (vary plausibly), `alt` describes what is visible, `data-seed` is unique. Vary `aspect-ratio` between figures (4/5, 3/2, 1/1, 2/3) for rhythm.
 
 ```html
-<figure class="shot" data-cat="portrait" data-full="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1800&q=85&auto=format" data-title="Marigold, Jaipur" data-exif="35mm · f/1.8 · 1/250 · ISO 200" tabindex="0" role="button" aria-label="Open photo: Marigold, Jaipur">
-  <div class="media img-reveal" style="aspect-ratio:4/5"><img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&h=1000&fit=crop&q=80&auto=format" width="800" height="1000" alt="Woman in a marigold-coloured scarf at a market in Jaipur" loading="lazy" decoding="async" data-seed="marigold-jaipur"></div>
+<figure class="shot" data-cat="portrait" data-title="Marigold, Jaipur" data-exif="35mm · f/1.8 · 1/250 · ISO 200">
+  <div class="media img-reveal" style="aspect-ratio:4/5"><img src="https://images.unsplash.com/photo-<ID from the library>?w=800&h=1000&fit=crop&q=80&auto=format" width="800" height="1000" alt="Woman in a marigold-coloured scarf at a market" loading="lazy" decoding="async" data-seed="marigold-jaipur"></div>
   <figcaption>Marigold, Jaipur</figcaption>
 </figure>
 ```
 
-Vary `aspect-ratio` between figures (4/5, 3/2, 1/1, 2/3) so the masonry has rhythm. Give every photo a distinct `data-seed`.
-
-**Lightbox (one per page)**
-
-```html
-<dialog class="lb" id="lb" aria-label="Photo viewer">
-  <div class="lb-top"><span id="lb-count">1 / 1</span><button class="lb-btn" id="lb-close" aria-label="Close"><i class="ti ti-x" aria-hidden="true"></i></button></div>
-  <div class="lb-stage"><button class="lb-btn lb-prev" id="lb-prev" aria-label="Previous photo"><i class="ti ti-arrow-left" aria-hidden="true"></i></button>
-    <img id="lb-img" alt="" decoding="async">
-    <button class="lb-btn lb-next" id="lb-next" aria-label="Next photo"><i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>
-  <div class="lb-bot"><span id="lb-title"></span><span id="lb-exif" class="muted"></span></div>
-</dialog>
-```
-
-**Filter chips**
-
-```html
-<div class="chips" role="group" aria-label="Filter photos">
-  <button class="chip" data-filter="all" aria-pressed="true">All</button>
-  <button class="chip" data-filter="portrait" aria-pressed="false">Portrait</button>
-  <button class="chip" data-filter="landscape" aria-pressed="false">Landscape</button>
-  <button class="chip" data-filter="architecture" aria-pressed="false">Architecture</button>
-  <button class="chip" data-filter="street" aria-pressed="false">Street</button>
-</div>
-```
+Filter chips: `<div class="chips" role="group" aria-label="Filter photos"><button class="chip" data-filter="all" aria-pressed="true">All</button> … one chip per genre …</div>`.
 
 ### C7. Page-specific JavaScript
 
 ```js
 (() => {
-  const { $, $$, reduce, safe } = window.site;
+  const { $, reduce, safe } = window.site;
 
-  /* filter */
-  const shots = $$('.shot'), chips = $$('.chip');
-  chips.forEach(c => c.addEventListener('click', () => {
-    const f = c.dataset.filter;
-    chips.forEach(x => x.setAttribute('aria-pressed', String(x === c)));
-    shots.forEach(s => s.classList.toggle('hide', f !== 'all' && s.dataset.cat !== f));
-    window.ScrollTrigger && ScrollTrigger.refresh();
-  }));
-
-  /* lightbox */
-  const lb = $('#lb'); if (!lb) return;
-  const img = $('#lb-img'), count = $('#lb-count'), title = $('#lb-title'), exif = $('#lb-exif');
-  let list = [], idx = 0, opener = null;
-  const visible = () => shots.filter(s => !s.classList.contains('hide'));
-  const preload = i => { const s = list[(i + list.length) % list.length]; if (s) { const p = new Image(); p.src = s.dataset.full; } };
-  const show = (i, instant) => {
-    idx = (i + list.length) % list.length;
-    const s = list[idx], alt = $('img', s)?.alt || s.dataset.title || '';
-    const apply = () => {
-      img.src = s.dataset.full; img.alt = alt;
-      count.textContent = `${idx + 1} / ${list.length}`; title.textContent = s.dataset.title || ''; exif.textContent = s.dataset.exif || '';
-      img.classList.remove('swap'); preload(idx + 1); preload(idx - 1);
-    };
-    if (instant || reduce) apply(); else { img.classList.add('swap'); setTimeout(apply, 180); }
-  };
-  const open = s => { list = visible(); opener = s; lb.showModal(); document.documentElement.classList.add('lb-open'); window.site.lenis?.stop(); show(list.indexOf(s), true); };
-  const close = () => { if (lb.open) lb.close(); };
-  lb.addEventListener('close', () => { document.documentElement.classList.remove('lb-open'); window.site.lenis?.start(); opener?.focus(); });
-  shots.forEach(s => {
-    s.addEventListener('click', () => open(s));
-    s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(s); } });
-  });
-  $('#lb-close').addEventListener('click', close);
-  $('#lb-prev').addEventListener('click', () => show(idx - 1));
-  $('#lb-next').addEventListener('click', () => show(idx + 1));
-  lb.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(idx + 1); if (e.key === 'ArrowLeft') show(idx - 1); });
-  lb.addEventListener('click', e => { if (e.target === lb) close(); });
-
-  /* swipe */
-  let sx = 0, sy = 0;
-  const stage = $('.lb-stage');
-  stage.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
-  stage.addEventListener('pointerup', e => {
-    const dx = e.clientX - sx, dy = e.clientY - sy;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) show(idx + (dx < 0 ? 1 : -1));
-    else if (dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.4) close();
-  });
-
-  /* hero collage drifts at different speeds */
+  /* hero collage drifts at different speeds (the gallery, filters and lightbox are handled by the core engine) */
   if (window.gsap && window.ScrollTrigger && !reduce) safe(() => {
     [['.c1', -6], ['.c2', 10], ['.c3', -12]].forEach(([sel, y]) => {
       const el = $(sel); if (el) gsap.to(el, { yPercent: y, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
@@ -221,13 +135,11 @@ Vary `aspect-ratio` between figures (4/5, 3/2, 1/1, 2/3) so the masonry has rhyt
 
 ### C8. Image guidance
 
-Unsplash IDs you can rely on for mood (use `?w=<W>&h=<H>&fit=crop&q=80&auto=format`, `&q=85` and larger `w` for lightbox files):
-`photo-1558769132-cb1aea458c5e` · `photo-1509631179647-0177331693ae` · `photo-1523170335258-f5ed11844a49` · `photo-1486325212027-8081e485255e` · `photo-1560448204-e02f11c3d0e2` · `photo-1558618666-fcd25c85cd64` · `photo-1513584684374-8bab748fbf90` · `photo-1476480862126-209bfaa8edc8` · `photo-1555396273-367ea4eb4db5`.
+All photos come from the verified library (A4.2) following the visual plan (C3b). The main gallery needs **24 photos**, at least 5 per genre chip.
 
-- Reuse is acceptable at different crops and aspect ratios, but give each instance its own `data-seed` and a different `alt` and caption, so the gallery never looks duplicated.
-- Always write `alt` as a real description of the picture, and `data-title` as a poetic place/subject caption.
-- Add a metadata line: lens · aperture · shutter · ISO. Vary plausibly.
-- The page must remain attractive with all photos failing (gradient fallbacks per `.media`).
+- A photo may appear twice (e.g. series cover and gallery) with different crops, alt text and captions; otherwise keep every photo unique, each with its own `data-seed`.
+- `alt` describes what is visible; `data-title` is a poetic place/subject caption; `data-exif` gives lens · aperture · shutter · ISO.
+- The page must remain attractive with all photos failing (generated art shows underneath each `.media`).
 
 ### C9. Content rules
 
@@ -241,7 +153,7 @@ Unsplash IDs you can rely on for mood (use `?w=<W>&h=<H>&fit=crop&q=80&auto=form
 ### C10. Photography-specific checklist
 
 - [ ] Photos dominate; UI chrome is small and quiet
-- [ ] Lightbox opens by click and keyboard, traps focus (native dialog), closes on Esc / backdrop / swipe-down, restores focus
+- [ ] The core lightbox opens by click and keyboard, closes on Esc / backdrop / swipe-down, restores focus
 - [ ] Filter chips work and update the lightbox set
 - [ ] Masonry has varied aspect ratios and no layout shift (width/height set)
 - [ ] Every photo has descriptive alt text and a caption

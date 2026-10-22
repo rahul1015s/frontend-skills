@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+<!-- IMAGES: tech,design,creative,fashion,people,nature,travel -->
 {{CORE}}
 
 ---
@@ -34,6 +35,20 @@ Default **Violet Hour** (creative/AI) or **Ember** (hardware, sport). Alternativ
 6. **Waitlist CTA** — repeat the form, counter of people already on the list (`data-count`), launch countdown.
 7. **FAQ** — 4 `<details>` items (shipping, warranty, price, compatibility).
 8. **Footer.**
+
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+The 3D scene is the hero visual; photography supports the story so the page is never only a canvas:
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero | The WebGL scene (C7) with the `.no-webgl` orb fallback | generated / 3D |
+| Detail strip (3 cards) | Each card has a 4:3 photo on top | `tech.12` · `tech.10` · `design.12` |
+| Under the spec grid | **Photo marquee** (A4.5) of lifestyle shots, 8 duplicated | `people.20` `people.23` `nature.04` `travel.00` `creative.12` `creative.03` `design.08` `design.17` |
+| **Gallery** (`id="gallery"`, add to nav) | “In the wild”: masonry of **9** lifestyle photos | `people.20` `people.23` `people.28` `nature.04` `travel.00` `creative.12` `creative.03` `design.08` `design.17` |
+| Voices | 3 portrait avatars | `people.01` `people.00` `people.25` |
+
+The gallery section must sit above `main`’s transparent background: give the section a `rgb(var(--bg-rgb) / .72)` panel so photos read over the canvas. Use `<body data-art-kinds="rings,grid,mesh">`. Total distinct photos ≥ 16.
 
 ### C4. Signature moment
 

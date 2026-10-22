@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions (names, venue, dates in the future relative to today).
 
+<!-- IMAGES: wedding,people,hotel,nature,food -->
 {{CORE}}
 
 ---
@@ -48,6 +49,22 @@ Set `--font-mono` to the body font (labels are small uppercase, wide-tracked) an
 10. **Guestbook** — recent wishes list (stored on the device, clearly labelled as a demo) and a form to add one.
 11. **FAQ** — dress code, kids, parking, plus-ones, photography, weather plan.
 12. **Footer** — hashtag, contact for questions, “With love” signature.
+
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+Weddings are emotional; imagery must be soft, warm and plentiful. Build all of these:
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero | Soft art + petals; add a **bento collage** (`.cg`) of five wedding photos below the countdown on desktop, stacked marquee on mobile | `wedding.00` `wedding.08` `wedding.18` `wedding.21` `wedding.13` |
+| Our story (5 moments, arched 4:5 frames) | One photo each in order | `wedding.17` `wedding.08` `wedding.18` `wedding.13` `wedding.21` |
+| Event cards | Each card opens with a 16:9 venue photo | ceremony `wedding.06` · reception `wedding.19` or `wedding.03` · extra event `hotel.11` or `wedding.20` |
+| Travel & stay | 3 photos for hotels and surroundings | `hotel.02` `hotel.08` `hotel.05` |
+| **Gallery** (`id="gallery"`, add to nav) | “Moments”: masonry of **12**, chips **Us · Details · Venue** | Us: `wedding.00` `wedding.08` `wedding.10` `wedding.13` `wedding.18` `wedding.21` `wedding.22` · Details: `wedding.01` `wedding.09` `wedding.14` `wedding.15` `wedding.12` · Venue: `wedding.03` `wedding.06` `wedding.07` `wedding.19` `wedding.20` |
+| Under the story | **Photo marquee** (A4.5) | `wedding.02` `wedding.04` `wedding.11` `wedding.23` `food.03` `food.23` `nature.06` `nature.16` |
+| Wedding party (8 round portraits) | 4 women, 4 men | women `people.00` `people.03` `people.06` `people.07` · men `people.01` `people.02` `people.20` `people.25` |
+
+Use `<body data-art-kinds="petals,mesh,rings">`. Total distinct photos ≥ 40. Tell the couple to replace every stock photo with their own.
 
 ### C4. Signature moment
 
@@ -331,7 +348,7 @@ Rules for the script:
 - **Travel**: nearest airport/station with distance, two hotels with “mention our wedding” note, a local tip.
 - **Wedding party**: 6–8 invented names with roles and one affectionate line each.
 - **Gifts**: tone is gracious (“Your presence is the greatest gift”), with optional registry link placeholders and a UPI/bank placeholder.
-- **Images**: Unsplash photos are optional and risky for weddings. Prefer generated art (`.media` with gradient/floral SVG motifs) and venue-style architecture/interior photos from `photo-1486325212027-8081e485255e`, `photo-1560448204-e02f11c3d0e2`, `photo-1555396273-367ea4eb4db5`, `photo-1514362545857-3bc16c4c7d1b`, `photo-1578985545062-69928b1d9587` (venue, cocktails, dessert), each with a unique `data-seed`. Tell the couple to replace them with their own photos.
+- **Images**: all from the verified library (A4.2) following the visual plan (C3b); the gallery uses the core component (A4.4). Tell the couple to replace every stock photo with their own.
 - **Privacy**: no phone numbers or addresses of private individuals beyond what the brief supplies; invent contact details clearly as placeholders.
 
 ### C9. Wedding-specific checklist

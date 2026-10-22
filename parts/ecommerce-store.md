@@ -10,6 +10,7 @@ If any detail is missing, **invent believable specifics** instead of asking ques
 
 > **Honest scope:** this produces a front-end store with a real, persistent cart and a **demo** checkout (no payments are taken). To go live, connect the checkout to Stripe, Razorpay, Shopify Buy Button, Snipcart or similar; the closing notes must say this.
 
+<!-- IMAGES: fashion,home,beauty,tech,food,people,design -->
 {{CORE}}
 
 ---
@@ -48,6 +49,29 @@ Product photography is the hero; chrome stays quiet. Use `aspect-ratio: 4/5` for
 10. **Footer** — shop links, help, payment icons (text pills), socials, © year.
 
 **Overlays (always present):** cart drawer · quick-view dialog · checkout dialog · toast container.
+
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+Pick the **product pool** that matches what the store sells, and build everything from it:
+
+| Store type | Product pool |
+| --- | --- |
+| Fashion / apparel | `fashion.00` … `fashion.27` (clothing `00 01 04 18 19 24 25 26 27`, model/lifestyle `02 06 07 08 09 20 21 22`, accessories `03 11 12 13 14 15 16`) |
+| Beauty / skincare / jewellery | `beauty.00` … `beauty.15` |
+| Home / furniture / decor | `home.00` … `home.15` + `design.06` `design.08` `design.10` |
+| Tech / gadgets | `tech.*` product-like shots + `fashion.03` `fashion.12` `fashion.13` `fashion.15` |
+| Coffee / food | `food.*` product-like shots |
+
+| Where | What to build |
+| --- | --- |
+| Catalogue (12 products) | Each has `img` and a **different** `img2` (hover swap) from the pool; no repeats across products except `img2` re-use at most once |
+| Hero | One lifestyle photo (4:5) from the pool |
+| Category tiles (4) | One photo each, distinct from product photos where possible |
+| Story section | One photo + short copy |
+| **Gallery** (`id="gallery"`, add to nav as “Lookbook”) | “Lookbook”: masonry of **9** lifestyle photos from the pool (people wearing/using products, interiors, flat lays) |
+| Reviews | 3 portraits matching the reviewers (`people.*`) |
+
+Use `<body data-art-kinds="mesh,stripes,waves">`. Total distinct photos ≥ 28.
 
 ### C4. Signature moment
 
@@ -95,7 +119,7 @@ Product photography is the hero; chrome stays quiet. Use `aspect-ratio: 4/5` for
 .search i{position:absolute;left:1rem;top:50%;translate:0 -50%;color:var(--text-3)}
 .search input{width:100%;min-height:48px;padding:.7rem 1rem .7rem 2.8rem;border-radius:var(--r-pill);border:1px solid var(--line);background:var(--surface);font-size:16px}
 .search input:focus-visible{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgb(var(--accent-rgb) / .18)}
-.chips{display:flex;gap:.45rem;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips{display:flex;flex-wrap:nowrap;gap:.45rem;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .chips::-webkit-scrollbar{display:none}
 .chip{padding:.6rem 1.1rem;min-height:44px;border-radius:var(--r-pill);border:1px solid var(--line);color:var(--text-2);white-space:nowrap;transition:background-color var(--t-hover),color var(--t-hover),border-color var(--t-hover)}
 .chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
@@ -506,7 +530,7 @@ Rules for this script:
 ### C8. Content rules
 
 - **Catalogue:** 12 products across 3–4 categories, each with a specific name (“Linen Overshirt”, not “Shirt 1”), realistic price points consistent with the brand (and `was` prices on about a third), one badge on a few (Bestseller / New / Low stock), rating 4.3–4.9, 20–400 reviews, 4–5 sizes where relevant, one-sentence material/fit description.
-- **Images:** use Unsplash IDs you trust (fashion: `photo-1490481651871-ab68de25d43d`, `photo-1558769132-cb1aea458c5e`, `photo-1523170335258-f5ed11844a49`, `photo-1509631179647-0177331693ae`). Repeating an ID at a different crop is fine; give every product a distinct `data-seed` (already done by id). Tech/food/beauty stores should rely on the fallbacks and generated art rather than risky IDs.
+- **Images:** all from the verified library (A4.2) following the visual plan (C3b): every product has two different photos (`img`, `img2`), the lookbook uses the core gallery component (A4.4), reviews show portraits. A store with fewer than 28 distinct photos fails the visual budget.
 - **Copy:** honest, no fake countdowns or invented “only 2 left” pressure; trust copy must match the config (shipping threshold, 30-day returns).
 - **Policies:** footer links to Shipping, Returns, Privacy, Terms as `#` placeholders and a note to the owner to supply them.
 - **SEO:** `<title>`, meta description, JSON-LD `Store` and a few `Product` entries with `offers`.

@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+
 ## ═══════════════════════════════════════════════
 ## PART A — CORE ENGINE (shared by every site type)
 ## ═══════════════════════════════════════════════
@@ -28,6 +29,8 @@ Everything below the line "REFERENCE IMPLEMENTATION" is tested code. **Copy it v
 8. **No emoji as icons**, no Font Awesome, no purple-gradient-on-white, no identical image-left/text-right rows repeated, no Inter/Roboto/Arial as the display font.
 9. **Only animate `transform` and `opacity`** (plus `clip-path`). Never `transition: all`. Never `ease-in` on UI.
 10. **Placeholders must be swappable:** put contact details, social URLs and form action in obvious places and mention them in the closing notes.
+11. **Visual-first.** A page without rich imagery is a failed page. Obey the VISUAL BUDGET in A4: a real hero visual, at least 14 photos, a gallery section with lightbox, portraits wherever there are people, and no run of text-only sections.
+12. **Photos come only from the verified library in A4.** Never invent, recall, or guess other image URLs.
 
 ### A1. CDN manifest (pinned versions; use only what the page needs)
 
@@ -90,23 +93,190 @@ Font pairings (display + body [+ mono]):
 - Retro-futurist: **Syne** + Chakra Petch + Share Tech Mono
 - Clean corporate: **Plus Jakarta Sans** only
 
-### A4. Images
+### A4. Visuals: photos, generated art and galleries (MANDATORY)
 
-Primary: Unsplash direct URLs.
+**Rule zero:** this site must be *full of visuals*. Text-only layouts are rejected.
+
+#### A4.1 VISUAL BUDGET (minimum, every page)
+
+- **Hero visual:** a full-bleed photo with scrim, OR a 3D / shader scene, OR a product mock-up built in HTML/CSS, OR a photo collage. Never a bare-text hero.
+- **At least 14 distinct photos** on the page (20+ for restaurants, real estate, fashion/e-commerce, wedding, photography and gyms).
+- **At least one gallery section** (A4.4): masonry grid of **9 or more** photos with hover captions and a working lightbox. Its photos are chosen to fit the brand.
+- **Portraits, not initials:** every testimonial, review, team member, coach, agent and wedding-party member has a portrait photo from the `people.*` set (match the written gender and age).
+- **No more than two consecutive sections** without a photo, generated art panel or mock-up.
+- Every card or tile with an image slot uses `.media` (generated art sits underneath the photo; see A4.3).
+- **Re-use limit:** a photo appears at most **twice** on a page, with different crops and different alt text.
+- Add at least one *atmosphere* moment: a photo marquee strip or a bento photo collage (A4.5).
+
+#### A4.2 The verified photo library: use ONLY these
+
+Every ID below was loaded and visually checked; each line says what the photo actually shows, so pick by content. Build the URL exactly like this:
 
 ```
 https://images.unsplash.com/photo-<ID>?w=<W>&h=<H>&fit=crop&q=80&auto=format
 ```
 
-Sizes: hero 1920×1080 (q 80), card 800×1000 or 800×600, square 600×600, avatar 160×160, lightbox 1600.
+Sizes: hero 1920×1080 · card 800×1000 (4:5) or 800×600 (4:3) · square 600×600 · avatar 160×160 · gallery thumb 800×(600–1000, vary) · lightbox is derived automatically.
 
-Rules:
-- Every `<img>` has `width`, `height` (matching the ratio), `alt`, `decoding="async"`, and `loading="lazy"` except the first-viewport image (`fetchpriority="high"`).
-- Put each image inside `<div class="media">` and add `data-seed="two-words"`. The reference JS swaps a failed image for a `picsum.photos` seeded photo, and if that fails too the `.media` shows a CSS gradient. Pages must therefore look fine even with no photos.
-- Use only photo IDs you are confident exist (lists in the type-specific section). Prefer fewer, larger, well-cropped photos over many small ones.
-- Where there is no topical photo (portfolios, abstract SaaS, brand-led pages) generate artwork in CSS/SVG instead: layered gradients, grain, shapes, device mockups built in HTML. This is more distinctive and never breaks.
-- Darken photos under text with a scrim (`linear-gradient(to top, rgb(0 0 0 / .7), transparent 60%)`), never rely on image brightness for contrast.
-- Hero images get a slow `scale(1.08 → 1)` settle; cards get a hover zoom to `1.05` (pointer devices only).
+Image rules:
+- Every `<img>` has `width` and `height` matching the crop ratio, a descriptive `alt` (what is visible, not the keyword), `decoding="async"`, and `loading="lazy"` except the hero image (`fetchpriority="high"`).
+- Put every image inside `<div class="media">` (or `.hero-bg`) and give it `data-seed="two-or-three-words"` (unique per image slot).
+- Copy IDs character for character from the library; do not alter them.
+- Photos under text always get a scrim: `linear-gradient(to top, rgb(0 0 0 / .7), transparent 60%)`.
+- Hero images settle from `scale(1.08)` to `1`; cards zoom to `1.05` on hover (pointer devices only).
+
+**Photo library for this site type** (key | ID | what it shows). Choose by what the photo shows; the visual plan in section C3b names exact keys.
+
+**gym.*** — gym, training and fitness (32)
+```
+key | photo ID | what it shows
+gym.00 | 1534438327276-14e5300c3a48 | dumbbell rack in a bright gym
+gym.01 | 1517836357463-d25dfeac3438 | loaded barbell on rubber floor, low angle
+gym.02 | 1571019613454-1cb2f99b2d8b | woman doing sit-ups on a mat, bright
+gym.03 | 1540497077202-7c8a3999166f | bright modern gym floor with machines
+gym.04 | 1581009146145-b5ef050c2e1e | man doing barbell curl, moody
+gym.05 | 1583454110551-21f2fa2afe61 | hands gripping a dumbbell, smartwatch
+gym.06 | 1593079831268-3381b0db4a77 | dark moody gym interior, wood floor
+gym.07 | 1605296867304-46d5465a13f1 | lifter crouched at a barbell in a dark gym
+gym.08 | 1526506118085-60ce8714f8c5 | man with barbell seen from behind, black and white
+gym.09 | 1549060279-7e168fcee0c2 | hand on barbell plate, sneakers, warm light
+gym.10 | 1558611848-73f7eb4001a1 | dumbbell rack beside a window
+gym.11 | 1574680096145-d05b474e2155 | woman lifting barbell, back view, black and white
+gym.12 | 1517963879433-6ad2b056d712 | barbell on rubber floor, top view
+gym.13 | 1599058945522-28d584b6f0ff | man resting against a concrete wall
+gym.14 | 1546483875-ad9014c88eba | woman doing dumbbell row on a bench
+gym.15 | 1517344368193-41552b6ad3f5 | black and white, man resting on a barbell
+gym.16 | 1544367567-0f2fcb009e0b | yoga pose at sunset, silhouette
+gym.17 | 1506126613408-eca07ce68773 | meditation silhouette, warm light
+gym.18 | 1518611012118-696072aa579a | women doing floor workout on pink mats
+gym.19 | 1552674605-db6ffd4facb5 | runners in silhouette, blue sky
+gym.20 | 1571902943202-507ec2618e8f | industrial gym with big windows, dark
+gym.21 | 1594737625785-a6cbdabd333c | man doing push-ups on dumbbells
+gym.22 | 1590487988256-9ed24133863e | black power rack, black and white
+gym.23 | 1532029837206-abbe2b7620e3 | man doing pull-ups
+gym.24 | 1476480862126-209bfaa8edc8 | running shoes on concrete stairs
+gym.25 | 1593095948071-474c5cc2989d | protein powder scoop
+gym.26 | 1599901860904-17e6ed7083a0 | downward-dog yoga, black and white
+gym.27 | 1623874514711-0f321325f318 | large warehouse gym with equipment
+gym.28 | 1579758629938-03607ccdbaba | man sitting on a gym bench, dark
+gym.29 | 1517130038641-a774d04afb3c | group fitness class with neon light
+gym.30 | 1598971639058-fab3c3109a00 | man doing push-ups on rubber floor
+gym.31 | 1534258936925-c58bed479fcb | battle-rope training
+```
+
+**people.*** — portraits (use for testimonials, team, coaches, agents, party) (30)
+```
+key | photo ID | what it shows
+people.00 | 1494790108377-be9c29b29330 | smiling woman, red sweater [woman]
+people.01 | 1507003211169-0a1dd7228f2d | smiling man, white tee [man]
+people.02 | 1500648767791-00dcc994a43e | man, grey sweater, friendly [man]
+people.03 | 1438761681033-6461ffad8d80 | red-haired woman by a lake [woman]
+people.04 | 1472099645785-5658abf4ff4e | older man with glasses [man]
+people.05 | 1534528741775-53994a69daeb | woman in blue light [woman]
+people.06 | 1573496359142-b8d87734a5a2 | woman in grey blazer [woman]
+people.07 | 1580489944761-15a19d654956 | woman with hair bun, white top [woman]
+people.08 | 1544005313-94ddf0286df2 | woman in striped shirt [woman]
+people.09 | 1547425260-76bcadfb4f2c | man with glasses and beard, blue shirt [man]
+people.10 | 1552058544-f2b08422138a | bearded man, black and white [man]
+people.11 | 1519085360753-af0119f7cbe7 | man in a dark suit [man]
+people.12 | 1560250097-0b93528c311a | older man in a suit with glasses [man]
+people.13 | 1531123897727-8f129e1688ce | woman, warm portrait [woman]
+people.14 | 1489424731084-a5d8b219a5bb | red-haired woman smiling [woman]
+people.15 | 1506794778202-cad84cf45f1d | bearded man, dark [man]
+people.16 | 1517841905240-472988babdf9 | woman in hoodie and denim jacket, blue wall [woman]
+people.17 | 1524504388940-b1c1722653e1 | woman with long hair, studio [woman]
+people.18 | 1529626455594-4ff0802cfb7e | red-haired woman, colourful [woman]
+people.19 | 1463453091185-61582044d556 | man in front of graffiti [man]
+people.20 | 1492562080023-ab3db95bfbce | man smiling outdoors [man]
+people.21 | 1522529599102-193c0d76b5b6 | man smiling, grey tee [man]
+people.22 | 1508214751196-bcfd4ca60f91 | blonde woman outdoors [woman]
+people.23 | 1521119989659-a83eee488004 | man in orange beanie [man]
+people.24 | 1543610892-0b1f7e6d8ac1 | man in beanie and glasses, profile [man]
+people.25 | 1531427186611-ecfd6d936c79 | man in light blue shirt [man]
+people.26 | 1558203728-00f45181dd84 | man with sunglasses, city behind [man]
+people.27 | 1566492031773-4f4e44671857 | man with glasses, striped shirt [man]
+people.28 | 1507591064344-4c6ce005b128 | man in cap on a street [man]
+people.29 | 1527980965255-d3b416303d12 | man with scarf, smiling [man]
+```
+
+**nature.*** — landscapes and nature (22)
+```
+key | photo ID | what it shows
+nature.00 | 1506744038136-46273834b3fb | Yosemite valley at dusk
+nature.01 | 1469474968028-56623f02e42e | rocky golden hills
+nature.02 | 1441974231531-c6227db76b6e | forest path
+nature.03 | 1470071459604-3b5ec3a7fe05 | green cliffs at sunset
+nature.04 | 1501785888041-af3ef285b470 | turquoise lake with a boat
+nature.05 | 1464822759023-fed622ff2c3b | mountain lake and forest
+nature.06 | 1507525428034-b723cf961d3e | beach at sunset
+nature.07 | 1476514525535-07fb3b4ae5f1 | wooden boat on an alpine lake
+nature.08 | 1519681393784-d120267933ba | Milky Way over mountains
+nature.09 | 1472214103451-9374bd1c798e | green hill with a spiral, sunset
+nature.10 | 1500530855697-b586d89ba3ee | desert road in red canyon
+nature.11 | 1433086966358-54859d0ed716 | waterfall with a bridge
+nature.12 | 1447752875215-b2761acb3c5d | forest bridge
+nature.13 | 1426604966848-d7adac402bff | El Capitan meadow
+nature.14 | 1418065460487-3e41a6c84dc5 | misty pine forest
+nature.15 | 1431794062232-2a99a5431c6c | red rock with waterfall
+nature.16 | 1475924156734-496f6cac6ec1 | pink sunset beach
+nature.17 | 1454496522488-7a8e488e8606 | snowy mountain peaks
+nature.18 | 1486870591958-9b9d0d1dda99 | mountain over dry grass
+nature.19 | 1483728642387-6c3bdd6c93e5 | teal mountain silhouette
+nature.20 | 1500375592092-40eb2168fd21 | wave over a rock
+nature.21 | 1505142468610-359e7d316be0 | aerial turquoise wave
+```
+
+#### A4.3 Generated art (automatic, always on)
+
+The engine puts a unique **generative SVG artwork** (mesh gradient, waves, topographic lines, rings, halftone, skyline, rays, petals, plate, stripes) *underneath* every `.media` and `.hero-bg`, coloured from the palette tokens. Photos sit on top and cover it; if a photo is slow or blocked, the art shows, so no image slot is ever blank.
+
+- Choose the family for the brand with `<body data-art-kinds="skyline,mesh,grid">`. Defaults: `mesh,waves,topo,rings,grid`. Available kinds: `mesh · waves · topo · rings · grid · skyline · rays · petals · plate · stripes`.
+- Force one slot with `data-art="rays"` on that `.media`; opt out with `data-art="none"`.
+- Use a `.media` *without any `<img>`* when you want pure artwork (brand panels, feature tiles, project covers): it renders the generated art by itself.
+
+#### A4.4 Gallery component (required at least once; use again wherever it fits)
+
+```html
+<section class="sec" id="gallery"><div class="wrap">
+  <p class="eyebrow" data-reveal>Gallery</p>
+  <h2 data-reveal>Short, specific title</h2>
+  <div class="chips" role="group" aria-label="Filter gallery">           <!-- optional filters -->
+    <button class="chip" data-filter="all" aria-pressed="true">All</button>
+    <button class="chip" data-filter="rooms" aria-pressed="false">Rooms</button>
+  </div>
+  <div class="masonry" data-gallery style="margin-top:1.5rem">
+    <figure class="shot" data-cat="rooms" data-title="Caption shown on hover and in the viewer" data-exif="optional extra line">
+      <div class="media img-reveal" style="aspect-ratio:4/5">
+        <img src="https://images.unsplash.com/photo-ID?w=800&h=1000&fit=crop&q=80&auto=format" width="800" height="1000" alt="What is visible" loading="lazy" decoding="async" data-seed="unique-seed">
+      </div>
+      <figcaption>Caption shown on hover and in the viewer</figcaption>
+    </figure>
+    <!-- 9–24 figures; vary aspect-ratio 4/5, 3/2, 1/1, 2/3 for rhythm; every data-seed unique -->
+  </div>
+</div></section>
+```
+
+The engine adds the lightbox automatically (keyboard ←/→/Esc, swipe, preload, focus return) and the chip filters. Do not write your own lightbox.
+
+#### A4.5 Atmosphere components
+
+**Photo marquee** (a slow, endless strip of photos; duplicate the set once for a seamless loop):
+
+```html
+<div class="pmq" aria-hidden="true"><div class="pmq-track">
+  <div class="media"><img src="…w=640&h=800…" width="640" height="800" alt="" loading="lazy" decoding="async" data-seed="s1"></div>
+  <!-- 8 photos, then the same 8 again -->
+</div></div>
+```
+
+**Bento collage** (5 photos, mixed sizes) for heroes and story sections:
+
+```html
+<div class="cg">
+  <div class="media cg-1"><img …></div><div class="media cg-2"><img …></div><div class="media cg-3"><img …></div>
+  <div class="media cg-4"><img …></div><div class="media cg-5"><img …></div>
+</div>
+```
 
 ### A5. Motion principles (applied in the reference code)
 
@@ -256,10 +426,10 @@ p{text-wrap:pretty}
 .progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:1001;background:var(--accent);transform-origin:0 50%;transform:scaleX(0)}
 
 /* ───────── media + cards ───────── */
-.media{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--surface-2),var(--surface));border-radius:var(--r-md)}
-.media img{width:100%;height:100%;object-fit:cover}
-.media.img-fail img{opacity:0}
-.media.img-fail::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 80% at 30% 20%,rgb(var(--accent-rgb) / .35),transparent 60%),radial-gradient(70% 70% at 80% 90%,rgb(255 255 255 / .06),transparent 60%)}
+.media{position:relative;overflow:hidden;background:var(--surface-2);border-radius:var(--r-md)}
+.art-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.media>img,.hero-bg>img{position:relative;width:100%;height:100%;object-fit:cover}  /* DOM order stacks the photo above the art and below ::after scrims */
+.img-fail{visibility:hidden}
 .scrim::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgb(0 0 0 / .72),rgb(0 0 0 / .05) 60%);pointer-events:none}
 .card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(20px,3vw,32px);overflow:hidden;transition:border-color var(--t-hover),transform .5s var(--ease-out)}
 .card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;
@@ -274,16 +444,58 @@ p{text-wrap:pretty}
 .icon-tile{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);font-size:24px;color:var(--accent)}
 .pill{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .8rem;border-radius:var(--r-pill);border:1px solid var(--line);font:500 var(--step--1)/1 var(--font-mono);color:var(--text-2)}
 
+/* ───────── gallery, chips, photo strips ───────── */
+.chips{display:flex;gap:.5rem;flex-wrap:wrap}
+.chip{padding:.6rem 1.1rem;min-height:44px;border-radius:var(--r-pill);border:1px solid var(--line);color:var(--text-2);white-space:nowrap;transition:background-color var(--t-hover),color var(--t-hover),border-color var(--t-hover)}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.masonry{columns:2;column-gap:12px}
+@media (min-width:861px){.masonry{columns:3}}
+@media (min-width:1200px){.masonry{columns:4}}
+.shot{display:block;width:100%;margin:0 0 12px;break-inside:avoid;position:relative;border-radius:var(--r-md);overflow:hidden;cursor:zoom-in}
+.shot.hide{display:none}
+.shot .media{border-radius:0}
+.shot figcaption{position:absolute;inset:auto 0 0 0;padding:1.6rem .9rem .8rem;font:500 .72rem/1.3 var(--font-mono);letter-spacing:.08em;color:#fff;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .5s var(--ease-out);background:linear-gradient(to top,rgb(0 0 0 / .65),transparent)}
+@media (hover:hover) and (pointer:fine){.shot:hover figcaption{opacity:1;transform:none}.shot:hover .media>img{transform:scale(1.05)}}
+@media (hover:none){.shot figcaption{opacity:1;transform:none}}
+.shot .media>img{transition:transform 1.2s var(--ease-out)}
+dialog.lb{border:0;padding:0;background:rgb(0 0 0 / .95);color:#fff;width:100vw;height:100dvh;max-width:none;max-height:none;overflow:hidden}
+dialog.lb::backdrop{background:rgb(0 0 0 / .95)}
+dialog.lb[open]{display:grid;grid-template-rows:auto 1fr auto;animation:lbIn .45s var(--ease-out)}
+@keyframes lbIn{from{opacity:0}}
+.lb-top,.lb-bot{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:14px var(--gutter);font:500 var(--step--1)/1.3 var(--font-mono);letter-spacing:.08em}
+.lb-stage{position:relative;display:grid;place-items:center;padding:0 var(--gutter);min-height:0;touch-action:pan-y}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;transition:opacity .35s,transform .5s var(--ease-out)}
+.lb-stage img.swap{opacity:0;transform:scale(.985)}
+.lb-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgb(255 255 255 / .25);display:grid;place-items:center;font-size:22px;color:#fff;background:rgb(0 0 0 / .35);transition:background-color var(--t-hover),transform var(--t-press)}
+.lb-btn:active{transform:scale(.94)}
+@media (hover:hover) and (pointer:fine){.lb-btn:hover{background:rgb(255 255 255 / .14)}}
+.lb-prev,.lb-next{position:absolute;top:50%;translate:0 -50%}
+.lb-prev{left:var(--gutter)}.lb-next{right:var(--gutter)}
+@media (max-width:860px){.lb-prev,.lb-next{top:auto;bottom:8px;translate:none}}
+.pmq{overflow:hidden;padding-block:12px}
+.pmq-track{display:flex;gap:12px;width:max-content;animation:marq 70s linear infinite}
+.pmq:hover .pmq-track{animation-play-state:paused}
+.pmq .media{flex:none;width:clamp(170px,24vw,300px);aspect-ratio:4/5;border-radius:var(--r-md)}
+.pmq .media:nth-child(3n){aspect-ratio:1}.pmq .media:nth-child(3n+1){aspect-ratio:3/4}
+.cg{display:grid;gap:12px;grid-template-columns:repeat(2,1fr);grid-auto-rows:clamp(110px,38vw,190px)}
+.cg .media{height:100%;border-radius:var(--r-md)}
+.cg-1{grid-column:span 2;grid-row:span 2}
+@media (min-width:861px){
+  .cg{grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(4,clamp(80px,11vw,160px));grid-auto-rows:unset}
+  .cg-1{grid-column:1/3;grid-row:1/5}.cg-2{grid-column:3/5;grid-row:1/3}.cg-3{grid-column:5/7;grid-row:1/4}.cg-4{grid-column:3/5;grid-row:3/5}.cg-5{grid-column:5/7;grid-row:4/5}
+}
+
 /* ───────── reveal system (hidden state exists only when JS runs) ───────── */
 .js [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease-out),transform 1s var(--ease-out);transition-delay:calc(var(--i,0)*70ms)}
 .js [data-reveal].in{opacity:1;transform:none}
 .js [data-split] .word{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
 .js [data-split] .char{display:inline-block;transform:translateY(112%);transition:transform 1.05s var(--ease-out);transition-delay:calc(var(--ci,0)*26ms)}
 .js [data-split].in .char{transform:none}
-.js .img-reveal{clip-path:inset(0 0 100% 0);transition:clip-path 1.3s var(--ease-in-out)}
-.js .img-reveal.in{clip-path:inset(0)}
-.js .img-reveal img{transform:scale(1.18);transition:transform 1.8s var(--ease-out)}
-.js .img-reveal.in img{transform:scale(1)}
+/* image curtain reveal. NEVER clip-path the observed element itself: Chrome's IntersectionObserver then reports it as not intersecting and the photo stays invisible forever */
+.js .img-reveal::before{content:"";position:absolute;inset:0;z-index:2;background:var(--bg);transform-origin:50% 0;transition:transform 1.3s var(--ease-in-out);pointer-events:none}
+.js .img-reveal.in::before{transform:scaleY(0)}
+.js .img-reveal>img{scale:1.15;transition:scale 1.8s var(--ease-out),transform 1.2s var(--ease-out)}
+.js .img-reveal.in>img{scale:1}
 
 /* ───────── marquee ───────── */
 .marquee{overflow:hidden;border-block:1px solid var(--line);padding-block:1.1rem}
@@ -326,7 +538,8 @@ p{text-wrap:pretty}
 /* ───────── reduced motion ───────── */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-  .js [data-reveal],.js [data-split] .char,.js .img-reveal,.js .img-reveal img{transform:none!important;clip-path:none!important}
+  .js [data-reveal],.js [data-split] .char{transform:none!important}
+  .js .img-reveal::before{display:none}.js .img-reveal>img{scale:1!important}
   .marquee-track{animation:none}
 }
 ```
@@ -390,8 +603,10 @@ Markup conventions the engine understands:
 - `data-reveal` on any element → fades up when it enters the viewport.
 - `data-stagger` on a parent → its children reveal in sequence.
 - `data-split` on a **plain-text** heading → per-character rise (an `sr-only` copy is added for screen readers). Do not put child markup inside it.
-- `.img-reveal` on a `.media` → curtain image reveal.
-- `data-count="1280"` on a number (write the final number in the HTML) → counts up when visible; decimals respected.
+- `.img-reveal` on a `.media` → curtain image reveal (a cover that wipes away; the photo itself is never hidden or clipped).
+- `data-count="1280"` on a number (write the final number in the HTML) → counts up when visible; decimals respected. Add `data-raw` for years and IDs so no thousands separator is inserted (`<b data-count="2019" data-raw>2019</b>`).
+- `.masonry[data-gallery]` containing `figure.shot` items → masonry gallery with automatic lightbox and `.chip[data-filter]` filters (A4.4); `.pmq` photo marquee and `.cg` bento collage (A4.5).
+- `data-art="kind"` / `data-art="none"` on a `.media`, and `<body data-art-kinds="…">`, control the generated artwork (A4.3).
 - `data-magnetic` on buttons, `data-tilt` on cards (pointer devices only), `data-speed="2"` on an element inside a wrapper for desktop parallax, `data-cursor` on any non-link element that should enlarge the cursor.
 - `form[data-form]` with an optional `data-success="message"` and a `<p class="form-status" hidden></p>` → validated demo submit with loading and success states (tell the user to connect a real endpoint such as Formspree).
 
@@ -409,15 +624,9 @@ Markup conventions the engine understands:
   const safe = fn => { try { fn(); } catch (e) { console.warn(e); } };
   doc.classList.add('js');
 
-  /* image fallback: picsum seeded photo, then CSS gradient */
-  addEventListener('error', e => {
-    const img = e.target;
-    if (!(img instanceof HTMLImageElement) || img.dataset.fb) return;
-    img.dataset.fb = '1';
-    const seed = (img.dataset.seed || img.alt || 'site').trim().replace(/\s+/g, '-');
-    img.src = `https://picsum.photos/seed/${encodeURIComponent(seed)}/${img.getAttribute('width') || 800}/${img.getAttribute('height') || 600}`;
-    img.addEventListener('error', () => img.closest('.media')?.classList.add('img-fail'), { once: true });
-  }, true);
+  /* failed photos are hidden so the generated art underneath shows */
+  addEventListener('error', e => { if (e.target instanceof HTMLImageElement) e.target.classList.add('img-fail'); }, true);
+  $$('img[src]').forEach(im => { if (im.complete && im.naturalWidth === 0) im.classList.add('img-fail'); });
 
   /* smooth scroll (Lenis) wired to ScrollTrigger */
   let lenis = null;
@@ -498,14 +707,14 @@ Markup conventions the engine understands:
   $$('[data-stagger]').forEach(p => Array.from(p.children).forEach((c, i) => { c.setAttribute('data-reveal', ''); c.style.setProperty('--i', i); }));
 
   /* counters */
-  const fmt = (v, dec) => v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  const fmt = (v, dec, raw) => raw ? v.toFixed(dec) : v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
   const count = el => {
-    const end = parseFloat(el.dataset.count), dec = (el.dataset.count.split('.')[1] || '').length;
-    if (reduce || isNaN(end)) { el.textContent = fmt(end, dec); return; }
+    const end = parseFloat(el.dataset.count), dec = (el.dataset.count.split('.')[1] || '').length, raw = el.hasAttribute('data-raw');
+    if (reduce || isNaN(end)) { el.textContent = fmt(end, dec, raw); return; }
     const t0 = performance.now(), dur = 1700;
     const tick = t => {
       const p = Math.min((t - t0) / dur, 1);
-      el.textContent = fmt(end * (1 - Math.pow(1 - p, 4)), dec);
+      el.textContent = fmt(end * (1 - Math.pow(1 - p, 4)), dec, raw);
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -524,6 +733,8 @@ Markup conventions the engine understands:
       en.target.classList.add('in'); io.unobserve(en.target);
     }), { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
     items.forEach(el => io.observe(el));
+    /* failsafe: anything already on screen after 4 s that the observer missed is shown, so no photo or block can stay hidden */
+    setTimeout(() => items.forEach(el => { if (el.classList.contains('in')) return; const r = el.getBoundingClientRect(); if (r.bottom > -50 && r.top < innerHeight * 1.25) el.classList.add('in'); }), 4000);
     const co = new IntersectionObserver(es => es.forEach(en => {
       if (!en.isIntersecting) return;
       count(en.target); co.unobserve(en.target);
@@ -601,6 +812,151 @@ Markup conventions the engine understands:
     });
   });
 
+  /* ───── generative art under every image slot ───── */
+  const hash = t => { let h = 2166136261; for (const c of String(t)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const rng = seed => { let a = hash(seed); return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
+  const BG = '<rect width="400" height="300" fill="var(--surface-2)"/>';
+  const ART = {
+    mesh(r, id) {
+      const cols = ['var(--accent)', 'var(--accent-2)', 'var(--text)'];
+      let s = `<defs><filter id="f${id}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="38"/></filter></defs>${BG}<g filter="url(#f${id})">`;
+      for (let i = 0; i < 5; i++) s += `<circle cx="${(r() * 400) | 0}" cy="${(r() * 300) | 0}" r="${(60 + r() * 100) | 0}" fill="${cols[i % 3]}" opacity="${(0.35 + r() * 0.45).toFixed(2)}"/>`;
+      return s + '</g>';
+    },
+    waves(r) {
+      let s = BG;
+      for (let i = 0; i < 6; i++) {
+        const y = 70 + i * 36 + r() * 14, a = 14 + r() * 26, p = r() * 6.28, k = 1 + r() * 1.6;
+        let d = `M0,${y.toFixed(1)}`;
+        for (let x = 0; x <= 400; x += 20) d += ` L${x},${(y + Math.sin(x / 400 * Math.PI * 2 * k + p) * a).toFixed(1)}`;
+        s += `<path d="${d} L400,300 L0,300Z" fill="${i % 2 ? 'var(--accent-2)' : 'var(--accent)'}" opacity="${(0.12 + i * 0.1).toFixed(2)}"/>`;
+      }
+      return s;
+    },
+    topo(r) {
+      const cx = 120 + r() * 160, cy = 90 + r() * 120, ph = [r() * 6.28, r() * 6.28, r() * 6.28];
+      let s = BG + '<g fill="none" stroke="var(--accent)" stroke-width="1.2">';
+      for (let i = 1; i <= 14; i++) {
+        let d = '';
+        for (let a = 0; a <= 64; a++) {
+          const t = a / 64 * 6.2832, rr = i * 17 * (1 + 0.16 * Math.sin(t * 2 + ph[0]) + 0.09 * Math.sin(t * 3 + ph[1]) + 0.05 * Math.sin(t * 5 + ph[2]));
+          d += (a ? 'L' : 'M') + (cx + Math.cos(t) * rr * 1.25).toFixed(1) + ',' + (cy + Math.sin(t) * rr).toFixed(1);
+        }
+        s += `<path d="${d}Z" opacity="${(0.15 + i / 14 * 0.6).toFixed(2)}"/>`;
+      }
+      return s + '</g>';
+    },
+    rings(r) {
+      const cx = r() * 400, cy = r() * 300; let s = BG;
+      for (let i = 0; i < 9; i++) s += `<circle cx="${(cx + Math.sin(i) * 14).toFixed(1)}" cy="${(cy + Math.cos(i) * 10).toFixed(1)}" r="${24 + i * 28}" fill="${i % 4 === 0 ? 'var(--accent)' : 'none'}" fill-opacity=".14" stroke="${i % 3 === 0 ? 'var(--accent-2)' : 'var(--accent)'}" stroke-opacity="${(0.7 - i * 0.06).toFixed(2)}" stroke-width="1.5"/>`;
+      return s;
+    },
+    grid(r) {
+      const fx = r() * 400, fy = r() * 300; let s = BG + '<g fill="var(--accent)">';
+      for (let y = 10; y < 300; y += 20) for (let x = 10; x < 400; x += 20) { const rad = Math.max(0, 8.5 - Math.hypot(x - fx, y - fy) / 28); if (rad > 0.6) s += `<circle cx="${x}" cy="${y}" r="${rad.toFixed(1)}"/>`; }
+      return s + '</g>';
+    },
+    skyline(r, id) {
+      let s = `<defs><linearGradient id="g${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--surface-2)"/><stop offset="1" stop-color="var(--accent)" stop-opacity=".45"/></linearGradient></defs><rect width="400" height="300" fill="url(#g${id})"/>`;
+      s += `<circle cx="${(60 + r() * 280) | 0}" cy="${(60 + r() * 50) | 0}" r="${(26 + r() * 22) | 0}" fill="var(--accent-2)" opacity=".75"/>`;
+      for (let layer = 0; layer < 2; layer++) {
+        let x = -10;
+        while (x < 400) {
+          const w = 22 + r() * 34, h = (layer ? 50 : 80) + r() * (layer ? 90 : 120);
+          s += `<rect x="${x.toFixed(1)}" y="${(300 - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="var(--text)" opacity="${layer ? 0.1 : 0.22}"/>`;
+          if (layer) for (let wy = 300 - h + 8; wy < 290; wy += 14) for (let wx = x + 5; wx < x + w - 6; wx += 9) if (r() > 0.55) s += `<rect x="${wx.toFixed(1)}" y="${wy.toFixed(1)}" width="4" height="6" fill="var(--accent-2)" opacity=".8"/>`;
+          x += w + 2 + r() * 6;
+        }
+      }
+      return s;
+    },
+    rays(r) {
+      const cx = 100 + r() * 200, cy = 250; let s = BG;
+      for (let i = 0; i < 26; i++) {
+        const a1 = Math.PI + i / 26 * Math.PI, a2 = Math.PI + (i + 0.55) / 26 * Math.PI;
+        s += `<path d="M${cx.toFixed(1)},${cy} L${(cx + Math.cos(a1) * 520).toFixed(1)},${(cy + Math.sin(a1) * 520).toFixed(1)} L${(cx + Math.cos(a2) * 520).toFixed(1)},${(cy + Math.sin(a2) * 520).toFixed(1)}Z" fill="var(--accent)" opacity="${(0.08 + (i % 3) * 0.1).toFixed(2)}"/>`;
+      }
+      return s + `<circle cx="${cx.toFixed(1)}" cy="${cy}" r="46" fill="var(--accent-2)" opacity=".85"/>`;
+    },
+    petals(r) {
+      let s = BG;
+      [[100 + r() * 60, 90 + r() * 40, 1], [260 + r() * 80, 160 + r() * 60, 1.3], [330 + r() * 40, 60 + r() * 30, 0.7]].forEach(([x, y, k]) => {
+        for (let i = 0; i < 8; i++) s += `<ellipse cx="${x.toFixed(1)}" cy="${(y - 26 * k).toFixed(1)}" rx="${(11 * k).toFixed(1)}" ry="${(26 * k).toFixed(1)}" transform="rotate(${i * 45} ${x.toFixed(1)} ${y.toFixed(1)})" fill="var(--accent)" fill-opacity=".22" stroke="var(--accent)" stroke-opacity=".6"/>`;
+        s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(7 * k).toFixed(1)}" fill="var(--accent-2)" opacity=".9"/>`;
+      });
+      for (let i = 0; i < 22; i++) s += `<circle cx="${(r() * 400) | 0}" cy="${(r() * 300) | 0}" r="${(1 + r() * 2).toFixed(1)}" fill="var(--accent-2)" opacity=".5"/>`;
+      return s;
+    },
+    plate(r) {
+      let s = BG + '<circle cx="200" cy="150" r="124" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><circle cx="200" cy="150" r="96" fill="none" stroke="var(--accent)" stroke-opacity=".45"/><circle cx="200" cy="150" r="70" fill="var(--accent)" fill-opacity=".1"/>';
+      for (let i = 0; i < 16; i++) { const a = r() * 6.28, d = r() * 62; s += `<ellipse cx="${(200 + Math.cos(a) * d).toFixed(1)}" cy="${(150 + Math.sin(a) * d).toFixed(1)}" rx="${(4 + r() * 9).toFixed(1)}" ry="${(3 + r() * 6).toFixed(1)}" transform="rotate(${(r() * 180) | 0} 200 150)" fill="${i % 3 ? 'var(--accent)' : 'var(--accent-2)'}" opacity="${(0.5 + r() * 0.4).toFixed(2)}"/>`; }
+      return s;
+    },
+    stripes(r) {
+      let s = BG + '<g transform="rotate(-18 200 150)">', x = -140;
+      while (x < 560) { const w = 14 + r() * 46; s += `<rect x="${x.toFixed(1)}" y="-80" width="${w.toFixed(1)}" height="460" fill="${r() > 0.5 ? 'var(--accent)' : r() > 0.5 ? 'var(--accent-2)' : 'var(--text)'}" opacity="${(0.1 + r() * 0.5).toFixed(2)}"/>`; x += w + 6 + r() * 24; }
+      return s + '</g>';
+    }
+  };
+  let artN = 0;
+  const kinds = (document.body.dataset.artKinds || 'mesh,waves,topo,rings,grid').split(',').map(k => k.trim()).filter(k => ART[k]);
+  $$('.media, .hero-bg, [data-art]').forEach((el, i) => {
+    if (el.dataset.art === 'none' || el.querySelector(':scope > .art-svg')) return;
+    const img = $('img', el), seed = el.dataset.seed || (img && (img.dataset.seed || img.alt)) || 'art' + i;
+    const kind = ART[el.dataset.art] ? el.dataset.art : kinds[hash(seed) % kinds.length] || 'mesh';
+    el.insertAdjacentHTML('afterbegin', `<svg class="art-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">${ART[kind](rng(seed), ++artN)}</svg>`);
+  });
+
+  /* ───── gallery: filters + lightbox (every .shot inside a [data-gallery]) ───── */
+  safe(() => {
+    const all = $$('[data-gallery] .shot');
+    $$('.chip[data-filter]').forEach(c => c.addEventListener('click', () => {
+      const scope = c.closest('section') || document, f = c.dataset.filter;
+      $$('.chip[data-filter]', scope).forEach(x => x.setAttribute('aria-pressed', String(x === c)));
+      $$('.shot', scope).forEach(s => s.classList.toggle('hide', f !== 'all' && s.dataset.cat !== f));
+      if (hasST) ScrollTrigger.refresh();
+    }));
+    if (!all.length) return;
+    const lb = document.createElement('dialog'); lb.className = 'lb'; lb.setAttribute('aria-label', 'Photo viewer');
+    lb.innerHTML = '<div class="lb-top"><span class="lb-count"></span><button class="lb-btn lb-close" aria-label="Close"><i class="ti ti-x" aria-hidden="true"></i></button></div>' +
+      '<div class="lb-stage"><button class="lb-btn lb-prev" aria-label="Previous photo"><i class="ti ti-arrow-left" aria-hidden="true"></i></button><img class="lb-img" alt="" decoding="async">' +
+      '<button class="lb-btn lb-next" aria-label="Next photo"><i class="ti ti-arrow-right" aria-hidden="true"></i></button></div><div class="lb-bot"><span class="lb-title"></span><span class="lb-exif"></span></div>';
+    document.body.append(lb);
+    const L = { img: $('.lb-img', lb), count: $('.lb-count', lb), title: $('.lb-title', lb), exif: $('.lb-exif', lb) };
+    let list = [], idx = 0, opener = null;
+    const src = s => { const i = $('img', s); return s.dataset.full || (i ? i.currentSrc || i.src : '').replace(/w=\d+&h=\d+&fit=crop&q=\d+/, 'w=1800&q=85'); };
+    const show = (n, instant) => {
+      idx = (n + list.length) % list.length;
+      const s = list[idx], im = $('img', s);
+      const apply = () => {
+        L.img.src = src(s); L.img.alt = im ? im.alt : ''; L.count.textContent = `${idx + 1} / ${list.length}`;
+        L.title.textContent = s.dataset.title || ''; L.exif.textContent = s.dataset.exif || ''; L.img.classList.remove('swap');
+        [idx + 1, idx - 1].forEach(k => { const t = list[(k + list.length) % list.length]; if (t) new Image().src = src(t); });
+      };
+      if (instant || reduce) apply(); else { L.img.classList.add('swap'); setTimeout(apply, 180); }
+    };
+    const open = s => { opener = s; list = $$('.shot', s.closest('[data-gallery]')).filter(x => !x.classList.contains('hide') && $('img', x)); lb.showModal(); lenis && lenis.stop(); show(list.indexOf(s), true); };
+    const close = () => { if (lb.open) lb.close(); };
+    lb.addEventListener('close', () => { lenis && lenis.start(); opener && opener.focus && opener.focus({ preventScroll: true }); });
+    all.forEach(s => {
+      if (!$('img', s)) return;
+      s.tabIndex = 0; s.setAttribute('role', 'button'); if (!s.hasAttribute('aria-label')) s.setAttribute('aria-label', 'Open photo: ' + (s.dataset.title || $('img', s).alt));
+      s.addEventListener('click', () => open(s));
+      s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(s); } });
+    });
+    $('.lb-close', lb).addEventListener('click', close);
+    $('.lb-prev', lb).addEventListener('click', () => show(idx - 1));
+    $('.lb-next', lb).addEventListener('click', () => show(idx + 1));
+    lb.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(idx + 1); if (e.key === 'ArrowLeft') show(idx - 1); });
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+    let sx = 0, sy = 0; const stage = $('.lb-stage', lb);
+    stage.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
+    stage.addEventListener('pointerup', e => {
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) show(idx + (dx < 0 ? 1 : -1)); else if (dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.4) close();
+    });
+  });
+
   $$('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
 
   window.site = { lenis, reduce, fine, wide, $, $$, scrollToEl, safe };
@@ -630,7 +986,9 @@ The second `<script>` (page-specific) may use `window.site`, listen for `site:re
 - [ ] Every interactive element has hover (pointer-gated), `:active`, `:focus-visible`; forms have labels, types, autocomplete, validation and a success state
 - [ ] `reduce` and `fine` handled (already in engine); no ungated `:hover` motion
 - [ ] Nav anchors match section `id`s; one `h1`; heading order logical
-- [ ] Images: `width`/`height`/`alt`/`data-seed`/`loading`; page still looks good with photos blocked
+- [ ] **Visual budget met (A4.1):** hero visual, ≥ 14 distinct photos, a gallery of ≥ 9 with lightbox, portraits on every testimonial/team/agent/coach, no run of 3 text-only sections, each photo used ≤ 2 times
+- [ ] Every photo ID is copied exactly from the A4.2 library (nothing invented); every `<img>` is inside `.media`/`.hero-bg` with `width`/`height`/`alt`/`data-seed`
+- [ ] Page still looks good with photos blocked (generated art shows)
 - [ ] Icons are Tabler only, with `aria-hidden` or `aria-label`
 - [ ] The signature moment exists, works, and is not buried under competing effects
 - [ ] No `console` errors on load; every library call guarded; no `transition: all`
@@ -674,6 +1032,23 @@ Headings in uppercase condensed type, tight leading, huge scale. Photography is 
 11. **FAQ** — 6 questions (first visit, cancellation, kids, equipment, parking, injuries).
 12. **Free-trial form** — name, phone, email, preferred class, goal, with success state.
 13. **Footer** — address, opening hours, socials, map-style block.
+
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+A gym site without powerful photography fails. Build all of these:
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero | Dark full-bleed with scrim | `gym.20` or `gym.27` (industrial) · `gym.06` (moody) |
+| Programs (6 cards, 4:5) | Strength · HIIT · Boxing/Conditioning · Mobility & Yoga · Powerlifting · Endurance | `gym.21` · `gym.29` · `gym.31` · `gym.16` · `gym.04` · `gym.19` |
+| Under the marquee | **Photo marquee** (A4.5), 8 duplicated | `gym.00` `gym.09` `gym.12` `gym.24` `gym.30` `gym.22` `gym.14` `gym.18` |
+| Coaches (4, 3:4) | 2 women, 2 men | `people.00` `people.22` `people.01` `people.20` |
+| Transformation slider | Before: `gym.15` (desaturate with CSS) · After: `gym.23` | as listed |
+| **Gallery** (`id="gallery"`, add to nav “Inside the gym”) | masonry of **12**, chips **Floor · Classes · Recovery** | Floor: `gym.00` `gym.03` `gym.06` `gym.10` `gym.20` `gym.22` `gym.27` · Classes: `gym.18` `gym.29` `gym.31` `gym.14` · Recovery: `gym.16` `gym.17` `gym.26` |
+| Reviews | 3 portraits | `people.01` `people.00` `people.21` |
+| Trial form | One side photo | `gym.30` |
+
+Use `<body data-art-kinds="stripes,rays,grid">`. Total distinct photos ≥ 30. Real member photos with written consent must replace the before/after pair; say so in the closing notes.
 
 ### C4. Signature moment
 
@@ -799,8 +1174,8 @@ h1,h2,h3{text-transform:uppercase}
 
 ```html
 <div class="ba" id="ba" role="group" aria-label="Before and after transformation">
-  <div class="layer"><div class="media"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Member before 16 weeks of training" loading="lazy" data-seed="before-training" style="filter:grayscale(.6) brightness(.85)"></div><span class="tag l">Week 0</span></div>
-  <div class="layer after"><div class="media"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Same member after 16 weeks of training" loading="lazy" data-seed="after-training"></div><span class="tag r">Week 16</span></div>
+  <div class="layer"><div class="media"><img src="https://images.unsplash.com/photo-1517344368193-41552b6ad3f5?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Member before 16 weeks of training" loading="lazy" data-seed="before-training" style="filter:grayscale(.6) brightness(.85)"></div><span class="tag l">Week 0</span></div>
+  <div class="layer after"><div class="media"><img src="https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Same member after 16 weeks of training" loading="lazy" data-seed="after-training"></div><span class="tag r">Week 16</span></div>
   <div class="handle" aria-hidden="true"></div>
   <input type="range" min="0" max="100" value="50" step="1" aria-label="Reveal before and after" id="ba-range">
 </div>
@@ -920,7 +1295,7 @@ BMI is a screening number, not a diagnosis. The calculator panel must include th
 - **Plans**: Starter (off-peak, 3 classes/week), Unlimited (most popular), Elite (adds coaching and recovery). Currency consistent; note the joining fee and a **7-day free trial**.
 - **Reviews**: concrete, honest results (“lost 9 kg in 16 weeks”, “first pull-up at 41”).
 - **Safety**: disclaimers on calculator; FAQ includes injuries and medical clearance.
-- **Photo IDs** (gym): equipment `photo-1534438327276-14e5300c3a48`, workout `photo-1581009146145-b5ef050c2e1e`, barbell `photo-1583454110551-21f2fa2afe61`, running `photo-1476480862126-209bfaa8edc8`, yoga `photo-1544367567-0f2fcb009e0b`, nutrition `photo-1593095948071-474c5cc2989d` (crops: hero 1920×1080, programs 800×1000, coaches 600×800).
+- **Photos:** all from the verified library (A4.2) following the visual plan (C3b); the gallery uses the core component (A4.4).
 
 ### C9. Gym-specific checklist
 

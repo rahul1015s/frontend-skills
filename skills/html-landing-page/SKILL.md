@@ -97,10 +97,13 @@ Fixed header, transparent over the hero, gains a blurred surface after 40px scro
 
 ## 8. Imagery without a build step
 
-- Photos: Unsplash `images.unsplash.com/photo-<id>?w=1600&q=80&auto=format&fit=crop` (use IDs you are confident exist; give every `<img>` an `onerror` fallback to a CSS gradient block).
-- Illustration/abstract: inline SVG, CSS gradients, grain via an SVG `feTurbulence` data-URI at 4–6% opacity.
-- Mockups: build in HTML/CSS (browser frame, phone frame) rather than hunting screenshots.
-- Always set `width`/`height` or `aspect-ratio`, `alt`, and `loading="lazy"` below the fold.
+A landing page must be image-rich: hero visual, at least 14 photos, a gallery with lightbox, portraits on every testimonial.
+
+- **Photos:** use only IDs from `parts/library.json` (browse `IMAGE-LIBRARY.md`). Those IDs were loaded and visually checked; never recall or invent Unsplash IDs. URL: `https://images.unsplash.com/photo-<ID>?w=1600&h=900&fit=crop&q=80&auto=format`.
+- **Never hide an image by clipping it before an IntersectionObserver reveal.** `clip-path: inset(0 0 100% 0)` on the observed element makes Chrome report it as never intersecting, so the photo stays invisible forever. Reveal with an overlay curtain (`::before` scaling away) or opacity instead.
+- **Behind every image slot** put generated artwork (gradient mesh, waves, topo lines, skyline, rays, petals) so a slow or blocked photo never leaves a hole.
+- **Mockups:** build device and browser frames in HTML/CSS rather than hunting screenshots.
+- Always set `width`/`height` or `aspect-ratio`, a descriptive `alt`, and `loading="lazy"` below the fold.
 
 ## 9. SEO and sharing basics
 

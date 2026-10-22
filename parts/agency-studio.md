@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+<!-- IMAGES: design,creative,fashion,tech,people,vehicles,food,beauty,travel,nature,home -->
 {{CORE}}
 
 ---
@@ -40,6 +41,21 @@ Pick one and commit:
 9. **Testimonial** — one large quote.
 10. **Contact** — oversized “Let’s make something” headline, brief form, email, studio address, socials.
 11. **Footer** — large studio name, nav, socials, © year.
+
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+The agency’s credibility *is* its imagery. Use rich photography everywhere:
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero | Headline over a **bento collage** (`.cg`) in the background at ~35% opacity or beside the text on desktop | `fashion.02` `creative.00` `design.01` `vehicles.04` `travel.09` |
+| Selected work (6 cases) | One photo per case, 4:3. Invent clients that fit the photo | fashion boutique `fashion.04` · bakery rebrand `food.22` · automotive launch `vehicles.05` · skincare packaging `beauty.06` · furniture e-shop `home.02` · music festival `creative.11` |
+| Horizontal reel (6) | 4:5 photos | `fashion.11` `fashion.13` `beauty.01` `food.02` `travel.09` `creative.09` |
+| Under Clients | **Photo marquee** (A4.5) | `creative.00` `design.01` `fashion.07` `fashion.02` `vehicles.04` `nature.10` `travel.01` `food.10` |
+| **Gallery** (`id="gallery"`, add to nav) | “Inside the studio”: masonry of **12**, chips **Studio · Craft · Inspiration** | Studio: `design.21` `design.22` `tech.04` `tech.05` · Craft: `design.13` `design.15` `design.20` `creative.08` · Inspiration: `creative.12` `creative.14` `nature.04` `travel.00` |
+| Team / testimonial | 4 portraits (2 women, 2 men) | `people.00` `people.22` `people.01` `people.20` |
+
+Use `<body data-art-kinds="stripes,rings,grid,mesh">`. Total distinct photos ≥ 30.
 
 ### C4. Signature moment
 
@@ -157,7 +173,7 @@ Pick one and commit:
 <section class="sec hscroll" id="reel" aria-label="Project reel"><div class="h-pin">
   <div class="wrap h-head"><div><p class="eyebrow">Reel</p><h2>Recent work</h2></div><p class="muted">Scroll →</p></div>
   <div class="h-track" id="h-track">
-    <article class="h-card" data-cursor><div class="media"><img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Packaging for Oro olive oil" loading="lazy" decoding="async" data-seed="oro-olive-oil"></div><h3>Oro — packaging</h3><span class="muted mono">Brand · 2025</span></article>
+    <article class="h-card" data-cursor><div class="media"><img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Boutique clothes rail for the Linea retail identity" loading="lazy" decoding="async" data-seed="linea-boutique"></div><h3>Linea — retail identity</h3><span class="muted mono">Brand · 2025</span></article>
     <!-- 5–6 cards -->
   </div>
   <div class="h-bar" aria-hidden="true"><i id="h-fill"></i></div>
@@ -205,11 +221,10 @@ If `containerAnimation` proves fragile, remove the per-card scale tween; the pin
 - **Projects (6)**: invented clients across 4+ industries, each with discipline, year and a one-line outcome (“Sold out in 11 days”, “+38% direct bookings”).
 - **Services (5)**: Brand identity · Websites & product · Packaging · Motion & film · Strategy. Each with 3 deliverable chips.
 - **Process timings**: Discover (1 wk) · Define (1–2 wks) · Design (3–5 wks) · Deliver (1–2 wks).
-- **Images**: use Unsplash IDs from the lists below, or generated art (see `.media` fallback); crop consistently (4:3 for cases, 4:5 for the reel). Alt text describes the work (“Packaging for Oro olive oil”).
+- **Images**: all from the verified library (A4.2) per the visual plan (C3b); crop consistently (4:3 for cases, 4:5 for the reel). Alt text describes what is visible.
 - **Contact** form: name, email, budget select (“<$10k / $10–25k / $25–50k / $50k+”), project description.
 
-Reference Unsplash IDs (use `?w=<W>&h=<H>&fit=crop&q=80&auto=format`):
-`photo-1558769132-cb1aea458c5e` (lookbook) · `photo-1509631179647-0177331693ae` (studio) · `photo-1523170335258-f5ed11844a49` (accessories) · `photo-1497366216548-37526070297c` (office) · `photo-1522071820081-009f0129c71c` (team) · `photo-1486325212027-8081e485255e` (architecture) · `photo-1560448204-e02f11c3d0e2` (interior).
+Photos: all from the verified library (A4.2) following the visual plan (C3b). Crop consistently (4:3 for cases, 4:5 for the reel) and write alt text that describes the work (“Packaging for Oro olive oil”).
 
 ### C9. Agency-specific checklist
 

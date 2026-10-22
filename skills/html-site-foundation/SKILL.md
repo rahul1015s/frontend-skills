@@ -128,7 +128,7 @@ Motion goes last on purpose: if the static page is not good, animation will not 
 - [ ] Contrast: body text ≥ 4.5:1, large text ≥ 3:1, including on images (use a scrim).
 - [ ] Every interactive element has hover (pointer-gated), `:active` and `:focus-visible` states.
 - [ ] `prefers-reduced-motion` handled; no animation blocks content from being readable.
-- [ ] Images have `alt`, `width`/`height` (no layout shift); below-fold images are `loading="lazy"`.
+- [ ] Visual budget: hero visual, ≥ 14 photos from the verified library (`IMAGE-LIBRARY.md`), a gallery with lightbox, portraits on every testimonial; images have `alt`, `width`/`height`; below-fold images are `loading="lazy"`; observed reveal elements are never `clip-path`ed.
 - [ ] Heading order is logical (one `h1`). Nav anchors match section ids.
 - [ ] Only `transform`/`opacity` animate. No `transition: all`.
 - [ ] Works if JS fails: content is visible by default; JS adds the hidden/animated state, never the reverse.

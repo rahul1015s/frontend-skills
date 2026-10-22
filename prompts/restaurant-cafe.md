@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+
 ## ═══════════════════════════════════════════════
 ## PART A — CORE ENGINE (shared by every site type)
 ## ═══════════════════════════════════════════════
@@ -28,6 +29,8 @@ Everything below the line "REFERENCE IMPLEMENTATION" is tested code. **Copy it v
 8. **No emoji as icons**, no Font Awesome, no purple-gradient-on-white, no identical image-left/text-right rows repeated, no Inter/Roboto/Arial as the display font.
 9. **Only animate `transform` and `opacity`** (plus `clip-path`). Never `transition: all`. Never `ease-in` on UI.
 10. **Placeholders must be swappable:** put contact details, social URLs and form action in obvious places and mention them in the closing notes.
+11. **Visual-first.** A page without rich imagery is a failed page. Obey the VISUAL BUDGET in A4: a real hero visual, at least 14 photos, a gallery section with lightbox, portraits wherever there are people, and no run of text-only sections.
+12. **Photos come only from the verified library in A4.** Never invent, recall, or guess other image URLs.
 
 ### A1. CDN manifest (pinned versions; use only what the page needs)
 
@@ -90,23 +93,162 @@ Font pairings (display + body [+ mono]):
 - Retro-futurist: **Syne** + Chakra Petch + Share Tech Mono
 - Clean corporate: **Plus Jakarta Sans** only
 
-### A4. Images
+### A4. Visuals: photos, generated art and galleries (MANDATORY)
 
-Primary: Unsplash direct URLs.
+**Rule zero:** this site must be *full of visuals*. Text-only layouts are rejected.
+
+#### A4.1 VISUAL BUDGET (minimum, every page)
+
+- **Hero visual:** a full-bleed photo with scrim, OR a 3D / shader scene, OR a product mock-up built in HTML/CSS, OR a photo collage. Never a bare-text hero.
+- **At least 14 distinct photos** on the page (20+ for restaurants, real estate, fashion/e-commerce, wedding, photography and gyms).
+- **At least one gallery section** (A4.4): masonry grid of **9 or more** photos with hover captions and a working lightbox. Its photos are chosen to fit the brand.
+- **Portraits, not initials:** every testimonial, review, team member, coach, agent and wedding-party member has a portrait photo from the `people.*` set (match the written gender and age).
+- **No more than two consecutive sections** without a photo, generated art panel or mock-up.
+- Every card or tile with an image slot uses `.media` (generated art sits underneath the photo; see A4.3).
+- **Re-use limit:** a photo appears at most **twice** on a page, with different crops and different alt text.
+- Add at least one *atmosphere* moment: a photo marquee strip or a bento photo collage (A4.5).
+
+#### A4.2 The verified photo library: use ONLY these
+
+Every ID below was loaded and visually checked; each line says what the photo actually shows, so pick by content. Build the URL exactly like this:
 
 ```
 https://images.unsplash.com/photo-<ID>?w=<W>&h=<H>&fit=crop&q=80&auto=format
 ```
 
-Sizes: hero 1920×1080 (q 80), card 800×1000 or 800×600, square 600×600, avatar 160×160, lightbox 1600.
+Sizes: hero 1920×1080 · card 800×1000 (4:5) or 800×600 (4:3) · square 600×600 · avatar 160×160 · gallery thumb 800×(600–1000, vary) · lightbox is derived automatically.
 
-Rules:
-- Every `<img>` has `width`, `height` (matching the ratio), `alt`, `decoding="async"`, and `loading="lazy"` except the first-viewport image (`fetchpriority="high"`).
-- Put each image inside `<div class="media">` and add `data-seed="two-words"`. The reference JS swaps a failed image for a `picsum.photos` seeded photo, and if that fails too the `.media` shows a CSS gradient. Pages must therefore look fine even with no photos.
-- Use only photo IDs you are confident exist (lists in the type-specific section). Prefer fewer, larger, well-cropped photos over many small ones.
-- Where there is no topical photo (portfolios, abstract SaaS, brand-led pages) generate artwork in CSS/SVG instead: layered gradients, grain, shapes, device mockups built in HTML. This is more distinctive and never breaks.
-- Darken photos under text with a scrim (`linear-gradient(to top, rgb(0 0 0 / .7), transparent 60%)`), never rely on image brightness for contrast.
-- Hero images get a slow `scale(1.08 → 1)` settle; cards get a hover zoom to `1.05` (pointer devices only).
+Image rules:
+- Every `<img>` has `width` and `height` matching the crop ratio, a descriptive `alt` (what is visible, not the keyword), `decoding="async"`, and `loading="lazy"` except the hero image (`fetchpriority="high"`).
+- Put every image inside `<div class="media">` (or `.hero-bg`) and give it `data-seed="two-or-three-words"` (unique per image slot).
+- Copy IDs character for character from the library; do not alter them.
+- Photos under text always get a scrim: `linear-gradient(to top, rgb(0 0 0 / .7), transparent 60%)`.
+- Hero images settle from `scale(1.08)` to `1`; cards zoom to `1.05` on hover (pointer devices only).
+
+**Photo library for this site type** (key | ID | what it shows). Choose by what the photo shows; the visual plan in section C3b names exact keys.
+
+**food.*** — food, drink, cafés and restaurants (31)
+```
+key | photo ID | what it shows
+food.00 | 1546833999-b9f581a1996d | Indian thali platter
+food.01 | 1555396273-367ea4eb4db5 | bright industrial café interior
+food.02 | 1514362545857-3bc16c4c7d1b | cocktail glass, dark and moody
+food.03 | 1578985545062-69928b1d9587 | chocolate drip cake
+food.04 | 1414235077428-338989a2e8c0 | fine-dining plating close-up
+food.05 | 1517248135467-4c7edcad34c4 | dark upscale restaurant interior
+food.06 | 1550966871-3ed3cdb5ed0c | elegant dining room with window light
+food.07 | 1559339352-11d035aa65de | seaside terrace restaurant
+food.08 | 1504674900247-0877df9cc836 | meat and salad bowls, overhead
+food.09 | 1565299624946-b28f40a0ae38 | pizza on a wooden board
+food.10 | 1567620905732-2d1ec7ab7445 | stack of pancakes
+food.11 | 1473093295043-cdd812d0e601 | farfalle pasta salad
+food.12 | 1476224203421-9ac39bcb3327 | mixed grill platter
+food.13 | 1540189549336-e6e99c3679fe | dark salad bowl
+food.14 | 1482049016688-2d3e1b311543 | avocado and egg toast
+food.15 | 1512621776951-a57141f2eefd | colourful buddha bowl
+food.16 | 1495474472287-4d71bcdd2085 | two latte-art coffees, cheers
+food.17 | 1509042239860-f550ce710b93 | cappuccino with plants
+food.18 | 1442512595331-e89e73853f31 | pour-over coffee brewing
+food.19 | 1447933601403-0c6688de566e | coffee beans texture
+food.20 | 1501339847302-ac426a4a7cbb | CAFE sign inside a café
+food.21 | 1554118811-1e0d58224f24 | bright café interior with tables
+food.22 | 1509440159596-0249088772ff | sourdough bread loaves
+food.23 | 1555507036-ab1f4038808a | croissant dusted with flour, dark
+food.24 | 1493770348161-369560ae357d | brunch spread, overhead
+food.25 | 1498837167922-ddd27525d352 | salad bar spread
+food.27 | 1551782450-a2132b4ba21d | burger and fries, dark
+food.28 | 1544025162-d76694265947 | ribs platter
+food.29 | 1529042410759-befb1204b468 | meatballs on salad
+food.30 | 1481931098730-318b6f776db0 | spaghetti, two plates and wine
+food.31 | 1568901346375-23c9450c58cd | burger close-up
+```
+
+**people.*** — portraits (use for testimonials, team, coaches, agents, party) (30)
+```
+key | photo ID | what it shows
+people.00 | 1494790108377-be9c29b29330 | smiling woman, red sweater [woman]
+people.01 | 1507003211169-0a1dd7228f2d | smiling man, white tee [man]
+people.02 | 1500648767791-00dcc994a43e | man, grey sweater, friendly [man]
+people.03 | 1438761681033-6461ffad8d80 | red-haired woman by a lake [woman]
+people.04 | 1472099645785-5658abf4ff4e | older man with glasses [man]
+people.05 | 1534528741775-53994a69daeb | woman in blue light [woman]
+people.06 | 1573496359142-b8d87734a5a2 | woman in grey blazer [woman]
+people.07 | 1580489944761-15a19d654956 | woman with hair bun, white top [woman]
+people.08 | 1544005313-94ddf0286df2 | woman in striped shirt [woman]
+people.09 | 1547425260-76bcadfb4f2c | man with glasses and beard, blue shirt [man]
+people.10 | 1552058544-f2b08422138a | bearded man, black and white [man]
+people.11 | 1519085360753-af0119f7cbe7 | man in a dark suit [man]
+people.12 | 1560250097-0b93528c311a | older man in a suit with glasses [man]
+people.13 | 1531123897727-8f129e1688ce | woman, warm portrait [woman]
+people.14 | 1489424731084-a5d8b219a5bb | red-haired woman smiling [woman]
+people.15 | 1506794778202-cad84cf45f1d | bearded man, dark [man]
+people.16 | 1517841905240-472988babdf9 | woman in hoodie and denim jacket, blue wall [woman]
+people.17 | 1524504388940-b1c1722653e1 | woman with long hair, studio [woman]
+people.18 | 1529626455594-4ff0802cfb7e | red-haired woman, colourful [woman]
+people.19 | 1463453091185-61582044d556 | man in front of graffiti [man]
+people.20 | 1492562080023-ab3db95bfbce | man smiling outdoors [man]
+people.21 | 1522529599102-193c0d76b5b6 | man smiling, grey tee [man]
+people.22 | 1508214751196-bcfd4ca60f91 | blonde woman outdoors [woman]
+people.23 | 1521119989659-a83eee488004 | man in orange beanie [man]
+people.24 | 1543610892-0b1f7e6d8ac1 | man in beanie and glasses, profile [man]
+people.25 | 1531427186611-ecfd6d936c79 | man in light blue shirt [man]
+people.26 | 1558203728-00f45181dd84 | man with sunglasses, city behind [man]
+people.27 | 1566492031773-4f4e44671857 | man with glasses, striped shirt [man]
+people.28 | 1507591064344-4c6ce005b128 | man in cap on a street [man]
+people.29 | 1527980965255-d3b416303d12 | man with scarf, smiling [man]
+```
+
+#### A4.3 Generated art (automatic, always on)
+
+The engine puts a unique **generative SVG artwork** (mesh gradient, waves, topographic lines, rings, halftone, skyline, rays, petals, plate, stripes) *underneath* every `.media` and `.hero-bg`, coloured from the palette tokens. Photos sit on top and cover it; if a photo is slow or blocked, the art shows, so no image slot is ever blank.
+
+- Choose the family for the brand with `<body data-art-kinds="skyline,mesh,grid">`. Defaults: `mesh,waves,topo,rings,grid`. Available kinds: `mesh · waves · topo · rings · grid · skyline · rays · petals · plate · stripes`.
+- Force one slot with `data-art="rays"` on that `.media`; opt out with `data-art="none"`.
+- Use a `.media` *without any `<img>`* when you want pure artwork (brand panels, feature tiles, project covers): it renders the generated art by itself.
+
+#### A4.4 Gallery component (required at least once; use again wherever it fits)
+
+```html
+<section class="sec" id="gallery"><div class="wrap">
+  <p class="eyebrow" data-reveal>Gallery</p>
+  <h2 data-reveal>Short, specific title</h2>
+  <div class="chips" role="group" aria-label="Filter gallery">           <!-- optional filters -->
+    <button class="chip" data-filter="all" aria-pressed="true">All</button>
+    <button class="chip" data-filter="rooms" aria-pressed="false">Rooms</button>
+  </div>
+  <div class="masonry" data-gallery style="margin-top:1.5rem">
+    <figure class="shot" data-cat="rooms" data-title="Caption shown on hover and in the viewer" data-exif="optional extra line">
+      <div class="media img-reveal" style="aspect-ratio:4/5">
+        <img src="https://images.unsplash.com/photo-ID?w=800&h=1000&fit=crop&q=80&auto=format" width="800" height="1000" alt="What is visible" loading="lazy" decoding="async" data-seed="unique-seed">
+      </div>
+      <figcaption>Caption shown on hover and in the viewer</figcaption>
+    </figure>
+    <!-- 9–24 figures; vary aspect-ratio 4/5, 3/2, 1/1, 2/3 for rhythm; every data-seed unique -->
+  </div>
+</div></section>
+```
+
+The engine adds the lightbox automatically (keyboard ←/→/Esc, swipe, preload, focus return) and the chip filters. Do not write your own lightbox.
+
+#### A4.5 Atmosphere components
+
+**Photo marquee** (a slow, endless strip of photos; duplicate the set once for a seamless loop):
+
+```html
+<div class="pmq" aria-hidden="true"><div class="pmq-track">
+  <div class="media"><img src="…w=640&h=800…" width="640" height="800" alt="" loading="lazy" decoding="async" data-seed="s1"></div>
+  <!-- 8 photos, then the same 8 again -->
+</div></div>
+```
+
+**Bento collage** (5 photos, mixed sizes) for heroes and story sections:
+
+```html
+<div class="cg">
+  <div class="media cg-1"><img …></div><div class="media cg-2"><img …></div><div class="media cg-3"><img …></div>
+  <div class="media cg-4"><img …></div><div class="media cg-5"><img …></div>
+</div>
+```
 
 ### A5. Motion principles (applied in the reference code)
 
@@ -256,10 +398,10 @@ p{text-wrap:pretty}
 .progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:1001;background:var(--accent);transform-origin:0 50%;transform:scaleX(0)}
 
 /* ───────── media + cards ───────── */
-.media{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--surface-2),var(--surface));border-radius:var(--r-md)}
-.media img{width:100%;height:100%;object-fit:cover}
-.media.img-fail img{opacity:0}
-.media.img-fail::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 80% at 30% 20%,rgb(var(--accent-rgb) / .35),transparent 60%),radial-gradient(70% 70% at 80% 90%,rgb(255 255 255 / .06),transparent 60%)}
+.media{position:relative;overflow:hidden;background:var(--surface-2);border-radius:var(--r-md)}
+.art-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.media>img,.hero-bg>img{position:relative;width:100%;height:100%;object-fit:cover}  /* DOM order stacks the photo above the art and below ::after scrims */
+.img-fail{visibility:hidden}
 .scrim::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgb(0 0 0 / .72),rgb(0 0 0 / .05) 60%);pointer-events:none}
 .card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(20px,3vw,32px);overflow:hidden;transition:border-color var(--t-hover),transform .5s var(--ease-out)}
 .card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;
@@ -274,16 +416,58 @@ p{text-wrap:pretty}
 .icon-tile{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);font-size:24px;color:var(--accent)}
 .pill{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .8rem;border-radius:var(--r-pill);border:1px solid var(--line);font:500 var(--step--1)/1 var(--font-mono);color:var(--text-2)}
 
+/* ───────── gallery, chips, photo strips ───────── */
+.chips{display:flex;gap:.5rem;flex-wrap:wrap}
+.chip{padding:.6rem 1.1rem;min-height:44px;border-radius:var(--r-pill);border:1px solid var(--line);color:var(--text-2);white-space:nowrap;transition:background-color var(--t-hover),color var(--t-hover),border-color var(--t-hover)}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.masonry{columns:2;column-gap:12px}
+@media (min-width:861px){.masonry{columns:3}}
+@media (min-width:1200px){.masonry{columns:4}}
+.shot{display:block;width:100%;margin:0 0 12px;break-inside:avoid;position:relative;border-radius:var(--r-md);overflow:hidden;cursor:zoom-in}
+.shot.hide{display:none}
+.shot .media{border-radius:0}
+.shot figcaption{position:absolute;inset:auto 0 0 0;padding:1.6rem .9rem .8rem;font:500 .72rem/1.3 var(--font-mono);letter-spacing:.08em;color:#fff;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .5s var(--ease-out);background:linear-gradient(to top,rgb(0 0 0 / .65),transparent)}
+@media (hover:hover) and (pointer:fine){.shot:hover figcaption{opacity:1;transform:none}.shot:hover .media>img{transform:scale(1.05)}}
+@media (hover:none){.shot figcaption{opacity:1;transform:none}}
+.shot .media>img{transition:transform 1.2s var(--ease-out)}
+dialog.lb{border:0;padding:0;background:rgb(0 0 0 / .95);color:#fff;width:100vw;height:100dvh;max-width:none;max-height:none;overflow:hidden}
+dialog.lb::backdrop{background:rgb(0 0 0 / .95)}
+dialog.lb[open]{display:grid;grid-template-rows:auto 1fr auto;animation:lbIn .45s var(--ease-out)}
+@keyframes lbIn{from{opacity:0}}
+.lb-top,.lb-bot{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:14px var(--gutter);font:500 var(--step--1)/1.3 var(--font-mono);letter-spacing:.08em}
+.lb-stage{position:relative;display:grid;place-items:center;padding:0 var(--gutter);min-height:0;touch-action:pan-y}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;transition:opacity .35s,transform .5s var(--ease-out)}
+.lb-stage img.swap{opacity:0;transform:scale(.985)}
+.lb-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgb(255 255 255 / .25);display:grid;place-items:center;font-size:22px;color:#fff;background:rgb(0 0 0 / .35);transition:background-color var(--t-hover),transform var(--t-press)}
+.lb-btn:active{transform:scale(.94)}
+@media (hover:hover) and (pointer:fine){.lb-btn:hover{background:rgb(255 255 255 / .14)}}
+.lb-prev,.lb-next{position:absolute;top:50%;translate:0 -50%}
+.lb-prev{left:var(--gutter)}.lb-next{right:var(--gutter)}
+@media (max-width:860px){.lb-prev,.lb-next{top:auto;bottom:8px;translate:none}}
+.pmq{overflow:hidden;padding-block:12px}
+.pmq-track{display:flex;gap:12px;width:max-content;animation:marq 70s linear infinite}
+.pmq:hover .pmq-track{animation-play-state:paused}
+.pmq .media{flex:none;width:clamp(170px,24vw,300px);aspect-ratio:4/5;border-radius:var(--r-md)}
+.pmq .media:nth-child(3n){aspect-ratio:1}.pmq .media:nth-child(3n+1){aspect-ratio:3/4}
+.cg{display:grid;gap:12px;grid-template-columns:repeat(2,1fr);grid-auto-rows:clamp(110px,38vw,190px)}
+.cg .media{height:100%;border-radius:var(--r-md)}
+.cg-1{grid-column:span 2;grid-row:span 2}
+@media (min-width:861px){
+  .cg{grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(4,clamp(80px,11vw,160px));grid-auto-rows:unset}
+  .cg-1{grid-column:1/3;grid-row:1/5}.cg-2{grid-column:3/5;grid-row:1/3}.cg-3{grid-column:5/7;grid-row:1/4}.cg-4{grid-column:3/5;grid-row:3/5}.cg-5{grid-column:5/7;grid-row:4/5}
+}
+
 /* ───────── reveal system (hidden state exists only when JS runs) ───────── */
 .js [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease-out),transform 1s var(--ease-out);transition-delay:calc(var(--i,0)*70ms)}
 .js [data-reveal].in{opacity:1;transform:none}
 .js [data-split] .word{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
 .js [data-split] .char{display:inline-block;transform:translateY(112%);transition:transform 1.05s var(--ease-out);transition-delay:calc(var(--ci,0)*26ms)}
 .js [data-split].in .char{transform:none}
-.js .img-reveal{clip-path:inset(0 0 100% 0);transition:clip-path 1.3s var(--ease-in-out)}
-.js .img-reveal.in{clip-path:inset(0)}
-.js .img-reveal img{transform:scale(1.18);transition:transform 1.8s var(--ease-out)}
-.js .img-reveal.in img{transform:scale(1)}
+/* image curtain reveal. NEVER clip-path the observed element itself: Chrome's IntersectionObserver then reports it as not intersecting and the photo stays invisible forever */
+.js .img-reveal::before{content:"";position:absolute;inset:0;z-index:2;background:var(--bg);transform-origin:50% 0;transition:transform 1.3s var(--ease-in-out);pointer-events:none}
+.js .img-reveal.in::before{transform:scaleY(0)}
+.js .img-reveal>img{scale:1.15;transition:scale 1.8s var(--ease-out),transform 1.2s var(--ease-out)}
+.js .img-reveal.in>img{scale:1}
 
 /* ───────── marquee ───────── */
 .marquee{overflow:hidden;border-block:1px solid var(--line);padding-block:1.1rem}
@@ -326,7 +510,8 @@ p{text-wrap:pretty}
 /* ───────── reduced motion ───────── */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-  .js [data-reveal],.js [data-split] .char,.js .img-reveal,.js .img-reveal img{transform:none!important;clip-path:none!important}
+  .js [data-reveal],.js [data-split] .char{transform:none!important}
+  .js .img-reveal::before{display:none}.js .img-reveal>img{scale:1!important}
   .marquee-track{animation:none}
 }
 ```
@@ -390,8 +575,10 @@ Markup conventions the engine understands:
 - `data-reveal` on any element → fades up when it enters the viewport.
 - `data-stagger` on a parent → its children reveal in sequence.
 - `data-split` on a **plain-text** heading → per-character rise (an `sr-only` copy is added for screen readers). Do not put child markup inside it.
-- `.img-reveal` on a `.media` → curtain image reveal.
-- `data-count="1280"` on a number (write the final number in the HTML) → counts up when visible; decimals respected.
+- `.img-reveal` on a `.media` → curtain image reveal (a cover that wipes away; the photo itself is never hidden or clipped).
+- `data-count="1280"` on a number (write the final number in the HTML) → counts up when visible; decimals respected. Add `data-raw` for years and IDs so no thousands separator is inserted (`<b data-count="2019" data-raw>2019</b>`).
+- `.masonry[data-gallery]` containing `figure.shot` items → masonry gallery with automatic lightbox and `.chip[data-filter]` filters (A4.4); `.pmq` photo marquee and `.cg` bento collage (A4.5).
+- `data-art="kind"` / `data-art="none"` on a `.media`, and `<body data-art-kinds="…">`, control the generated artwork (A4.3).
 - `data-magnetic` on buttons, `data-tilt` on cards (pointer devices only), `data-speed="2"` on an element inside a wrapper for desktop parallax, `data-cursor` on any non-link element that should enlarge the cursor.
 - `form[data-form]` with an optional `data-success="message"` and a `<p class="form-status" hidden></p>` → validated demo submit with loading and success states (tell the user to connect a real endpoint such as Formspree).
 
@@ -409,15 +596,9 @@ Markup conventions the engine understands:
   const safe = fn => { try { fn(); } catch (e) { console.warn(e); } };
   doc.classList.add('js');
 
-  /* image fallback: picsum seeded photo, then CSS gradient */
-  addEventListener('error', e => {
-    const img = e.target;
-    if (!(img instanceof HTMLImageElement) || img.dataset.fb) return;
-    img.dataset.fb = '1';
-    const seed = (img.dataset.seed || img.alt || 'site').trim().replace(/\s+/g, '-');
-    img.src = `https://picsum.photos/seed/${encodeURIComponent(seed)}/${img.getAttribute('width') || 800}/${img.getAttribute('height') || 600}`;
-    img.addEventListener('error', () => img.closest('.media')?.classList.add('img-fail'), { once: true });
-  }, true);
+  /* failed photos are hidden so the generated art underneath shows */
+  addEventListener('error', e => { if (e.target instanceof HTMLImageElement) e.target.classList.add('img-fail'); }, true);
+  $$('img[src]').forEach(im => { if (im.complete && im.naturalWidth === 0) im.classList.add('img-fail'); });
 
   /* smooth scroll (Lenis) wired to ScrollTrigger */
   let lenis = null;
@@ -498,14 +679,14 @@ Markup conventions the engine understands:
   $$('[data-stagger]').forEach(p => Array.from(p.children).forEach((c, i) => { c.setAttribute('data-reveal', ''); c.style.setProperty('--i', i); }));
 
   /* counters */
-  const fmt = (v, dec) => v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  const fmt = (v, dec, raw) => raw ? v.toFixed(dec) : v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
   const count = el => {
-    const end = parseFloat(el.dataset.count), dec = (el.dataset.count.split('.')[1] || '').length;
-    if (reduce || isNaN(end)) { el.textContent = fmt(end, dec); return; }
+    const end = parseFloat(el.dataset.count), dec = (el.dataset.count.split('.')[1] || '').length, raw = el.hasAttribute('data-raw');
+    if (reduce || isNaN(end)) { el.textContent = fmt(end, dec, raw); return; }
     const t0 = performance.now(), dur = 1700;
     const tick = t => {
       const p = Math.min((t - t0) / dur, 1);
-      el.textContent = fmt(end * (1 - Math.pow(1 - p, 4)), dec);
+      el.textContent = fmt(end * (1 - Math.pow(1 - p, 4)), dec, raw);
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -524,6 +705,8 @@ Markup conventions the engine understands:
       en.target.classList.add('in'); io.unobserve(en.target);
     }), { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
     items.forEach(el => io.observe(el));
+    /* failsafe: anything already on screen after 4 s that the observer missed is shown, so no photo or block can stay hidden */
+    setTimeout(() => items.forEach(el => { if (el.classList.contains('in')) return; const r = el.getBoundingClientRect(); if (r.bottom > -50 && r.top < innerHeight * 1.25) el.classList.add('in'); }), 4000);
     const co = new IntersectionObserver(es => es.forEach(en => {
       if (!en.isIntersecting) return;
       count(en.target); co.unobserve(en.target);
@@ -601,6 +784,151 @@ Markup conventions the engine understands:
     });
   });
 
+  /* ───── generative art under every image slot ───── */
+  const hash = t => { let h = 2166136261; for (const c of String(t)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const rng = seed => { let a = hash(seed); return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
+  const BG = '<rect width="400" height="300" fill="var(--surface-2)"/>';
+  const ART = {
+    mesh(r, id) {
+      const cols = ['var(--accent)', 'var(--accent-2)', 'var(--text)'];
+      let s = `<defs><filter id="f${id}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="38"/></filter></defs>${BG}<g filter="url(#f${id})">`;
+      for (let i = 0; i < 5; i++) s += `<circle cx="${(r() * 400) | 0}" cy="${(r() * 300) | 0}" r="${(60 + r() * 100) | 0}" fill="${cols[i % 3]}" opacity="${(0.35 + r() * 0.45).toFixed(2)}"/>`;
+      return s + '</g>';
+    },
+    waves(r) {
+      let s = BG;
+      for (let i = 0; i < 6; i++) {
+        const y = 70 + i * 36 + r() * 14, a = 14 + r() * 26, p = r() * 6.28, k = 1 + r() * 1.6;
+        let d = `M0,${y.toFixed(1)}`;
+        for (let x = 0; x <= 400; x += 20) d += ` L${x},${(y + Math.sin(x / 400 * Math.PI * 2 * k + p) * a).toFixed(1)}`;
+        s += `<path d="${d} L400,300 L0,300Z" fill="${i % 2 ? 'var(--accent-2)' : 'var(--accent)'}" opacity="${(0.12 + i * 0.1).toFixed(2)}"/>`;
+      }
+      return s;
+    },
+    topo(r) {
+      const cx = 120 + r() * 160, cy = 90 + r() * 120, ph = [r() * 6.28, r() * 6.28, r() * 6.28];
+      let s = BG + '<g fill="none" stroke="var(--accent)" stroke-width="1.2">';
+      for (let i = 1; i <= 14; i++) {
+        let d = '';
+        for (let a = 0; a <= 64; a++) {
+          const t = a / 64 * 6.2832, rr = i * 17 * (1 + 0.16 * Math.sin(t * 2 + ph[0]) + 0.09 * Math.sin(t * 3 + ph[1]) + 0.05 * Math.sin(t * 5 + ph[2]));
+          d += (a ? 'L' : 'M') + (cx + Math.cos(t) * rr * 1.25).toFixed(1) + ',' + (cy + Math.sin(t) * rr).toFixed(1);
+        }
+        s += `<path d="${d}Z" opacity="${(0.15 + i / 14 * 0.6).toFixed(2)}"/>`;
+      }
+      return s + '</g>';
+    },
+    rings(r) {
+      const cx = r() * 400, cy = r() * 300; let s = BG;
+      for (let i = 0; i < 9; i++) s += `<circle cx="${(cx + Math.sin(i) * 14).toFixed(1)}" cy="${(cy + Math.cos(i) * 10).toFixed(1)}" r="${24 + i * 28}" fill="${i % 4 === 0 ? 'var(--accent)' : 'none'}" fill-opacity=".14" stroke="${i % 3 === 0 ? 'var(--accent-2)' : 'var(--accent)'}" stroke-opacity="${(0.7 - i * 0.06).toFixed(2)}" stroke-width="1.5"/>`;
+      return s;
+    },
+    grid(r) {
+      const fx = r() * 400, fy = r() * 300; let s = BG + '<g fill="var(--accent)">';
+      for (let y = 10; y < 300; y += 20) for (let x = 10; x < 400; x += 20) { const rad = Math.max(0, 8.5 - Math.hypot(x - fx, y - fy) / 28); if (rad > 0.6) s += `<circle cx="${x}" cy="${y}" r="${rad.toFixed(1)}"/>`; }
+      return s + '</g>';
+    },
+    skyline(r, id) {
+      let s = `<defs><linearGradient id="g${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--surface-2)"/><stop offset="1" stop-color="var(--accent)" stop-opacity=".45"/></linearGradient></defs><rect width="400" height="300" fill="url(#g${id})"/>`;
+      s += `<circle cx="${(60 + r() * 280) | 0}" cy="${(60 + r() * 50) | 0}" r="${(26 + r() * 22) | 0}" fill="var(--accent-2)" opacity=".75"/>`;
+      for (let layer = 0; layer < 2; layer++) {
+        let x = -10;
+        while (x < 400) {
+          const w = 22 + r() * 34, h = (layer ? 50 : 80) + r() * (layer ? 90 : 120);
+          s += `<rect x="${x.toFixed(1)}" y="${(300 - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="var(--text)" opacity="${layer ? 0.1 : 0.22}"/>`;
+          if (layer) for (let wy = 300 - h + 8; wy < 290; wy += 14) for (let wx = x + 5; wx < x + w - 6; wx += 9) if (r() > 0.55) s += `<rect x="${wx.toFixed(1)}" y="${wy.toFixed(1)}" width="4" height="6" fill="var(--accent-2)" opacity=".8"/>`;
+          x += w + 2 + r() * 6;
+        }
+      }
+      return s;
+    },
+    rays(r) {
+      const cx = 100 + r() * 200, cy = 250; let s = BG;
+      for (let i = 0; i < 26; i++) {
+        const a1 = Math.PI + i / 26 * Math.PI, a2 = Math.PI + (i + 0.55) / 26 * Math.PI;
+        s += `<path d="M${cx.toFixed(1)},${cy} L${(cx + Math.cos(a1) * 520).toFixed(1)},${(cy + Math.sin(a1) * 520).toFixed(1)} L${(cx + Math.cos(a2) * 520).toFixed(1)},${(cy + Math.sin(a2) * 520).toFixed(1)}Z" fill="var(--accent)" opacity="${(0.08 + (i % 3) * 0.1).toFixed(2)}"/>`;
+      }
+      return s + `<circle cx="${cx.toFixed(1)}" cy="${cy}" r="46" fill="var(--accent-2)" opacity=".85"/>`;
+    },
+    petals(r) {
+      let s = BG;
+      [[100 + r() * 60, 90 + r() * 40, 1], [260 + r() * 80, 160 + r() * 60, 1.3], [330 + r() * 40, 60 + r() * 30, 0.7]].forEach(([x, y, k]) => {
+        for (let i = 0; i < 8; i++) s += `<ellipse cx="${x.toFixed(1)}" cy="${(y - 26 * k).toFixed(1)}" rx="${(11 * k).toFixed(1)}" ry="${(26 * k).toFixed(1)}" transform="rotate(${i * 45} ${x.toFixed(1)} ${y.toFixed(1)})" fill="var(--accent)" fill-opacity=".22" stroke="var(--accent)" stroke-opacity=".6"/>`;
+        s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(7 * k).toFixed(1)}" fill="var(--accent-2)" opacity=".9"/>`;
+      });
+      for (let i = 0; i < 22; i++) s += `<circle cx="${(r() * 400) | 0}" cy="${(r() * 300) | 0}" r="${(1 + r() * 2).toFixed(1)}" fill="var(--accent-2)" opacity=".5"/>`;
+      return s;
+    },
+    plate(r) {
+      let s = BG + '<circle cx="200" cy="150" r="124" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><circle cx="200" cy="150" r="96" fill="none" stroke="var(--accent)" stroke-opacity=".45"/><circle cx="200" cy="150" r="70" fill="var(--accent)" fill-opacity=".1"/>';
+      for (let i = 0; i < 16; i++) { const a = r() * 6.28, d = r() * 62; s += `<ellipse cx="${(200 + Math.cos(a) * d).toFixed(1)}" cy="${(150 + Math.sin(a) * d).toFixed(1)}" rx="${(4 + r() * 9).toFixed(1)}" ry="${(3 + r() * 6).toFixed(1)}" transform="rotate(${(r() * 180) | 0} 200 150)" fill="${i % 3 ? 'var(--accent)' : 'var(--accent-2)'}" opacity="${(0.5 + r() * 0.4).toFixed(2)}"/>`; }
+      return s;
+    },
+    stripes(r) {
+      let s = BG + '<g transform="rotate(-18 200 150)">', x = -140;
+      while (x < 560) { const w = 14 + r() * 46; s += `<rect x="${x.toFixed(1)}" y="-80" width="${w.toFixed(1)}" height="460" fill="${r() > 0.5 ? 'var(--accent)' : r() > 0.5 ? 'var(--accent-2)' : 'var(--text)'}" opacity="${(0.1 + r() * 0.5).toFixed(2)}"/>`; x += w + 6 + r() * 24; }
+      return s + '</g>';
+    }
+  };
+  let artN = 0;
+  const kinds = (document.body.dataset.artKinds || 'mesh,waves,topo,rings,grid').split(',').map(k => k.trim()).filter(k => ART[k]);
+  $$('.media, .hero-bg, [data-art]').forEach((el, i) => {
+    if (el.dataset.art === 'none' || el.querySelector(':scope > .art-svg')) return;
+    const img = $('img', el), seed = el.dataset.seed || (img && (img.dataset.seed || img.alt)) || 'art' + i;
+    const kind = ART[el.dataset.art] ? el.dataset.art : kinds[hash(seed) % kinds.length] || 'mesh';
+    el.insertAdjacentHTML('afterbegin', `<svg class="art-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">${ART[kind](rng(seed), ++artN)}</svg>`);
+  });
+
+  /* ───── gallery: filters + lightbox (every .shot inside a [data-gallery]) ───── */
+  safe(() => {
+    const all = $$('[data-gallery] .shot');
+    $$('.chip[data-filter]').forEach(c => c.addEventListener('click', () => {
+      const scope = c.closest('section') || document, f = c.dataset.filter;
+      $$('.chip[data-filter]', scope).forEach(x => x.setAttribute('aria-pressed', String(x === c)));
+      $$('.shot', scope).forEach(s => s.classList.toggle('hide', f !== 'all' && s.dataset.cat !== f));
+      if (hasST) ScrollTrigger.refresh();
+    }));
+    if (!all.length) return;
+    const lb = document.createElement('dialog'); lb.className = 'lb'; lb.setAttribute('aria-label', 'Photo viewer');
+    lb.innerHTML = '<div class="lb-top"><span class="lb-count"></span><button class="lb-btn lb-close" aria-label="Close"><i class="ti ti-x" aria-hidden="true"></i></button></div>' +
+      '<div class="lb-stage"><button class="lb-btn lb-prev" aria-label="Previous photo"><i class="ti ti-arrow-left" aria-hidden="true"></i></button><img class="lb-img" alt="" decoding="async">' +
+      '<button class="lb-btn lb-next" aria-label="Next photo"><i class="ti ti-arrow-right" aria-hidden="true"></i></button></div><div class="lb-bot"><span class="lb-title"></span><span class="lb-exif"></span></div>';
+    document.body.append(lb);
+    const L = { img: $('.lb-img', lb), count: $('.lb-count', lb), title: $('.lb-title', lb), exif: $('.lb-exif', lb) };
+    let list = [], idx = 0, opener = null;
+    const src = s => { const i = $('img', s); return s.dataset.full || (i ? i.currentSrc || i.src : '').replace(/w=\d+&h=\d+&fit=crop&q=\d+/, 'w=1800&q=85'); };
+    const show = (n, instant) => {
+      idx = (n + list.length) % list.length;
+      const s = list[idx], im = $('img', s);
+      const apply = () => {
+        L.img.src = src(s); L.img.alt = im ? im.alt : ''; L.count.textContent = `${idx + 1} / ${list.length}`;
+        L.title.textContent = s.dataset.title || ''; L.exif.textContent = s.dataset.exif || ''; L.img.classList.remove('swap');
+        [idx + 1, idx - 1].forEach(k => { const t = list[(k + list.length) % list.length]; if (t) new Image().src = src(t); });
+      };
+      if (instant || reduce) apply(); else { L.img.classList.add('swap'); setTimeout(apply, 180); }
+    };
+    const open = s => { opener = s; list = $$('.shot', s.closest('[data-gallery]')).filter(x => !x.classList.contains('hide') && $('img', x)); lb.showModal(); lenis && lenis.stop(); show(list.indexOf(s), true); };
+    const close = () => { if (lb.open) lb.close(); };
+    lb.addEventListener('close', () => { lenis && lenis.start(); opener && opener.focus && opener.focus({ preventScroll: true }); });
+    all.forEach(s => {
+      if (!$('img', s)) return;
+      s.tabIndex = 0; s.setAttribute('role', 'button'); if (!s.hasAttribute('aria-label')) s.setAttribute('aria-label', 'Open photo: ' + (s.dataset.title || $('img', s).alt));
+      s.addEventListener('click', () => open(s));
+      s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(s); } });
+    });
+    $('.lb-close', lb).addEventListener('click', close);
+    $('.lb-prev', lb).addEventListener('click', () => show(idx - 1));
+    $('.lb-next', lb).addEventListener('click', () => show(idx + 1));
+    lb.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(idx + 1); if (e.key === 'ArrowLeft') show(idx - 1); });
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+    let sx = 0, sy = 0; const stage = $('.lb-stage', lb);
+    stage.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
+    stage.addEventListener('pointerup', e => {
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) show(idx + (dx < 0 ? 1 : -1)); else if (dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.4) close();
+    });
+  });
+
   $$('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
 
   window.site = { lenis, reduce, fine, wide, $, $$, scrollToEl, safe };
@@ -630,7 +958,9 @@ The second `<script>` (page-specific) may use `window.site`, listen for `site:re
 - [ ] Every interactive element has hover (pointer-gated), `:active`, `:focus-visible`; forms have labels, types, autocomplete, validation and a success state
 - [ ] `reduce` and `fine` handled (already in engine); no ungated `:hover` motion
 - [ ] Nav anchors match section `id`s; one `h1`; heading order logical
-- [ ] Images: `width`/`height`/`alt`/`data-seed`/`loading`; page still looks good with photos blocked
+- [ ] **Visual budget met (A4.1):** hero visual, ≥ 14 distinct photos, a gallery of ≥ 9 with lightbox, portraits on every testimonial/team/agent/coach, no run of 3 text-only sections, each photo used ≤ 2 times
+- [ ] Every photo ID is copied exactly from the A4.2 library (nothing invented); every `<img>` is inside `.media`/`.hero-bg` with `width`/`height`/`alt`/`data-seed`
+- [ ] Page still looks good with photos blocked (generated art shows)
 - [ ] Icons are Tabler only, with `aria-hidden` or `aria-label`
 - [ ] The signature moment exists, works, and is not buried under competing effects
 - [ ] No `console` errors on load; every library call guarded; no `transition: all`
@@ -674,6 +1004,23 @@ Make people hungry, then make booking effortless. 70% of visitors are on a phone
 
 A **sticky bottom bar on mobile** (hidden on desktop): `Call` + `Book` buttons, appearing after the hero.
 
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+Food sells through photographs. Choose the set that matches the venue and use all of these:
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero | Full-bleed interior or terrace | restaurant: `food.05` or `food.06` · seaside: `food.07` · café: `food.21` or `food.20` |
+| Story | Left: plating or barista close-up; below: the parallax frame | `food.04` or `food.18` · parallax: `food.05` or `food.21` |
+| Chef / owner | One portrait | `people.12` or `people.10` (man) · `people.07` (woman) |
+| Signature dishes (3 cards) | Restaurant: `food.12` `food.28` `food.30` · Café: `food.17` `food.23` `food.14` · Bakery: `food.22` `food.23` `food.03` | as listed |
+| Menu | Optional 56px round thumbnails per dish from the same pool; never required | `food.*` |
+| Photo marquee under the hero | 8 photos, duplicated | `food.08` `food.09` `food.10` `food.13` `food.15` `food.24` `food.27` `food.31` |
+| **Gallery** (`id="gallery"`) | “A taste of the room”: masonry of **12**, chips **Food · Drinks · Space** | Food: `food.01` `food.04` `food.08` `food.09` `food.12` `food.30` · Drinks: `food.02` `food.16` `food.17` `food.18` · Space: `food.05` `food.06` `food.07` `food.21` |
+| Reviews | 3 portraits | `people.00` `people.01` `people.22` |
+
+Use `<body data-art-kinds="plate,waves,mesh">`. Total distinct photos ≥ 24.
+
 ### C4. Signature moment
 
 **A cinematic hero**: the photo settles from `scale(1.12)` to `1` over 2.4s while the name rises character by character, then the Open-now pill fades in. Below it, the menu tabs cross-fade items with a stagger. Keep everything else gentle and warm.
@@ -701,7 +1048,8 @@ A **sticky bottom bar on mobile** (hidden on desktop): `Call` + `Book` buttons, 
 .facts b{display:block;font:500 var(--step-3)/1 var(--font-display);letter-spacing:-.03em}
 .facts span{color:var(--text-2);font-size:var(--step--1)}
 .parallax-frame{overflow:hidden;border-radius:var(--r-lg);aspect-ratio:16/9;margin-top:clamp(24px,5vw,72px)}
-.parallax-frame img{width:100%;height:120%;object-fit:cover}
+.parallax-frame .media{height:100%;border-radius:0}
+.parallax-frame img{width:100%;height:120%;margin-top:-10%;object-fit:cover}
 
 /* menu tabs */
 .tabs{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.5rem;margin:2rem 0 1rem}
@@ -731,9 +1079,7 @@ A **sticky bottom bar on mobile** (hidden on desktop): `Call` + `Book` buttons, 
 /* experience, gallery, reviews */
 .exp{display:grid;gap:12px}
 @media (min-width:861px){.exp{grid-template-columns:repeat(3,1fr)}}
-.masonry{columns:2;column-gap:12px}
-@media (min-width:861px){.masonry{columns:4}}
-.masonry .media{margin-bottom:12px;break-inside:avoid;border-radius:var(--r-md)}
+/* gallery (.masonry, .shot) and the lightbox come from the core (A4.4) */
 .reviews{display:grid;gap:12px}
 @media (min-width:861px){.reviews{grid-template-columns:repeat(3,1fr)}}
 .stars{color:var(--accent);letter-spacing:.15em;margin-bottom:.8rem}
@@ -766,7 +1112,7 @@ A **sticky bottom bar on mobile** (hidden on desktop): `Call` + `Book` buttons, 
 
 ```html
 <section class="hero" id="top-hero">
-  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1920&h=1080&fit=crop&q=80&auto=format" width="1920" height="1080" alt="Candlelit dining room at Brasa" fetchpriority="high" decoding="async" data-seed="candlelit-dining-room"></div>
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&h=1080&fit=crop&q=80&auto=format" width="1920" height="1080" alt="Candlelit dining room at Brasa" fetchpriority="high" decoding="async" data-seed="candlelit-dining-room"></div>
   <div class="wrap">
     <span class="open-pill" data-open aria-live="polite"><i></i><span>Checking hours…</span></span>
     <h1 data-split style="margin-top:1.2rem">Brasa Kitchen</h1>
@@ -863,11 +1209,9 @@ List each guest count once.
 
 Hours list markup: `<ul class="hours"><li data-day="1"><span>Monday</span><span>Closed</span></li> …</ul>` with all seven days, matching the `HOURS` object. Dock markup: `<div class="dock"><a class="btn btn-ghost" href="tel:+442071234567"><i class="ti ti-phone"></i>Call</a><a class="btn btn-primary" href="#reserve">Book</a></div>`.
 
-### C8. Photo IDs by venue (use `?w=<W>&h=<H>&fit=crop&q=80&auto=format`)
+### C8. Photography
 
-- **Restaurant:** steak `photo-1546833999-b9f581a1996d` · ambience `photo-1555396273-367ea4eb4db5` · cocktails `photo-1514362545857-3bc16c4c7d1b` · dessert `photo-1578985545062-69928b1d9587`
-- **Café:** coffee `photo-1495474472287-4d71bcdd2085` · ambience `photo-1555396273-367ea4eb4db5`
-- If you need more variety than IDs you trust, reuse these at different crops, and set distinct `data-seed` values so any fallback differs. The site must still look good if every photo fails.
+All photos come from the verified library (A4.2) following the visual plan (C3b). The gallery uses the core component (A4.4) with `figure.shot` items so every photo opens in the lightbox. If you need variety, re-use a photo at most twice with a different crop and a distinct `data-seed`. The site must still look good if every photo fails (the generated `plate`/`waves` art shows).
 
 ### C9. Content rules
 

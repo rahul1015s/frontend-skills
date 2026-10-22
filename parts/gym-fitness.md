@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+<!-- IMAGES: gym,people,nature -->
 {{CORE}}
 
 ---
@@ -45,6 +46,23 @@ Headings in uppercase condensed type, tight leading, huge scale. Photography is 
 11. **FAQ** — 6 questions (first visit, cancellation, kids, equipment, parking, injuries).
 12. **Free-trial form** — name, phone, email, preferred class, goal, with success state.
 13. **Footer** — address, opening hours, socials, map-style block.
+
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+A gym site without powerful photography fails. Build all of these:
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero | Dark full-bleed with scrim | `gym.20` or `gym.27` (industrial) · `gym.06` (moody) |
+| Programs (6 cards, 4:5) | Strength · HIIT · Boxing/Conditioning · Mobility & Yoga · Powerlifting · Endurance | `gym.21` · `gym.29` · `gym.31` · `gym.16` · `gym.04` · `gym.19` |
+| Under the marquee | **Photo marquee** (A4.5), 8 duplicated | `gym.00` `gym.09` `gym.12` `gym.24` `gym.30` `gym.22` `gym.14` `gym.18` |
+| Coaches (4, 3:4) | 2 women, 2 men | `people.00` `people.22` `people.01` `people.20` |
+| Transformation slider | Before: `gym.15` (desaturate with CSS) · After: `gym.23` | as listed |
+| **Gallery** (`id="gallery"`, add to nav “Inside the gym”) | masonry of **12**, chips **Floor · Classes · Recovery** | Floor: `gym.00` `gym.03` `gym.06` `gym.10` `gym.20` `gym.22` `gym.27` · Classes: `gym.18` `gym.29` `gym.31` `gym.14` · Recovery: `gym.16` `gym.17` `gym.26` |
+| Reviews | 3 portraits | `people.01` `people.00` `people.21` |
+| Trial form | One side photo | `gym.30` |
+
+Use `<body data-art-kinds="stripes,rays,grid">`. Total distinct photos ≥ 30. Real member photos with written consent must replace the before/after pair; say so in the closing notes.
 
 ### C4. Signature moment
 
@@ -170,8 +188,8 @@ h1,h2,h3{text-transform:uppercase}
 
 ```html
 <div class="ba" id="ba" role="group" aria-label="Before and after transformation">
-  <div class="layer"><div class="media"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Member before 16 weeks of training" loading="lazy" data-seed="before-training" style="filter:grayscale(.6) brightness(.85)"></div><span class="tag l">Week 0</span></div>
-  <div class="layer after"><div class="media"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Same member after 16 weeks of training" loading="lazy" data-seed="after-training"></div><span class="tag r">Week 16</span></div>
+  <div class="layer"><div class="media"><img src="https://images.unsplash.com/photo-1517344368193-41552b6ad3f5?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Member before 16 weeks of training" loading="lazy" data-seed="before-training" style="filter:grayscale(.6) brightness(.85)"></div><span class="tag l">Week 0</span></div>
+  <div class="layer after"><div class="media"><img src="https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=900&h=1125&fit=crop&q=80&auto=format" width="900" height="1125" alt="Same member after 16 weeks of training" loading="lazy" data-seed="after-training"></div><span class="tag r">Week 16</span></div>
   <div class="handle" aria-hidden="true"></div>
   <input type="range" min="0" max="100" value="50" step="1" aria-label="Reveal before and after" id="ba-range">
 </div>
@@ -291,7 +309,7 @@ BMI is a screening number, not a diagnosis. The calculator panel must include th
 - **Plans**: Starter (off-peak, 3 classes/week), Unlimited (most popular), Elite (adds coaching and recovery). Currency consistent; note the joining fee and a **7-day free trial**.
 - **Reviews**: concrete, honest results (“lost 9 kg in 16 weeks”, “first pull-up at 41”).
 - **Safety**: disclaimers on calculator; FAQ includes injuries and medical clearance.
-- **Photo IDs** (gym): equipment `photo-1534438327276-14e5300c3a48`, workout `photo-1581009146145-b5ef050c2e1e`, barbell `photo-1583454110551-21f2fa2afe61`, running `photo-1476480862126-209bfaa8edc8`, yoga `photo-1544367567-0f2fcb009e0b`, nutrition `photo-1593095948071-474c5cc2989d` (crops: hero 1920×1080, programs 800×1000, coaches 600×800).
+- **Photos:** all from the verified library (A4.2) following the visual plan (C3b); the gallery uses the core component (A4.4).
 
 ### C9. Gym-specific checklist
 

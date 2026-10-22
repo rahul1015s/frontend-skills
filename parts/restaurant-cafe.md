@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+<!-- IMAGES: food,people -->
 {{CORE}}
 
 ---
@@ -45,6 +46,23 @@ Make people hungry, then make booking effortless. 70% of visitors are on a phone
 
 A **sticky bottom bar on mobile** (hidden on desktop): `Call` + `Book` buttons, appearing after the hero.
 
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+Food sells through photographs. Choose the set that matches the venue and use all of these:
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero | Full-bleed interior or terrace | restaurant: `food.05` or `food.06` · seaside: `food.07` · café: `food.21` or `food.20` |
+| Story | Left: plating or barista close-up; below: the parallax frame | `food.04` or `food.18` · parallax: `food.05` or `food.21` |
+| Chef / owner | One portrait | `people.12` or `people.10` (man) · `people.07` (woman) |
+| Signature dishes (3 cards) | Restaurant: `food.12` `food.28` `food.30` · Café: `food.17` `food.23` `food.14` · Bakery: `food.22` `food.23` `food.03` | as listed |
+| Menu | Optional 56px round thumbnails per dish from the same pool; never required | `food.*` |
+| Photo marquee under the hero | 8 photos, duplicated | `food.08` `food.09` `food.10` `food.13` `food.15` `food.24` `food.27` `food.31` |
+| **Gallery** (`id="gallery"`) | “A taste of the room”: masonry of **12**, chips **Food · Drinks · Space** | Food: `food.01` `food.04` `food.08` `food.09` `food.12` `food.30` · Drinks: `food.02` `food.16` `food.17` `food.18` · Space: `food.05` `food.06` `food.07` `food.21` |
+| Reviews | 3 portraits | `people.00` `people.01` `people.22` |
+
+Use `<body data-art-kinds="plate,waves,mesh">`. Total distinct photos ≥ 24.
+
 ### C4. Signature moment
 
 **A cinematic hero**: the photo settles from `scale(1.12)` to `1` over 2.4s while the name rises character by character, then the Open-now pill fades in. Below it, the menu tabs cross-fade items with a stagger. Keep everything else gentle and warm.
@@ -72,7 +90,8 @@ A **sticky bottom bar on mobile** (hidden on desktop): `Call` + `Book` buttons, 
 .facts b{display:block;font:500 var(--step-3)/1 var(--font-display);letter-spacing:-.03em}
 .facts span{color:var(--text-2);font-size:var(--step--1)}
 .parallax-frame{overflow:hidden;border-radius:var(--r-lg);aspect-ratio:16/9;margin-top:clamp(24px,5vw,72px)}
-.parallax-frame img{width:100%;height:120%;object-fit:cover}
+.parallax-frame .media{height:100%;border-radius:0}
+.parallax-frame img{width:100%;height:120%;margin-top:-10%;object-fit:cover}
 
 /* menu tabs */
 .tabs{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.5rem;margin:2rem 0 1rem}
@@ -102,9 +121,7 @@ A **sticky bottom bar on mobile** (hidden on desktop): `Call` + `Book` buttons, 
 /* experience, gallery, reviews */
 .exp{display:grid;gap:12px}
 @media (min-width:861px){.exp{grid-template-columns:repeat(3,1fr)}}
-.masonry{columns:2;column-gap:12px}
-@media (min-width:861px){.masonry{columns:4}}
-.masonry .media{margin-bottom:12px;break-inside:avoid;border-radius:var(--r-md)}
+/* gallery (.masonry, .shot) and the lightbox come from the core (A4.4) */
 .reviews{display:grid;gap:12px}
 @media (min-width:861px){.reviews{grid-template-columns:repeat(3,1fr)}}
 .stars{color:var(--accent);letter-spacing:.15em;margin-bottom:.8rem}
@@ -137,7 +154,7 @@ A **sticky bottom bar on mobile** (hidden on desktop): `Call` + `Book` buttons, 
 
 ```html
 <section class="hero" id="top-hero">
-  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1920&h=1080&fit=crop&q=80&auto=format" width="1920" height="1080" alt="Candlelit dining room at Brasa" fetchpriority="high" decoding="async" data-seed="candlelit-dining-room"></div>
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&h=1080&fit=crop&q=80&auto=format" width="1920" height="1080" alt="Candlelit dining room at Brasa" fetchpriority="high" decoding="async" data-seed="candlelit-dining-room"></div>
   <div class="wrap">
     <span class="open-pill" data-open aria-live="polite"><i></i><span>Checking hours…</span></span>
     <h1 data-split style="margin-top:1.2rem">Brasa Kitchen</h1>
@@ -234,11 +251,9 @@ List each guest count once.
 
 Hours list markup: `<ul class="hours"><li data-day="1"><span>Monday</span><span>Closed</span></li> …</ul>` with all seven days, matching the `HOURS` object. Dock markup: `<div class="dock"><a class="btn btn-ghost" href="tel:+442071234567"><i class="ti ti-phone"></i>Call</a><a class="btn btn-primary" href="#reserve">Book</a></div>`.
 
-### C8. Photo IDs by venue (use `?w=<W>&h=<H>&fit=crop&q=80&auto=format`)
+### C8. Photography
 
-- **Restaurant:** steak `photo-1546833999-b9f581a1996d` · ambience `photo-1555396273-367ea4eb4db5` · cocktails `photo-1514362545857-3bc16c4c7d1b` · dessert `photo-1578985545062-69928b1d9587`
-- **Café:** coffee `photo-1495474472287-4d71bcdd2085` · ambience `photo-1555396273-367ea4eb4db5`
-- If you need more variety than IDs you trust, reuse these at different crops, and set distinct `data-seed` values so any fallback differs. The site must still look good if every photo fails.
+All photos come from the verified library (A4.2) following the visual plan (C3b). The gallery uses the core component (A4.4) with `figure.shot` items so every photo opens in the lightbox. If you need variety, re-use a photo at most twice with a different crop and a distinct `data-seed`. The site must still look good if every photo fails (the generated `plate`/`waves` art shows).
 
 ### C9. Content rules
 

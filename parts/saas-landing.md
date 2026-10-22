@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+<!-- IMAGES: tech,people,design,creative -->
 {{CORE}}
 
 ---
@@ -37,6 +38,18 @@ Default **Blueprint** (dark) with Space Grotesk + Geist + JetBrains Mono. Altern
 9. **FAQ** — 6 `<details>` items that remove objections.
 10. **Final CTA** — big headline, one button, risk reversal line.
 11. **Footer** — product, company, resources, legal; newsletter optional.
+
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero | The animated mock-up (C6) **plus** an avatar stack of 5 overlapping 40px portraits beside the trust line (“Loved by 4,200 teams”) | `people.01` `people.00` `people.09` `people.06` `people.20` |
+| Bento | Two tiles carry a photo background with a scrim (`.media` filling the card, text above it): one product-story tile and one infrastructure tile | `design.12` · `tech.12` |
+| Under the logo strip | **Bento collage** (`.cg`, A4.5) “Teams like yours” | `tech.04` `tech.05` `tech.09` `tech.21` `design.21` |
+| Testimonials | 3 portraits (160×160) matching the quote authors | `people.00` · `people.09` · `people.06` |
+| **Gallery** (`id="gallery"`, after Testimonials, add to nav) | “Life at <Company>”: masonry of **10** | `tech.04` `tech.05` `tech.09` `tech.11` `tech.21` `design.21` `design.22` `design.14` `design.23` `people.25` |
+
+Use `<body data-art-kinds="mesh,grid,rings">`. Total distinct photos ≥ 16.
 
 ### C4. Signature moment
 

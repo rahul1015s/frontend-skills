@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+<!-- IMAGES: property,home,hotel,travel,people -->
 {{CORE}}
 
 ---
@@ -44,6 +45,22 @@ Generous space, large serif headings, thin dividers. Buttons are restrained (rou
 9. **Testimonials** — 3 quotes mentioning the property type and timeline.
 10. **Sell with us / valuation form** — address, property type, email, phone; success state.
 11. **Footer** — office address, licence number, socials, small-print disclaimer.
+
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+Property is bought with the eyes: photography must be generous and consistent.
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Hero | Full-bleed exterior with scrim | luxury: `property.24` · modern: `property.03` · tropical: `property.04` |
+| Listing cards (9) | Exteriors, 4:3, each unique | `property.03` `property.04` `property.05` `property.06` `property.07` `property.09` `property.14` `property.18` `property.25` |
+| Listing galleries (3 photos each) | Card exterior first, then 2 interiors from this pool | `property.01` `property.08` `property.10` `property.11` `property.12` `property.13` `property.26` `property.27` `property.28` `home.03` `home.14` `home.15` |
+| Neighbourhoods (4 tiles, 3:4) | City/area shots | `travel.03` `travel.04` `travel.10` `travel.11` (or `property.20` `property.02` for Toronto/skyline-style markets) |
+| **Gallery** (`id="gallery"`, add to nav “Gallery”) | “Inside our homes”: masonry of **12** interiors and details, chips **Living · Kitchen & dining · Bedrooms · Outdoors** | Living: `property.01` `property.10` `property.11` `property.26` `property.27` `home.03` · Kitchen & dining: `property.13` `property.28` · Bedrooms: `home.15` `hotel.09` · Outdoors: `property.24` `hotel.02` |
+| Agents (4) | 2 women, 2 men | `people.06` `people.07` `people.11` `people.25` |
+| Testimonials | 3 portraits | `people.00` `people.12` `people.21` |
+
+Use `<body data-art-kinds="skyline,grid,mesh">`. Total distinct photos ≥ 34. Every listing’s dialog must show its own 3-photo gallery.
 
 ### C4. Signature moment
 
@@ -171,9 +188,9 @@ Option values and city names must match the invented listings.
 <article class="home" data-city="Bandra" data-type="villa" data-beds="4" data-baths="5" data-area="3,800" data-price="85000000"
          data-title="Sea-facing Art Deco villa" data-addr="Pali Hill, Bandra West" data-desc="Restored 1938 villa with a private garden, double-height living room and a rooftop terrace."
          data-feat="Private garden,Rooftop terrace,Sea view,3 parking,Smart home"
-         data-gallery="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&h=1050&fit=crop&q=80&auto=format,https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1400&h=1050&fit=crop&q=80&auto=format,https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&h=1050&fit=crop&q=80&auto=format">
+         data-gallery="https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=1400&h=1050&fit=crop&q=80&auto=format,https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1400&h=1050&fit=crop&q=80&auto=format,https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&h=1050&fit=crop&q=80&auto=format">
   <div class="media">
-    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&q=80&auto=format" width="800" height="600" alt="Sea-facing Art Deco villa in Bandra" loading="lazy" decoding="async" data-seed="bandra-villa">
+    <img src="https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=800&h=600&fit=crop&q=80&auto=format" width="800" height="600" alt="Modern glass villa at dusk in Bandra" loading="lazy" decoding="async" data-seed="bandra-villa">
     <span class="tag-p">New</span>
     <button class="save" aria-pressed="false" aria-label="Shortlist Sea-facing Art Deco villa"><i class="ti ti-heart" aria-hidden="true"></i></button>
     <button class="open" aria-label="View details: Sea-facing Art Deco villa"></button>
@@ -311,7 +328,7 @@ Add `<span id="result-count" class="count" role="status"></span>`, `<select id="
 - **Neighbourhoods**: average price per sq ft, commute/school/greenery notes.
 - **Agents**: first name + surname, languages, speciality, phone with `tel:` link.
 - **Compliance**: footer disclaimer: “Prices and availability are indicative and subject to change. Images are representative.” EMI tool note: “Estimate only; actual rates vary by lender.”
-- **Photo IDs** (use `?w=<W>&h=<H>&fit=crop&q=80&auto=format`): modern home `photo-1558618666-fcd25c85cd64`, interior `photo-1560448204-e02f11c3d0e2`, architecture `photo-1486325212027-8081e485255e`, aerial `photo-1513584684374-8bab748fbf90`. Reuse across listings at different crops; give each card a distinct `data-seed`.
+- **Photos:** all from the verified library (A4.2) following the visual plan (C3b); the gallery section uses the core component (A4.4) in addition to the per-listing galleries.
 - **SEO**: JSON-LD `RealEstateAgent` plus `Offer`s for listings.
 
 ### C9. Real-estate checklist

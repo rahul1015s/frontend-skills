@@ -8,6 +8,7 @@
 
 If any detail is missing, **invent believable specifics** instead of asking questions.
 
+<!-- IMAGES: design,tech,creative,people,nature -->
 {{CORE}}
 
 ---
@@ -43,6 +44,20 @@ Set `--accent-rgb`, `--bg-rgb` and `--on-accent` consistently with the palette.
 9. **Footer** — name, local time, socials, © year, "Back to top".
 
 Nav: Work · About · Experience · Contact (+ "Let's talk" button).
+
+### C3b. Visual plan (MANDATORY; keys refer to the photo library in A4.2)
+
+This portfolio must feel visual, not like a text résumé. Add these to the section order and build every one:
+
+| Where | What to build | Photos |
+| --- | --- | --- |
+| Directly under the hero | **Photo marquee** (A4.5), 8 photos, duplicated once | `design.12` `design.13` `design.14` `design.20` `tech.07` `creative.08` `creative.14` `design.22` |
+| About | One portrait that matches the person’s gender and age, plus two workspace shots | portrait from `people.*` (men: 01, 02, 09, 20, 25 · women: 00, 06, 07, 16) · `tech.20` · `design.17` |
+| **Gallery** (`id="gallery"`, add “Gallery” to the nav; between Capabilities and Experience) | “Process & playground”: masonry of **12** with chips **UI · Research · Craft** | UI: `tech.00` `tech.03` `tech.07` `tech.14` `design.12` `design.14` · Research: `design.13` `design.20` `design.22` `design.21` · Craft: `design.15` `creative.14` `creative.15` `creative.08` |
+| Kind words | 3 portrait avatars (160×160) matching each quoted person | `people.01` `people.00` `people.12` (swap by gender) |
+| Project artwork | Keep the generated `.art` tiles (C5); they are the visual identity of the work list | generated |
+
+Use `<body data-art-kinds="mesh,topo,rings">`. Total distinct photos ≥ 16.
 
 ### C4. Signature moment (build ALL THREE, subtly)
 
