@@ -54,6 +54,13 @@ node build.mjs                                   # rebuild examples/ and the ski
 node build.mjs --story my-story.js --out my.html # one self-contained file from your own story script
 ```
 
+## Changing the engine (re-pin the CDN links)
+
+Pages written from the skill load the engine from jsDelivr **pinned to a commit** (`love-stories/REF`), so existing pages never change under you. After editing `engine/`:
+
+1. `node build.mjs`, commit and push the engine change.
+2. Put the new commit hash in `love-stories/REF`, run `node build.mjs` again (it rewrites the links in `LOVE-STORY-SKILL.md` and `skill/love-story/SKILL.md`), commit and push.
+
 ## Boundaries
 
 Romantic, flirty and passionate-but-tasteful are in scope. **No explicit sexual content, no pressure, guilt-tripping or manipulation.** Apology and comfort pages use a calm "No" button (`dodge: false`). The Mars-and-Venus story is original and does not reproduce any book.
