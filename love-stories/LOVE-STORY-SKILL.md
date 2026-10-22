@@ -39,12 +39,12 @@ Everything is loaded from CDNs. The engine files are pinned to an immutable comm
 <meta name="theme-color" content="#05050c">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rahul1015s/frontend-skills@42dcc6046df262d55da93bc3e18db89e9e136a67/love-stories/engine/engine.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rahul1015s/frontend-skills@5636cf0166b2658f21292fdacfade40bc4b59290/love-stories/engine/engine.css">
 </head>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/rahul1015s/frontend-skills@42dcc6046df262d55da93bc3e18db89e9e136a67/love-stories/engine/engine.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/rahul1015s/frontend-skills@5636cf0166b2658f21292fdacfade40bc4b59290/love-stories/engine/engine.bundle.js"></script>
 <script>
 LoveStory({
   title: '…',
