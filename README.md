@@ -14,8 +14,12 @@ Each file is **self-contained** (design system + working engine code + section s
 | [`restaurant-cafe.md`](prompts/restaurant-cafe.md) | Restaurant / café / bar | Cinematic hero, Open-now pill from real hours, tabbed menu, booking, mobile dock |
 | [`product-launch-3d.md`](prompts/product-launch-3d.md) | Product drop / hardware / app reveal | Three.js hero + pinned 3-beat scroll story, waitlist, countdown |
 | [`photography-gallery.md`](prompts/photography-gallery.md) | Photographer / visual artist | Parallax collage, masonry + filters, keyboard/swipe lightbox |
+| [`ecommerce-store.md`](prompts/ecommerce-store.md) | Online store (any product type) | Persistent cart drawer with free-shipping bar and promo code, filters/search/sort, quick view, demo checkout |
+| [`gym-fitness.md`](prompts/gym-fitness.md) | Gym / CrossFit / yoga studio | Bookable class schedule, before/after drag slider, BMI and calorie calculator, pricing toggle |
+| [`real-estate.md`](prompts/real-estate.md) | Real-estate agency / developer | Hero search that filters listings live, property gallery dialog, EMI calculator with donut chart |
+| [`wedding-invite.md`](prompts/wedding-invite.md) | Wedding website / digital invitation | Click-to-open curtain, countdown, add-to-calendar (.ics), RSVP, guestbook, falling petals |
 
-Example:
+Example (any of the ten):
 
 > Build a landing page for Plume, an AI meeting notetaker that writes follow-ups in your voice, for sales teams. Palette: Violet Hour. Pricing: Free, Pro $19, Team $49 per seat.
 
