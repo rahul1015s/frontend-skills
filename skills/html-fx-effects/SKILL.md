@@ -1,11 +1,11 @@
 ---
 name: html-fx-effects
-description: A zero-dependency kit of ~220 animated effects for single-file HTML sites — text animations, WebGL/canvas backgrounds, cursor effects, image effects, animated cards, menus, galleries, 3D carousels and micro-interactions — driven by a data-fx attribute. Use when a page should have the kind of motion seen on reactbits.dev (blur-in text, aurora/plasma/galaxy backgrounds, spotlight cards, magnet buttons, dock, gooey nav, lanyard, flowing menu, etc.) without React.
+description: A zero-dependency kit of ~290 animated effects for single-file HTML sites — text animations, WebGL/canvas backgrounds, cursor effects, image effects, animated cards, menus, galleries, 3D carousels and micro-interactions — driven by a data-fx attribute. Use when a page should have the kind of motion seen on reactbits.dev (blur-in text, aurora/plasma/galaxy backgrounds, spotlight cards, magnet buttons, dock, gooey nav, lanyard, flowing menu, etc.) without React.
 ---
 
 # FX — animated effects kit for plain HTML
 
-The kit lives in `fx/` (this repo): **~220 effects, no dependencies**. Every effect is switched on with an attribute:
+The kit lives in `fx/` (this repo): **~290 effects, no dependencies**. Every effect is switched on with an attribute:
 
 ```html
 <h1 data-fx="split-text">Motion that feels alive</h1>
@@ -23,7 +23,8 @@ The kit lives in `fx/` (this repo): **~220 effects, no dependencies**. Every eff
 | `fx/dist/fx-interaction.js` | cursor effects, borders, image effects, scroll effects | ~54 KB |
 | `fx/dist/fx-components.js` | cards, menus, galleries, carousels, sliders, 3D | ~75 KB |
 | `fx/dist/fx-micro.js` | buttons, toggles, inputs, delete animations, toasts | ~60 KB |
-| `fx/fx.js` | everything (~240 KB) | |
+| `fx/dist/fx-magic.js` | Magic UI-style patterns, buttons, text, device frames, widgets | ~75 KB |
+| `fx/fx.js` | everything (~320 KB) | |
 
 Load only the bundles the page uses. For development pin to `@main`; for a shipped page pin to a commit hash (`@<hash>`) so later edits to the repo cannot change the page.
 
@@ -34,7 +35,7 @@ Load only the bundles the page uses. For development pin to `@main`; for a shipp
 - **Single-file output (no CDN):** paste the needed `fx/dist/fx-*.js` contents inside one `<script>` tag at the end of `<body>`. Every effect block is independent, so unused ones may be deleted; the first block (core) is required.
 - Never write your own version of an effect listed here. Use the kit, then spend your effort on layout, copy and photos.
 
-Source is in `fx/src/*.js` (edit there, then `node fx/build.mjs`, which regenerates `fx/fx.js` and `fx/dist/`). `fx/showcase.html` (the first ~75) and `fx/showcase-more.html` (`?demo=name,name` or `?bg=name,name`, no query = all demos) are the regression tests: open in a real browser and scroll.
+Source is in `fx/src/*.js` (edit there, then `node fx/build.mjs`, which regenerates `fx/fx.js` and `fx/dist/`). `fx/showcase.html` (the first ~75) and `fx/showcase-more.html` (`?demo=name,name` or `?bg=name,name`, no query = all demos) and `fx/showcase-magic.html` (`?demo=name,name`) are the regression tests: open in a real browser and scroll.
 
 ## Where to use what (pick 3–5 per page, not all)
 
@@ -274,6 +275,110 @@ Custom events (`fx-input`, `fx-confirm`, …) bubble, so listen with `el.addEven
 ### Known simplifications (be honest with the user)
 These follow the *behaviour* of the React Bits originals but are lighter: `splash-cursor` is ink splats, not a fluid simulation; `lanyard` is a 2D rope, not 3D physics; `infinite-menu` is a DOM sphere, not a WebGL one; `ferrofluid`, `crystalized-ball`, `fluid-glass` and `dome-gallery` approximate the originals' look; `model-viewer` fetches three.js from esm.sh at runtime.
 
+## Magic UI-style set (`fx/dist/fx-magic.js`)
+
+Modelled on the components catalogued at magicui.design. Magic UI is MIT-licensed, but this code is still written from scratch for plain HTML (no React, no Tailwind, no framer-motion). Pattern effects (`dot-pattern`, `grid-pattern`, …) draw a layer *behind* the element's content, so give the element `position:relative` (set automatically) and keep text above it.
+
+### Same behaviour, Magic UI names (aliases of existing effects)
+| Magic UI name | Use | Maps to |
+| --- | --- | --- |
+| `animated-gradient-text` | gradient fill text | `gradient-text` |
+| `animated-shiny-text` | sweep highlight | `shiny-text` |
+| `blur-fade` | scroll-in fade + blur | `reveal` (blur on) |
+| `typing-animation` | typewriter | `type-text` |
+| `word-rotate` | cycling words | `rotating-text` |
+| `number-ticker` | counting number | `count-up` |
+| `scroll-based-velocity` | scroll-speed marquee | `scroll-velocity` |
+| `hyper-text` | scramble on hover | `scramble-text` |
+| `text-reveal` | words light up on scroll | `scroll-reveal` |
+| `spinning-text` | text on a rotating ring | `circular-text` |
+| `text-animate` | word blur-in | `blur-text` |
+| `marquee` | infinite loop of children | `logo-loop` |
+| `magic-card` | cursor spotlight card | `spotlight-card` |
+| `bento-grid` | grid with glow + sparkles | `magic-bento` |
+| `noise-texture` | film grain | `noise` |
+| `progressive-blur` | edge blur | `gradual-blur` |
+| `light-rays` | rays from the top | `bg-light-rays` |
+| `particles` | linked dots | `bg-particles` |
+| `icon-cloud` | icons on a draggable 3D sphere | `infinite-menu` |
+
+Also already in the kit under the same idea: `dock`, `animated-list`, `ripple-button`, `glare-hover`, `animated-subscribe-button` (below).
+
+### Patterns and backgrounds
+| `data-fx` | What it does | Options |
+| --- | --- | --- |
+| `dot-pattern` | Faded dot grid (`glow:true` pulses it) | `size`, `r`, `color`, `fade`, `glow` |
+| `grid-pattern` | Faded line grid | `size`, `color`, `fade` |
+| `striped-pattern` | Diagonal stripes | `size`, `color`, `angle` |
+| `animated-grid-pattern` | Grid whose squares fade in and out | `size`, `count`, `color`, `dur` |
+| `flickering-grid` | Canvas squares flicker | `size`, `gap`, `color`, `chance`, `maxOp` |
+| `hexagon-pattern` | Hexagon outline grid | `r`, `color` |
+| `interactive-grid-pattern` | Grid cells flash where the cursor passes | `size`, `color`, `hot` |
+| `retro-grid` | Perspective floor grid rolling toward you | `color`, `bg`, `opacity` |
+| `meteors` | Meteor shower | `count`, `color` |
+| `ripple` | Concentric rings pulsing from the centre | `rings`, `gap`, `start`, `color` |
+| `warp-background` | Grid tunnel with beams rushing past | `beams`, `color`, `grid`, `rings` |
+| `floating-3d-particles` | Depth points with cursor parallax | `count`, `color` |
+| `globe` | Dotted rotating globe with pulsing markers, drag to spin | `markers:[[lat,lon],…]`, `color`, `glow`, `speed`, `dots` |
+| `backlight` | Blurred copy of the `<img>` glowing behind it | `blur`, `color` |
+
+### Borders and cards
+| `data-fx` | What it does | Options |
+| --- | --- | --- |
+| `border-beam` | A light travels around the border | `c1`, `c2`, `width`, `dur` |
+| `shine-border` | Slowly shifting gradient border | `colors`, `width`, `dur` |
+| `neon-gradient-card` | Neon glow border card (content wrapped automatically) | `c1`, `c2`, `radius`, `border` |
+| `animated-beam` | Animated line between two elements inside the container | `from`, `to` (selectors), `curve`, `c1`, `c2`, `dur`, `reverse` |
+| `orbiting-circles` | Children orbit on rings (`data-radius` per child) | `radius`, `dur`, `reverse`, `ring` |
+
+### Buttons and widgets
+| `data-fx` | What it does | Options / events |
+| --- | --- | --- |
+| `shimmer-button` | Light travels around the edge | `bg`, `shimmer` |
+| `rainbow-button` | Animated rainbow border + glow | |
+| `pulsating-button` | Soft pulse ring | `color` |
+| `shiny-button` | Glint sweeps across | |
+| `interactive-hover-button` | A dot floods the button, label swaps | `color`, `hover` |
+| `animated-subscribe-button` | Label slides to "Subscribed" | `fx-input`; `label`, `done` |
+| `confetti` | Confetti burst on click (`on:"view"` for on-scroll); `FX.confetti(x,y)`; `el.fxConfetti()` | `count`, `power`, `on`, `colors` |
+| `cool-mode` | Emoji/image particles pop from the pointer | `items`, `on:"click/hover"`, `count`, `size` |
+| `animated-theme-toggler` | Sun/moon button toggling `html.dark` + `data-theme`, remembered | `fx-input` |
+| `animated-circular-progress-bar` | Animated ring with %; `el.fxSet(n)` | `value`, `size`, `color`, `width` |
+| `scroll-progress` | Fixed top bar showing page scroll (one per page) | `height`, `color` |
+| `pointer` | Coloured arrow + name tag follows the cursor over the element | `label`, `color` |
+| `smooth-cursor` | Spring-follow arrow replaces the system cursor (page-wide) | `color`, `stroke` |
+
+### Text
+| `data-fx` | What it does | Options |
+| --- | --- | --- |
+| `highlighter` | Marker annotation drawn on view | `type:"highlight/underline/box/circle/strike/bracket"`, `color`, `width`, `dur`, `delay` |
+| `line-shadow-text` | Hard diagonal line shadow | `color`, `bg` |
+| `comic-text` | Comic-book pop-in lettering | |
+| `aurora-text` | Aurora gradient with soft glow | `colors:[4]` |
+| `sparkles-text` | Sparkles twinkle around the text | `count`, `colors` |
+| `dia-text-reveal` | Diagonal gradient wipe | `colors`, `dur` |
+| `text-3d-flip` | Letters flip in 3D on hover | `color` |
+| `kinetic-text` | Letters bounce on hover | `color` |
+| `morphing-text` | Words melt into each other (blur-threshold morph) | `texts`, `every` |
+| `video-text` | Looping video (or gradient fallback) visible only through the letters | `src`, `font`, `fallback` |
+| `glyph-matrix` | Matrix-style character grid resolving into the word | `text`, `cols`, `rows`, `chars` |
+
+### Media, devices, code
+| `data-fx` | What it does | Options |
+| --- | --- | --- |
+| `pixel-image` | `<img>` starts pixelated and sharpens on view/hover | `steps`, `every`, `trigger` |
+| `lens` | Magnifier follows the cursor over an `<img>` | `zoom`, `size` |
+| `avatar-circles` | Overlapping avatars with "+N" | `more`, `href` |
+| `code-comparison` | Before/after panes (two `<pre>` children) | `a`, `b` labels |
+| `file-tree` | Expandable tree from nested `<ul><li>` (`data-open` on `<li>`) | |
+| `terminal` | Fake terminal typing commands (lines starting with `$ `) | `lines`, `speed`, `pause`, `loop` |
+| `iphone`, `android` | Phone frame around the child (img/video/div) | `width` |
+| `safari` | Browser window frame around the child | `url` |
+| `hero-video-dialog` | Thumbnail opens a video lightbox (YouTube embed URL or mp4) | `src` |
+| `tweet-card` | Static quote card (no network) | `name`, `handle`, `text`, `date`, `avatar` |
+
+Not included: `dotted-map` (needs a world dataset) and live tweet fetching. For a dotted map use `globe`.
+
 ## Adding an effect
 
 1. Write it as `FX.register('name', (el) => { … return cleanupFn; })` in a file under `fx/src/`. Read options with `FX.util.opts(el, {defaults})`.
@@ -283,4 +388,4 @@ These follow the *behaviour* of the React Bits originals but are lighter: `splas
 
 ## Credit and licence
 
-The effects are inspired by the *kinds* of motion catalogued on reactbits.dev. All code here is original, written for this repo. React Bits is MIT with a Commons Clause that forbids redistributing its components, including ported versions, so **do not paste or translate code from the React Bits repo into this kit**; describe the behaviour and write it fresh.
+The effects are inspired by the *kinds* of motion catalogued on reactbits.dev and magicui.design. All code here is original, written for this repo. React Bits is MIT with a Commons Clause that forbids redistributing its components, including ported versions, so **do not paste or translate code from the React Bits repo into this kit**. Magic UI is plain MIT, but the same rule applies here for consistency: describe the behaviour and write it fresh.

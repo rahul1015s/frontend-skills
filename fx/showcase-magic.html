@@ -1,0 +1,56 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FX showcase (Magic UI-style)</title>
+<style>
+:root{--bg:#07070b;--fg:#ececf3;--mut:#8b8ba0;--card:#12121a}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}
+section{position:relative;padding:56px max(16px,4vw);border-top:1px solid #1d1d28}h2.k{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin:0 0 24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.bg{position:relative;height:220px;border-radius:16px;overflow:hidden;background:#05050a;border:1px solid #1d1d28;display:grid;place-items:end start;padding:12px;isolation:isolate}.bg b{position:relative;z-index:1;font-size:12px;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px}
+.card{background:var(--card);border:1px solid #23232f;border-radius:16px;padding:22px;min-height:120px}.big{font-size:clamp(2rem,6vw,4rem);font-weight:800;margin:0}
+.btn{font:inherit;color:#000;background:#fff;border:0;border-radius:99px;padding:.8em 1.5em;cursor:pointer;font-weight:600}
+.sw{width:100%;height:100%;min-height:90px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:grid;place-items:center;font-weight:700;color:#fff}
+.demo{position:relative;height:220px;border-radius:16px;overflow:hidden;background:#0b0b12;border:1px solid #1d1d28;padding:14px;isolation:isolate}.demo>b.t{position:absolute;left:12px;bottom:10px;z-index:3;font-size:12px;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px;pointer-events:none}
+img.p{width:100%;height:100%;object-fit:cover;display:block}
+</style></head><body>
+<div id="app"></div>
+<script src="fx.js"></script>
+<script>
+// ?bg=name,name renders those as background tiles. ?demo=NAME renders the named demo from DEMOS below. No params: everything.
+const IMG=(id,w=600)=>`https://images.unsplash.com/${id}?w=${w}&q=60&auto=format&fit=crop`;
+const A=IMG('photo-1506744038136-46273834b3fb'),B=IMG('photo-1441974231531-c6227db76b6e'),C=IMG('photo-1469474968028-56623f02e42e'),D=IMG('photo-1500530855697-b586d89ba3ee');
+const W=(inner,extra='')=>`<div class="demo" style="display:grid;place-items:center;${extra}">${inner}</div>`;
+const T=(fx,txt,extra='',style='font-size:34px;font-weight:800')=>W(`<div data-fx="${fx}" ${extra} style="${style}">${txt}</div>`);
+const BGD=(fx,extra='')=>`<div class="demo" data-fx="${fx}" ${extra} style="display:grid;place-items:center"><span style="position:relative;z-index:1;font-weight:700">${fx}</span></div>`;
+const DEMOS={
+ 'dot-pattern':BGD('dot-pattern'),'grid-pattern':BGD('grid-pattern'),'striped-pattern':BGD('striped-pattern'),'animated-grid-pattern':BGD('animated-grid-pattern'),'flickering-grid':BGD('flickering-grid'),'hexagon-pattern':BGD('hexagon-pattern'),'interactive-grid-pattern':BGD('interactive-grid-pattern'),
+ 'retro-grid':BGD('retro-grid'),'meteors':BGD('meteors'),'ripple':BGD('ripple'),'warp-background':BGD('warp-background'),'floating-3d-particles':BGD('floating-3d-particles'),'globe':`<div class="demo" data-fx="globe" style="padding:0"></div>`,
+ 'border-beam':W('<div data-fx="border-beam" style="width:200px;height:110px;display:grid;place-items:center;border-radius:16px;background:#0e0e16">Border beam</div>'),
+ 'shine-border':W('<div data-fx="shine-border" style="width:200px;height:110px;display:grid;place-items:center;border-radius:16px;background:#0e0e16">Shine border</div>'),
+ 'neon-gradient-card':W('<div data-fx="neon-gradient-card" style="width:200px">Neon gradient card</div>'),
+ 'animated-beam':`<div class="demo" data-fx="animated-beam" data-opts='{"from":"#bm1","to":"#bm2","curve":30}' style="display:flex;justify-content:space-between;align-items:center;padding:30px"><div id="bm1" class="sw" style="width:54px;height:54px;min-height:0;border-radius:50%;z-index:2">A</div><div id="bm2" class="sw" style="width:54px;height:54px;min-height:0;border-radius:50%;z-index:2;background:linear-gradient(135deg,#f43f5e,#fb923c)">B</div></div>`,
+ 'orbiting-circles':`<div class="demo" data-fx="orbiting-circles" data-opts='{"radius":55}'><div class="sw" style="width:26px;height:26px;min-height:0;border-radius:50%"></div><div class="sw" style="width:26px;height:26px;min-height:0;border-radius:50%;background:#f43f5e"></div><div class="sw" data-radius="85" style="width:20px;height:20px;min-height:0;border-radius:50%;background:#10b981"></div></div>`,
+ confetti:W('<button class="btn" data-fx="confetti">Confetti!</button>'),'cool-mode':W('<button class="btn" data-fx="cool-mode">Pop emoji</button>'),
+ backlight:W(`<div data-fx="backlight"><img src="${C}" width="170" height="110" style="border-radius:12px;object-fit:cover;display:block" alt=""></div>`),
+ 'shimmer-button':W('<button data-fx="shimmer-button">Shimmer</button>'),'rainbow-button':W('<button data-fx="rainbow-button">Rainbow</button>'),'pulsating-button':W('<button data-fx="pulsating-button">Pulsating</button>'),'shiny-button':W('<button data-fx="shiny-button">Shiny</button>'),
+ 'interactive-hover-button':W('<button data-fx="interactive-hover-button" style="color:#fff">Get started</button>'),'animated-subscribe-button':W('<button data-fx="animated-subscribe-button"></button>'),
+ highlighter:W('<p style="font-size:24px;font-weight:700;line-height:2;margin:0">Make it <span data-fx="highlighter">pop</span>, <span data-fx="highlighter" data-opts=\'{"type":"circle","color":"#f472b6"}\'>circle</span> and <span data-fx="highlighter" data-opts=\'{"type":"underline","color":"#22d3ee"}\'>underline</span></p>'),
+ 'line-shadow-text':T('line-shadow-text','LINE SHADOW','','font-size:34px;font-weight:900'),'comic-text':T('comic-text','Boom!','','font-size:54px'),'aurora-text':T('aurora-text','Aurora','','font-size:50px;font-weight:900'),'sparkles-text':T('sparkles-text','Sparkles','','font-size:44px;font-weight:900'),
+ 'dia-text-reveal':T('dia-text-reveal','Dia reveal','','font-size:44px;font-weight:900'),'text-3d-flip':T('text-3d-flip','Flip me','data-opts=\'{"color":"#f472b6"}\'','font-size:40px;font-weight:900'),'kinetic-text':T('kinetic-text','Kinetic hover','','font-size:34px;font-weight:800'),
+ 'morphing-text':T('morphing-text','','','font-size:46px;font-weight:900'),'video-text':W('<div data-fx="video-text" data-opts=\'{"font":"900 60px system-ui"}\'>VIDEO</div>'),'glyph-matrix':W('<div data-fx="glyph-matrix" data-opts=\'{"text":"MAGIC","cols":26,"rows":7}\' style="color:#a5b4fc;font-size:9px"></div>'),
+ 'pixel-image':W(`<div data-fx="pixel-image" style="width:230px;height:150px"><img src="${A}" alt="" style="width:100%;height:100%;object-fit:cover"></div>`),'lens':W(`<div data-fx="lens" style="width:230px"><img src="${B}" style="width:100%;display:block;border-radius:10px" alt=""></div>`),
+ 'avatar-circles':W(`<div data-fx="avatar-circles" data-opts='{"more":12}' style="color:#fff"><img src="${A}" alt=""><img src="${B}" alt=""><img src="${C}" alt=""><img src="${D}" alt=""></div>`),
+ 'code-comparison':W('<div data-fx="code-comparison" style="width:92%;font-size:11px"><pre>var a = [1,2,3];\nfor (var i=0;i&lt;a.length;i++) {\n  log(a[i]);\n}</pre><pre>const a = [1,2,3];\na.forEach(log);</pre></div>'),
+ 'file-tree':W('<div data-fx="file-tree" style="color:#e5e7eb;width:180px"><ul><li data-open>src<ul><li data-open>components<ul><li>Button.tsx</li><li>Card.tsx</li></ul></li><li>index.ts</li></ul></li><li>package.json</li></ul></div>'),
+ 'terminal':W('<div data-fx="terminal" style="width:92%"></div>'),'iphone':W(`<div data-fx="iphone" data-opts='{"width":110}'><img src="${C}" alt=""></div>`),'android':W(`<div data-fx="android" data-opts='{"width":110}'><img src="${B}" alt=""></div>`),
+ 'safari':W(`<div data-fx="safari" data-opts='{"url":"magic.dev"}' style="width:92%"><img src="${A}" alt="" style="height:110px;object-fit:cover"></div>`),'hero-video-dialog':W(`<div data-fx="hero-video-dialog" data-opts='{"src":"https://www.youtube.com/embed/dQw4w9WgXcQ"}' style="width:230px"><img src="${D}" style="width:100%;display:block" alt=""></div>`),
+ 'animated-theme-toggler':W('<button data-fx="animated-theme-toggler" style="color:#fff"></button>'),'animated-circular-progress-bar':W('<div data-fx="animated-circular-progress-bar" data-opts=\'{"value":72,"size":120}\' style="color:#fff"></div>'),
+ 'tweet-card':W('<div data-fx="tweet-card" data-opts=\'{"name":"Ada Lovelace","handle":"@ada","text":"The Analytical Engine weaves algebraic patterns, just as the loom weaves flowers and leaves.","date":"Dec 10, 1843"}\' style="font-size:13px"></div>'),
+ 'pointer':`<div class="demo" data-fx="pointer" data-opts='{"label":"Ada"}' style="display:grid;place-items:center">Hover for the labelled pointer</div>`,
+ 'icon-cloud':`<div class="demo" data-fx="icon-cloud" data-opts='{"radius":95}'>${['★','♥','⚡','☀','☾','✿','♪','☂','⚑','✈','☕','⌘'].map(t=>`<span style="font-size:28px">${t}</span>`).join('')}</div>`,
+ 'blur-fade':T('blur-fade','Blur fade in'),'animated-gradient-text':T('animated-gradient-text','Gradient'),'animated-shiny-text':T('animated-shiny-text','Shiny text'),'typing-animation':T('typing-animation','Typing…'),'word-rotate':T('word-rotate','one','data-opts=\'{"texts":["Fast","Bold","Alive"]}\''),
+ 'number-ticker':T('number-ticker','0','data-opts=\'{"to":98765}\'','font-size:44px;font-weight:900'),'hyper-text':T('hyper-text','Hyper text'),'spinning-text':W('<div data-fx="spinning-text" data-opts=\'{"size":140}\'>SPINNING ✦ TEXT ✦ </div>'),
+ 'marquee':W('<div data-fx="marquee" style="width:100%;font-weight:700"><span>Alpha</span><span>Beta</span><span>Gamma</span><span>Delta</span></div>'),'magic-card':W('<div data-fx="magic-card" class="card" style="width:190px">Magic card</div>'),'bento-grid':`<div class="demo grid" data-fx="bento-grid" style="grid-template-columns:repeat(3,1fr);padding:10px">${[1,2,3].map(i=>`<div class="card" style="min-height:90px">Bento ${i}</div>`).join('')}</div>`,
+ 'progressive-blur':`<div class="demo" data-fx="progressive-blur" style="padding:0"><img class="p" src="${A}" alt=""></div>`,'light-rays':BGD('light-rays'),'particles':BGD('particles'),'noise-texture':BGD('noise-texture'),'scroll-progress':W('<span data-fx="scroll-progress">top bar</span>'),
+};
+const q=new URLSearchParams(location.search),dm=(q.get('demo')||'').split(',').filter(Boolean);
+const dn=dm.length?dm:Object.keys(DEMOS);
+document.getElementById('app').innerHTML=`<section><h2 class="k">Magic UI-style</h2><div class="grid">${dn.map(n=>`<div><div style="font-size:12px;color:#8b8ba0;margin-bottom:6px">${n}</div>${DEMOS[n]}</div>`).join('')}</div></section>`;FX.init();
+</script></body></html>

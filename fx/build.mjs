@@ -3,7 +3,7 @@
 import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 const files = readdirSync('fx/src').filter(f => f.endsWith('.js')).sort();
 const read = f => readFileSync('fx/src/' + f, 'utf8').trim();
-const CATS = { text: ['10', '11'], backgrounds: ['20', '21', '22'], interaction: ['30', '31', '32'], components: ['40', '41'], micro: ['50', '51'] };
+const CATS = { text: ['10', '11'], backgrounds: ['20', '21', '22'], interaction: ['30', '31', '32'], components: ['40', '41'], micro: ['50', '51'], magic: ['60', '61'] };
 writeFileSync('fx/fx.js', files.map(read).join('\n\n') + '\n');
 mkdirSync('fx/dist', { recursive: true });
 for (const [cat, prefixes] of Object.entries(CATS)) {
