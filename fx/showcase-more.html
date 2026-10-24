@@ -1,0 +1,100 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FX showcase (more)</title>
+<style>
+:root{--bg:#07070b;--fg:#ececf3;--mut:#8b8ba0;--card:#12121a}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}
+section{position:relative;padding:56px max(16px,4vw);border-top:1px solid #1d1d28}h2.k{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin:0 0 24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.bg{position:relative;height:220px;border-radius:16px;overflow:hidden;background:#05050a;border:1px solid #1d1d28;display:grid;place-items:end start;padding:12px;isolation:isolate}.bg b{position:relative;z-index:1;font-size:12px;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px}
+.card{background:var(--card);border:1px solid #23232f;border-radius:16px;padding:22px;min-height:120px}.big{font-size:clamp(2rem,6vw,4rem);font-weight:800;margin:0}
+.btn{font:inherit;color:#000;background:#fff;border:0;border-radius:99px;padding:.8em 1.5em;cursor:pointer;font-weight:600}
+.sw{width:100%;height:100%;min-height:90px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:grid;place-items:center;font-weight:700;color:#fff}
+.demo{position:relative;height:220px;border-radius:16px;overflow:hidden;background:#0b0b12;border:1px solid #1d1d28;padding:14px;isolation:isolate}.demo>b.t{position:absolute;left:12px;bottom:10px;z-index:3;font-size:12px;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px;pointer-events:none}
+img.p{width:100%;height:100%;object-fit:cover;display:block}
+</style></head><body>
+<div id="app"></div>
+<script src="fx.js"></script>
+<script>
+// ?bg=name,name renders those as background tiles. ?demo=NAME renders the named demo from DEMOS below. No params: everything.
+const IMG=(id,w=600)=>`https://images.unsplash.com/${id}?w=${w}&q=60&auto=format&fit=crop`;
+const A=IMG('photo-1506744038136-46273834b3fb'),B=IMG('photo-1441974231531-c6227db76b6e'),C=IMG('photo-1469474968028-56623f02e42e'),D=IMG('photo-1500530855697-b586d89ba3ee');
+const DEMOS={
+ crosshair:`<div class="demo" data-fx="crosshair"></div>`,
+ 'cursor-grid':`<div class="demo" data-fx="cursor-grid"></div>`,
+ 'elastic-mesh':`<div class="demo" data-fx="elastic-mesh"></div>`,
+ 'gradual-blur':`<div class="demo" data-fx="gradual-blur"><img class="p" src="${A}" alt=""></div>`,
+ cubes:`<div class="demo" data-fx="cubes"></div>`,
+ 'orbit-images':`<div class="demo" data-fx="orbit-images" data-opts='{"rx":90,"ry":34}'><img src="${A}" width="70" height="70" style="border-radius:12px;object-fit:cover"><img src="${B}" width="70" height="70" style="border-radius:12px;object-fit:cover"><img src="${C}" width="70" height="70" style="border-radius:12px;object-fit:cover"><img src="${D}" width="70" height="70" style="border-radius:12px;object-fit:cover"></div>`,
+ 'pixel-transition':`<div class="demo" data-fx="pixel-transition"><img class="p" src="${A}" alt=""><div class="sw" style="height:100%;border-radius:0">Revealed</div></div>`,
+ 'pixel-swap':`<div class="demo" data-fx="pixel-swap" data-opts='{"every":1800}'><img class="p" src="${A}" alt=""><img class="p" src="${B}" alt=""><img class="p" src="${C}" alt=""></div>`,
+ 'sticker-peel':`<div class="demo" style="display:grid;place-items:center"><div data-fx="sticker-peel"><img src="${C}" width="170" height="130" style="border-radius:14px;object-fit:cover" alt=""></div></div>`,
+ 'grid-motion':`<div class="demo" data-fx="grid-motion" data-opts='{"rows":3}'>${Array.from({length:18},(_,i)=>`<div class="sw" style="width:110px;height:64px;flex:none;background:hsl(${i*20},70%,55%)">${i+1}</div>`).join('')}</div>`,
+ 'electric-logo':`<div class="demo" style="display:grid;place-items:center"><div data-fx="electric-logo" style="font-size:54px;font-weight:900">LOGO</div></div>`,
+ 'scroll-expand':`<div class="demo" style="height:420px;overflow:auto;padding:0"><div data-fx="scroll-expand"><img class="p" src="${A}" alt=""></div></div>`,
+};
+
+const card=(t,h)=>`<div class="sw" style="${h?'':''}background:linear-gradient(135deg,hsl(${(t.charCodeAt(0)*13)%360},70%,50%),hsl(${(t.charCodeAt(0)*13+60)%360},70%,40%))">${t}</div>`;
+const tile=(i,w=150,h=190)=>`<div style="width:${w}px;height:${h}px;border-radius:14px;background:hsl(${i*47%360},65%,52%);display:grid;place-items:center;font-weight:800;color:#fff;font-size:22px">${i}</div>`;
+Object.assign(DEMOS,{
+ 'bounce-cards':`<div class="demo" data-fx="bounce-cards">${[1,2,3,4,5].map(i=>tile(i,90,120)).join('')}</div>`,
+ 'bubble-menu':`<div class="demo" style="display:grid;place-items:start center;padding-top:30px"><div data-fx="bubble-menu"><a href="#">Home</a><a href="#">Work</a><a href="#">About</a></div></div>`,
+ 'card-nav':`<div class="demo" style="padding:10px;height:260px"><div data-fx="card-nav" data-title="Brand"><div class="cards"><a style="background:#7c3aed;color:#fff">Work</a><a style="background:#0ea5e9;color:#fff">About</a><a style="background:#f43f5e;color:#fff">Contact</a></div></div></div>`,
+ 'card-swap':`<div class="demo" data-fx="card-swap">${[1,2,3,4].map(i=>`<div style="width:160px;height:110px;border-radius:12px;background:hsl(${i*70},70%,50%);display:grid;place-items:center;font-weight:800;color:#fff">${i}</div>`).join('')}</div>`,
+ 'chroma-grid':`<div class="demo grid" style="grid-template-columns:repeat(3,1fr);padding:0" data-fx="chroma-grid">${[A,B,C,D,A,C].map(u=>`<img class="p" src="${u}" alt="">`).join('')}</div>`,
+ 'option-wheel':`<div class="demo" style="display:grid;place-items:center"><div data-fx="option-wheel" style="width:160px;color:#fff">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div>${d}</div>`).join('')}</div></div>`,
+ 'depth-carousel':`<div class="demo" data-fx="depth-carousel" data-opts='{"step":90}'>${[1,2,3,4,5].map(i=>`<div style="left:50%;top:50%;width:130px;height:150px;border-radius:12px;background:hsl(${i*60},65%,50%);display:grid;place-items:center;font-weight:800;color:#fff">${i}</div>`).join('')}</div>`,
+ 'flex-carousel':`<div class="demo" data-fx="flex-carousel" style="--fx-h:190px;padding:0">${[A,B,C,D].map(u=>`<div><img src="${u}" alt=""></div>`).join('')}</div>`,
+ folder:`<div class="demo" style="display:grid;place-items:center"><div data-fx="folder"><div style="padding:8px;font-size:11px;color:#333">Resume</div><div style="padding:8px;font-size:11px;color:#333">Invoice</div><div style="padding:8px;font-size:11px;color:#333">Notes</div></div></div>`,
+ 'glass-icons':`<div class="demo" style="display:grid;place-items:center;font-size:20px;color:#fff"><div data-fx="glass-icons"><a data-c1="#7c3aed" data-c2="#06b6d4" data-label="Files">★</a><a data-c1="#f43f5e" data-c2="#fb923c" data-label="Love">♥</a><a data-c1="#10b981" data-c2="#84cc16" data-label="Go">➜</a></div></div>`,
+ 'drift-wall':`<div class="demo" data-fx="drift-wall" data-opts='{"cols":4}'>${Array.from({length:16},(_,i)=>`<div style="height:${70+(i*37)%60}px;border-radius:10px;background:hsl(${i*31%360},65%,50%)"></div>`).join('')}</div>`,
+ 'line-sidebar':`<div class="demo" style="display:grid;place-items:center"><nav data-fx="line-sidebar" style="width:140px;color:#fff"><a href="#a">Intro</a><a href="#b">Features</a><a href="#c">Pricing</a><a href="#d">FAQ</a></nav></div>`,
+ 'pixel-card':`<div class="demo" data-fx="pixel-card" style="display:grid;place-items:center"><span style="position:relative">Hover me</span></div>`,
+ 'specular-button':`<div class="demo" style="display:grid;place-items:center"><button data-fx="specular-button">Specular</button></div>`,
+ 'reflective-card':`<div class="demo" style="display:grid;place-items:center"><div data-fx="reflective-card" style="width:190px;height:120px;border-radius:16px;display:grid;place-items:center;font-weight:700">Reflective</div></div>`,
+ 'profile-card':`<div class="demo" style="display:grid;place-items:center"><div data-fx="profile-card" style="width:170px;border-radius:16px;background:#1a1a26;padding:14px;text-align:center"><img src="${D}" width="70" height="70" style="border-radius:50%;object-fit:cover"><div style="font-weight:700;margin-top:6px">Ada L.</div><div style="font-size:12px;color:#8b8ba0">Engineer</div></div></div>`,
+ 'magic-bento':`<div class="demo grid" style="grid-template-columns:repeat(3,1fr);padding:10px" data-fx="magic-bento">${[1,2,3].map(i=>`<div class="card" style="min-height:90px">Card ${i}</div>`).join('')}</div>`,
+ 'fluid-glass':`<div class="demo" data-fx="fluid-glass" style="padding:0"><img class="p" src="${B}" alt=""></div>`,
+ counter:`<div class="demo" style="display:grid;place-items:center;font-size:56px;font-weight:800"><span data-fx="counter" data-opts='{"value":20483}'>0</span></div>`,
+ 'dome-gallery':`<div class="demo" data-fx="dome-gallery" data-opts='{"radius":200,"size":70}'>${Array.from({length:22},(_,i)=>`<div style="background:hsl(${i*17},65%,50%)"></div>`).join('')}</div>`,
+ 'infinite-menu':`<div class="demo" data-fx="infinite-menu" data-opts='{"radius":100}'>${['Home','Work','About','Blog','Shop','Press','Jobs','Docs','Help','Team','Labs','Store','News','Media'].map(t=>`<span style="font-weight:700">${t}</span>`).join('')}</div>`,
+ 'infinite-spiral':`<div class="demo" data-fx="infinite-spiral" data-opts='{"radius":110,"rise":34}'>${Array.from({length:12},(_,i)=>tile(i+1,60,60)).join('')}</div>`,
+ 'flying-posters':`<div class="demo" data-fx="flying-posters" data-opts='{"depth":260}'>${Array.from({length:7},(_,i)=>tile(i+1,80,110)).join('')}</div>`,
+ 'circular-carousel':`<div class="demo" data-fx="circular-carousel" data-opts='{"w":80,"h":110}'>${Array.from({length:8},(_,i)=>tile(i+1,80,110)).join('')}</div>`,
+ 'circular-gallery':`<div class="demo" data-fx="circular-gallery" data-opts='{"w":90,"h":120}'>${[A,B,C,D,A,B,C,D].map(u=>`<img src="${u}" style="object-fit:cover;border-radius:10px" alt="">`).join('')}</div>`,
+ 'decay-card':`<div class="demo" style="display:grid;place-items:center"><div data-fx="decay-card" style="width:190px;height:130px;border-radius:14px;overflow:hidden"><img class="p" src="${C}" alt=""></div></div>`,
+ 'morph-slider':`<div class="demo" style="display:grid;align-content:center;color:#fff"><div data-fx="morph-slider"></div></div>`,
+ 'staggered-menu':`<div class="demo" style="display:grid;place-items:center">Menu button is fixed top-right of the page<div data-fx="staggered-menu"><a href="#">Home</a><a href="#">Work</a><a href="#">Contact</a></div></div>`,
+ lanyard:`<div class="demo" data-fx="lanyard" style="height:320px"><div style="width:120px;height:170px;border-radius:12px;background:linear-gradient(160deg,#7c3aed,#06b6d4);display:grid;place-items:center;font-weight:800;color:#fff">BADGE</div></div>`,
+ 'curved-input':`<div class="demo" style="display:grid;place-items:center"><div data-fx="curved-input" style="width:90%;color:#fff"></div></div>`,
+ 'model-viewer':`<div class="demo" data-fx="model-viewer" style="padding:0"></div>`,
+});
+
+const T=(fx,txt,extra='',style='font-size:34px;font-weight:800')=>`<div class="demo" style="display:grid;place-items:center;text-align:center"><div data-fx="${fx}" ${extra} style="${style}">${txt}</div></div>`;
+const W=(inner,extra='')=>`<div class="demo" style="display:grid;place-items:center;${extra}">${inner}</div>`;
+Object.assign(DEMOS,{
+ 'echo-text':T('echo-text','ECHO'),'depth-text':T('depth-text','DEPTH',"",'font-size:56px;font-weight:900'),'fold-text':T('fold-text','Fold in'),'fuzzy-text':T('fuzzy-text','FUZZY'),
+ 'split-flap-text':T('split-flap-text','',`data-opts='{"texts":["BERLIN","TOKYO","LAGOS"]}'`,'font-size:30px;font-weight:800'),'masked-heading':T('masked-heading','Masked heading'),'tech-text':T('tech-text','System online'),
+ 'text-cursor':T('text-cursor','Move over this text'),'text-loop':T('text-loop','one',`data-opts='{"texts":["Design","Build","Ship"]}'`),'warp-text':T('warp-text','Warped text'),
+ 'particle-text':`<div class="demo" data-fx="particle-text" data-opts='{"font":"800 120px system-ui"}'>FX</div>`,'ascii-text':`<div class="demo" data-fx="ascii-text" data-opts='{"cell":8}'>HELLO</div>`,
+ 'variable-proximity':T('variable-proximity','PROXIMITY','','font-size:44px;font-family:Inter,system-ui;font-weight:300'),
+ 'bell-toggle':W('<button data-fx="bell-toggle"></button>'),'code-slots':W('<div data-fx="code-slots" data-opts=\'{"n":5}\' style="font-size:14px"></div>'),'comet-dial':W('<div data-fx="comet-dial" style="width:160px;height:160px;color:#fff"></div>'),
+ 'dodge-field':`<div class="demo" data-fx="dodge-field" style="display:flex;gap:10px;align-items:center;justify-content:center"><button class="btn">Catch</button><button class="btn">me</button><button class="btn">if</button><button class="btn">you can</button></div>`,
+ 'flying-button':W('<button class="btn" data-fx="flying-button" data-opts=\'{"label":"Send"}\'></button>'),'folder-float':W('<div data-fx="folder-float"></div>'),'fuse-button':W('<button class="btn" data-fx="fuse-button">Light the fuse</button>'),
+ 'glide-select':W('<div data-fx="glide-select" style="color:#fff"><div>Alpha</div><div>Beta</div><div>Gamma</div></div>'),'jelly-radio':W('<div data-fx="jelly-radio" style="color:#fff"><span>Day</span><span>Week</span><span>Month</span></div>'),
+ 'lattice-loader':W('<div data-fx="lattice-loader" style="color:#a78bfa"></div>'),'peek-rating':W('<div data-fx="peek-rating"></div>'),'prompt-bar':W('<div data-fx="prompt-bar" style="width:90%;color:#fff"></div>'),
+ 'refine-frame':W('<div data-fx="refine-frame" style="padding:14px 20px;color:#fff">Focus me</div>'),'rubber-segment':W('<div data-fx="rubber-segment" style="color:#fff"><button>One</button><button>Two</button><button>Three</button></div>'),
+ 'slide-commit':W('<div data-fx="slide-commit" style="color:#fff"></div>'),'sling-button':W('<button class="btn" data-fx="sling-button" style="color:#000">Sling</button>'),'slosh-gauge':W('<div data-fx="slosh-gauge" data-opts=\'{"value":68}\' style="width:140px;height:140px;color:#fff"></div>'),
+ 'status-mark':W('<span data-fx="status-mark" data-s="ok" style="font-size:44px"></span><span data-fx="status-mark" data-s="err" style="font-size:44px;margin-left:16px"></span><span data-fx="status-mark" data-s="load" style="font-size:44px;margin-left:16px"></span>'),
+ 'swipe-row':W('<div data-fx="swipe-row" style="width:260px;color:#fff"><div style="padding:14px">Swipe me left</div><button style="background:#ef4444">Del</button><button style="background:#3b82f6">Edit</button></div>'),
+ 'swipe-toast':W('<button class="btn" data-fx="swipe-toast" data-msg="Saved — swipe me away">Show toast</button>'),'tear-ticket':W('<div data-fx="tear-ticket" style="color:#000"><div style="background:#fde68a;padding:16px 20px;border-radius:10px 0 0 10px">ADMIT ONE</div><div style="background:#fcd34d;padding:16px 12px;border-radius:0 10px 10px 0;writing-mode:vertical-rl">Drag ↓</div></div>'),
+ 'thought-line':W('<div data-fx="thought-line"></div>'),'voice-pill':W('<button data-fx="voice-pill" style="color:#fff"></button>'),'wake-slider':W('<button data-fx="wake-slider"></button>'),
+ 'warm-tooltip':W('<div data-fx="warm-tooltip"><button class="btn" data-tip="Warm and springy">Hover me</button></div>'),'call-chip':W('<button data-fx="call-chip" data-opts=\'{"name":"Ada"}\'></button>'),'branched-menu':W('<div data-fx="branched-menu" style="color:#fff"></div>'),
+ 'paper-crumple':W('<div data-fx="paper-crumple" class="card" style="cursor:pointer">Click to crumple</div>'),'shredder':W('<div data-fx="shredder" class="card" style="cursor:pointer">Click to shred</div>'),
+ 'ripple-distortion':`<div class="demo" data-fx="ripple-distortion" style="padding:0"><img src="${A}" alt=""></div>`,'halftone-reveal':`<div class="demo" data-fx="halftone-reveal" style="padding:0"><img src="${B}" alt=""></div>`,'image-bulge':`<div class="demo" data-fx="image-bulge" style="padding:0"><img src="${C}" alt=""></div>`,
+});
+
+const q=new URLSearchParams(location.search),bg=(q.get('bg')||'').split(',').filter(Boolean),dm=(q.get('demo')||'').split(',').filter(Boolean);
+let h='';
+if(bg.length)h+=`<section><h2 class="k">Backgrounds</h2><div class="grid">${bg.map(n=>`<div class="bg" data-fx="${n}"><b>${n}</b></div>`).join('')}</div></section>`;
+const dn=dm.length?dm:(bg.length?[]:Object.keys(DEMOS));
+if(dn.length)h+=`<section><h2 class="k">Demos</h2><div class="grid">${dn.map(n=>`<div><div style="font-size:12px;color:#8b8ba0;margin-bottom:6px">${n}</div>${DEMOS[n]}</div>`).join('')}</div></section>`;
+document.getElementById('app').innerHTML=h;FX.init();
+</script></body></html>
