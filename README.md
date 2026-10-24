@@ -75,3 +75,7 @@ To add a site type, create `parts/<type>.md` with a title, a "HOW TO USE" box, a
 ## Credits and influences
 
 animations.dev, Devouring Details, Interface Craft, Invisible Details, Tabler Icons, Codrops (Three.js, SVG text on a path, kinetic typography), Three.js Resources, and Emil Kowalski's animation principles. Only public pages were read; paid course content was not available. Photos are from Unsplash.
+
+## 4. FX effects kit (React Bits-style motion, no React)
+
+[`fx/fx.js`](fx/fx.js) is a dependency-free script with ~75 effects switched on by `data-fx="…"`: text animations (blur-in, scramble, typewriter, scroll-reveal, curved loop…), shader and canvas backgrounds (aurora, plasma, galaxy, silk, particles, hyperspeed…), cursor effects (magnet, blob cursor, target cursor, image trail…), cards and menus (spotlight, tilt, holo, dock, gooey nav, flowing menu…) and micro-interactions. Skill: [`skills/html-fx-effects/SKILL.md`](skills/html-fx-effects/SKILL.md). Demo of everything: [`fx/showcase.html`](fx/showcase.html).

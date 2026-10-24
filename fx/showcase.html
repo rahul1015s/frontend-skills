@@ -1,0 +1,110 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FX showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070b;--fg:#ececf3;--mut:#8b8ba0;--card:#12121a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 Inter,system-ui,sans-serif}
+section{position:relative;padding:72px max(16px,5vw);border-top:1px solid #1d1d28;overflow:hidden}
+h2.k{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin:0 0 28px}
+.row{display:flex;flex-wrap:wrap;gap:28px;align-items:center}
+.big{font-size:clamp(2rem,6vw,4.5rem);font-weight:800;line-height:1.05;margin:0}
+.bg{position:relative;height:260px;border-radius:18px;overflow:hidden;background:#05050a;border:1px solid #1d1d28;display:grid;place-items:end start;padding:14px;font-size:12px;color:#fff;isolation:isolate}
+.bg b{position:relative;z-index:1;background:rgba(0,0,0,.5);padding:2px 8px;border-radius:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid #23232f;border-radius:16px;padding:22px;min-height:140px}
+.btn{font:inherit;color:#000;background:#fff;border:0;border-radius:99px;padding:.8em 1.5em;cursor:pointer;font-weight:600}
+.sw{width:100%;height:150px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:grid;place-items:center;font-weight:700;font-size:20px;color:#fff}
+</style></head><body>
+<div data-fx="blob-cursor" data-opts='{"color":"#a78bfa"}'></div>
+
+<section data-fx="bg-aurora" data-opts='{"colors":["#5eead4","#818cf8","#f472b6"]}' style="min-height:520px;display:grid;place-content:center;text-align:center">
+  <h1 class="big" data-fx="split-text" style="position:relative">Motion that feels alive</h1>
+  <p data-fx="blur-text" style="position:relative;color:var(--mut)">Vanilla effects, one file, zero dependencies.</p>
+</section>
+
+<section><h2 class="k">Text</h2><div class="row" style="flex-direction:column;align-items:flex-start;gap:22px">
+  <p class="big" data-fx="shiny-text">Shiny text sweep</p>
+  <p class="big" data-fx="gradient-text">Gradient flow text</p>
+  <p class="big" data-fx="glitch-text">GLITCH</p>
+  <p class="big" data-fx="scramble-text">Scrambled on hover</p>
+  <p class="big" data-fx="decrypted-text">Decrypted signal</p>
+  <p class="big">We build <span data-fx="rotating-text" data-opts='{"texts":["fast","bold","alive"]}' style="color:#a78bfa">fast</span> things</p>
+  <p class="big">Typing: <span data-fx="type-text" data-opts='{"texts":["Hello world","Ship it today","Make it move"]}'></span></p>
+  <p class="big"><span data-fx="count-up" data-opts='{"to":12840,"suffix":"+"}'>0</span> happy users</p>
+  <p class="big" data-fx="stroke-text">Outline</p>
+  <p class="big" data-fx="shuffle-text">Shuffle</p>
+  <p class="big" data-fx="true-focus">True focus words</p>
+  <p class="big" data-fx="text-pressure" style="font-family:Inter;font-weight:300">PRESSURE</p>
+  <p data-fx="scroll-reveal" class="big" style="font-size:clamp(1.4rem,3vw,2.4rem)">Words sharpen as you scroll past them, one at a time, giving long statements a reading rhythm.</p>
+  <p class="big" data-fx="scroll-float">FLOAT UP</p>
+  <div style="width:100%;font-size:42px" data-fx="curved-loop" data-opts='{"text":"Curved loop ✦ drag me ✦ "}'></div>
+  <div style="width:100%;font-size:56px;font-weight:800" data-fx="scroll-velocity">Scroll velocity</div>
+  <div data-fx="circular-text" data-opts='{"size":170}'>REACT ✦ WITHOUT ✦ REACT ✦ </div>
+  <div data-fx="falling-text" style="width:100%;font-size:28px;min-height:160px">Words fall and pile up with a little gravity and bounce.</div>
+</div></section>
+
+<section><h2 class="k">Backgrounds</h2><div class="grid">
+  <div class="bg" data-fx="bg-plasma"><b>plasma</b></div>
+  <div class="bg" data-fx="bg-iridescence"><b>iridescence</b></div>
+  <div class="bg" data-fx="bg-silk"><b>silk</b></div>
+  <div class="bg" data-fx="bg-waves"><b>waves</b></div>
+  <div class="bg" data-fx="bg-light-rays"><b>light rays</b></div>
+  <div class="bg" data-fx="bg-ripple-grid"><b>ripple grid</b></div>
+  <div class="bg" data-fx="bg-galaxy"><b>galaxy</b></div>
+  <div class="bg" data-fx="bg-liquid-chrome"><b>liquid chrome</b></div>
+  <div class="bg" data-fx="bg-orb"><b>orb</b></div>
+  <div class="bg" data-fx="bg-particles"><b>particles</b></div>
+  <div class="bg" data-fx="bg-dot-grid"><b>dot grid</b></div>
+  <div class="bg" data-fx="bg-letter-glitch"><b>letter glitch</b></div>
+  <div class="bg" data-fx="bg-hyperspeed"><b>hyperspeed</b></div>
+  <div class="bg" data-fx="bg-lightning"><b>lightning</b></div>
+  <div class="bg" data-fx="bg-radar"><b>radar</b></div>
+  <div class="bg" data-fx="bg-snow"><b>snow</b></div>
+  <div class="bg" data-fx="metaballs"><b>metaballs</b></div>
+</div></section>
+
+<section><h2 class="k">Cursor + animation</h2><div class="row">
+  <button class="btn" data-fx="magnet">Magnet</button>
+  <button class="btn" data-fx="ripple-button">Ripple</button>
+  <button class="btn" data-fx="hold-button" style="background:#2a2a3a;color:#fff">Hold to confirm</button>
+  <div data-fx="star-border" style="border-radius:14px;background:transparent"><span>Star border</span></div>
+  <div data-fx="electric-border" style="padding:1.2em 1.6em">Electric border</div>
+  <div data-fx="glare-hover" class="card" style="width:220px">Glare hover</div>
+  <div data-fx="click-spark" class="card" style="width:220px">Click me</div>
+  <div class="card" style="width:260px;height:160px;position:relative" data-fx="pixel-trail"><span style="position:relative">Pixel trail</span></div>
+  <div class="card" style="width:300px;height:180px" data-fx="image-trail"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&q=60" alt=""><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=60" alt=""><span style="position:relative;z-index:2">Image trail</span></div>
+  <div data-fx="noise" class="card" style="width:220px">Film grain</div>
+  <div data-fx="reveal" data-opts='{"from":"left","blur":true}' class="card" style="width:220px">Reveal</div>
+</div>
+<div data-fx="logo-loop" style="margin-top:40px;font-size:28px;font-weight:700;color:#8b8ba0"><span>ACME</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span></div></section>
+
+<section><h2 class="k">Components</h2><div class="grid">
+  <div class="card" data-fx="spotlight-card">Spotlight card</div>
+  <div class="card" data-fx="border-glow">Border glow</div>
+  <div class="card" data-fx="tilted-card"><div data-depth="14">Tilted card</div></div>
+  <div class="card" data-fx="holo-card">Holo card</div>
+  <div class="card" style="background:linear-gradient(135deg,#7c3aed,#06b6d4)"><div data-fx="glass-surface" style="padding:22px;color:#fff">Glass surface</div></div>
+  <div data-fx="flip-card" style="height:140px"><div class="card sw">Front</div><div class="card sw" style="background:#f472b6">Back</div></div>
+</div>
+<div class="row" style="margin-top:40px">
+  <div data-fx="dock"><div class="sw" style="width:48px;height:48px;font-size:12px">A</div><div class="sw" style="width:48px;height:48px;font-size:12px">B</div><div class="sw" style="width:48px;height:48px;font-size:12px">C</div><div class="sw" style="width:48px;height:48px;font-size:12px">D</div></div>
+  <nav data-fx="gooey-nav"><ul><li><a href="#">Home</a></li><li><a href="#">Work</a></li><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></nav>
+  <div data-fx="pill-nav" style="background:#1a1a24;border-radius:99px;padding:5px"><a href="#" style="padding:.5em 1em;color:#fff;text-decoration:none">One</a><a href="#" style="padding:.5em 1em;color:#fff;text-decoration:none">Two</a><a href="#" style="padding:.5em 1em;color:#fff;text-decoration:none">Three</a></div>
+  <div data-fx="card-stack" style="width:220px;height:140px;margin-right:40px"><div class="sw">1</div><div class="sw" style="background:#f472b6">2</div><div class="sw" style="background:#34d399">3</div></div>
+</div>
+<div data-fx="flowing-menu" style="margin-top:40px"><a href="#" data-img="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&q=60">Mountains</a><a href="#" data-img="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=60">Forests</a><a href="#">Oceans</a></div>
+<div data-fx="accordion-gallery" style="margin-top:40px;--fx-h:160px"><div class="sw">One</div><div class="sw" style="background:#f472b6">Two</div><div class="sw" style="background:#34d399">Three</div><div class="sw" style="background:#f59e0b">Four</div></div>
+<div data-fx="animated-list" class="grid" style="margin-top:40px"><div class="card">Item 1</div><div class="card">Item 2</div><div class="card">Item 3</div></div>
+<div data-fx="carousel" style="margin-top:40px"><div class="sw" style="flex:none;width:300px">Slide 1</div><div class="sw" style="flex:none;width:300px;background:#f472b6">Slide 2</div><div class="sw" style="flex:none;width:300px;background:#34d399">Slide 3</div><div class="sw" style="flex:none;width:300px;background:#f59e0b">Slide 4</div></div>
+<div data-fx="stepper" style="margin-top:40px;max-width:420px"><div>Step one content</div><div>Step two content</div><div>Step three content</div></div>
+<div data-fx="elastic-slider" style="margin-top:40px;max-width:420px"></div>
+<div data-fx="masonry" style="margin-top:40px"><div class="card" style="height:120px">a</div><div class="card" style="height:200px">b</div><div class="card" style="height:150px">c</div><div class="card" style="height:90px">d</div><div class="card" style="height:180px">e</div></div>
+<div data-fx="scroll-stack" style="margin-top:40px"><div class="sw" style="height:260px">Stack 1</div><div class="sw" style="height:260px;background:#f472b6">Stack 2</div><div class="sw" style="height:260px;background:#34d399">Stack 3</div></div>
+</section>
+
+<section><h2 class="k">Micro</h2><div class="row">
+  <button data-fx="squish-switch" aria-label="toggle"></button>
+  <input data-fx="spring-check" aria-label="check">
+  <span data-fx="pulse-heart" style="font-size:36px">♥</span>
+  <span data-fx="scrub-field" class="big">42</span>
+</div></section>
+</body><script src="fx.js"></script></html>
